@@ -86,6 +86,10 @@ def main():
 
     if m.status == GRB.INFEASIBLE:
         print("Infeasible")
-    else:
-        pretty_print(m, is_black, n, board)
-        write_to_file(m, is_black, n, board)
+        exit()
+
+    pretty_print(m, is_black, n, board)
+    write_to_file(m, is_black, n, board)
+
+    # run_solution_checker()
+
