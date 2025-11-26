@@ -10,6 +10,9 @@ from src.duplicates_constraints.duplicates_path_constraint import duplicates_pat
 from src.pretty_print import pretty_print
 from src.write_results import get_results
 
+folder = "/8_instances"
+instance_key = "123.singles"
+
 def read_file():
     file = open("problem_instances/8_instances/123.singles", "r")
     line = file.readline()
@@ -31,6 +34,17 @@ def read_file():
     file.close()
 
     return n, board
+
+def write_to_file(m, is_black, n, board):
+    with open("problem_instances" + folder + "_solutions/" + instance_key + "sol", "w") as file:
+        file.write(get_results(m, is_black, n, board))
+        file.write("\n")
+
+        with open("problem_instances" + folder + "/" + instance_key, "r") as source:
+            for line in source:
+                if len(line) > 0 and line[0] != "@" and line[0] != "#": continue
+                else: file.write(line)
+
 
 def main():
     n, board = read_file()
@@ -74,4 +88,4 @@ def main():
         print("Infeasible")
     else:
         pretty_print(m, is_black, n, board)
-        get_results(m, is_black, n, board)
+        write_to_file(m, is_black, n, board)

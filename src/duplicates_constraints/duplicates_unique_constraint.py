@@ -33,7 +33,6 @@ def duplicates_unique_constraint(n, is_black, m, duplicates):
     for i in range(n):
         for j in range(n):
             if duplicates[j][i] > 0:
-                print(duplicates[j][i] -1)
                 vertical_expressions[i][int(duplicates[j][i]) - 1].append(1 - is_black[j][i])
 
     for i in range(n):

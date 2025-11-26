@@ -30,6 +30,4 @@ def find_duplicates(n, board):
             if counts[np.where(values == board[j][i])] > 1:
                 duplicates[j][i] = board[j][i]
 
-    print(duplicates)
-
     return duplicates
