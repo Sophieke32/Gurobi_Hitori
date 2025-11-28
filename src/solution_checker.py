@@ -17,17 +17,14 @@ def run_solution_checker(root, file):
     return valid
 
 def check(root, file):
-    stream = open(root + "_solutions/" + file + "sol", "r")
+    with open(root + "_solutions/" + file + "sol", "r") as stream:
+        lines = stream.read().splitlines()
 
-    lines = stream.read().splitlines()
+        n = int(lines[0])
 
-    n = int(lines[0])
-
-    if len(lines) < n + 2:
-        print("file format wrong, expected more")
-        exit(1)
-
-    stream.close()
+        if len(lines) < n + 2:
+            print("file format wrong, expected more lines")
+            exit(1)
 
     # Make the grid
     grid = []
