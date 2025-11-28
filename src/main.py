@@ -1,3 +1,4 @@
+import time
 import numpy as np
 import gurobipy as gp
 from gurobipy import GRB
@@ -28,7 +29,7 @@ def read_file(root, file):
 
         return n, board
 
-def write_to_file(m, is_black, n, board, root, file):
+def write_to_file(m, is_black, n, board, cpu_time, root, file):
     with open(root + "_solutions/" + file + "sol", "w") as f:
         f.write(get_results(m, is_black, n, board))
         f.write("\n")
@@ -40,14 +41,14 @@ def write_to_file(m, is_black, n, board, root, file):
                 else:
                     f.write(line)
 
+        f.write("\n# Computed in " + str(cpu_time) + " seconds")
 
-def write_infeasible(root, file):
+
+def write_infeasible(cpu_time, root, file):
     with open(root + "_solutions/" + file + "sol", "w") as file:
-        file.write("Model Infeasible")
+        file.write("# Model Infeasible in " + str(cpu_time) + " seconds")
 
-def main(root, file):
-    n, board = read_file(root, file)
-
+def model_and_solve(n, board):
     # Create the duplicates array
     duplicates = find_duplicates(n, board)
 
@@ -82,12 +83,23 @@ def main(root, file):
     # Optimise the model
     m.optimize()
 
+    return m, is_black
+
+def main(root, file):
+    n, board = read_file(root, file)
+
+    start = time.process_time()
+    m, is_black = model_and_solve(n, board)
+    end = time.process_time()
+
+    cpu_time = end - start
+
     if m.status == GRB.INFEASIBLE:
         print(root + "/" + file, "was found to be infeasible")
-        write_infeasible(root, file)
+        write_infeasible(cpu_time, root, file)
         return
 
     pretty_print(m, is_black, n, board)
-    write_to_file(m, is_black, n, board, root, file)
+    write_to_file(m, is_black, n, board, cpu_time, root, file)
 
     run_solution_checker(root, file)
