@@ -8,50 +8,48 @@ from src.duplicates_constraints.find_duplicates import find_duplicates
 from src.duplicates_constraints.create_duplicates_graph import create_graph
 from src.duplicates_constraints.duplicates_path_constraint import duplicates_path_constraint
 from src.pretty_print import pretty_print
+from src.solution_checker import run_solution_checker
 from src.write_results import get_results
 
-folder = "/8_instances"
-instance_key = "123.singles"
+def read_file(root, file):
+    with open(root + "/" + file, "r") as f:
+        line = f.readline()
+        while type(int(line)) != int: continue
+        n = int(line)
 
-def read_file():
-    file = open("problem_instances/8_instances/123.singles", "r")
-    line = file.readline()
-    while type(int(line)) != int: continue
-    n = int(line)
+        board = np.zeros((n,n), dtype=int)
 
-    board = np.zeros((n,n), dtype=int)
+        f.readline()
 
-    file.readline()
+        for i in range(n):
+            board[i] = [int(number) for number in f.readline().split()]
 
-    for i in range(n):
-        board[i] = [int(number) for number in file.readline().split()]
+        f.close()
 
-    line = file.readline()
+        return n, board
 
-    while line:
-        print(line.strip())
-        line = file.readline()
-    file.close()
+def write_to_file(m, is_black, n, board, root, file):
+    with open(root + "_solutions/" + file + "sol", "w") as f:
+        f.write(get_results(m, is_black, n, board))
+        f.write("\n")
 
-    return n, board
-
-def write_to_file(m, is_black, n, board):
-    with open("problem_instances" + folder + "_solutions/" + instance_key + "sol", "w") as file:
-        file.write(get_results(m, is_black, n, board))
-        file.write("\n")
-
-        with open("problem_instances" + folder + "/" + instance_key, "r") as source:
+        with open(root + "/" + file, "r") as source:
             for line in source:
-                if len(line) > 0 and line[0] != "@" and line[0] != "#": continue
-                else: file.write(line)
+                if len(line) > 0 and line[0] != "@" and line[0] != "#":
+                    continue
+                else:
+                    f.write(line)
 
 
-def main():
-    n, board = read_file()
+def write_infeasible(root, file):
+    with open(root + "_solutions/" + file + "sol", "w") as file:
+        file.write("Model Infeasible")
+
+def main(root, file):
+    n, board = read_file(root, file)
 
     # Create the duplicates array
     duplicates = find_duplicates(n, board)
-
 
     # Create a new model
     m = gp.Model("Hitori")
@@ -85,11 +83,11 @@ def main():
     m.optimize()
 
     if m.status == GRB.INFEASIBLE:
-        print("Infeasible")
-        exit()
+        print(root + "/" + file, "was found to be infeasible")
+        write_infeasible(root, file)
+        return
 
     pretty_print(m, is_black, n, board)
-    write_to_file(m, is_black, n, board)
+    write_to_file(m, is_black, n, board, root, file)
 
-    # run_solution_checker()
-
+    run_solution_checker(root, file)

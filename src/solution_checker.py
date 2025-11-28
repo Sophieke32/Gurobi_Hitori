@@ -1,8 +1,23 @@
-import sys
 import pandas as pd
+import numpy as np
 
-def check(file):
-    stream = open(file, "r")
+def run_solution_checker(root, file):
+    valid = check(root, file)
+    if valid: print(file, "Solution is valid")
+    else: print(file, "Solution is not valid")
+
+    with open(root + "_solutions/" + file + "sol", "r+") as f:
+        text = f.readlines()
+
+        if valid and "# Solution is valid" not in text:
+            f.write("\n# Solution is valid")
+        if not valid and "# Solution is not valid" not in text:
+            f.write("\n# Solution is not valid")
+
+    return valid
+
+def check(root, file):
+    stream = open(root + "_solutions/" + file + "sol", "r")
 
     lines = stream.read().splitlines()
 
@@ -18,9 +33,11 @@ def check(file):
     grid = []
     for i in range(2, n + 2):
         line = lines[i]
-        row = [x for x in line.split(" ", )]
+        row = [x for x in line.split(" ",)]
         assert (len(row) == n)
         grid.append(row)
+
+    grid = np.array(grid)
 
     # No two black squares next to one another
     for i in range(n -1):
@@ -37,12 +54,10 @@ def check(file):
 
     # Check all unique
     for i in range(n):
-        if (len(list(filter(lambda s: "B" not in s, grid[i]))) !=
-                len(pd.unique(list(filter(lambda s: "B" not in s, grid[i]))))):
+        if len(grid[i][~np.char.endswith(grid[i], "B")]) != len(pd.unique(grid[i][~np.char.endswith(grid[i], "B")])):
             return False
 
-        if (len(list(filter(lambda s: "B" not in s, list(row[i] for row in grid)))) !=
-                len(pd.unique(list(filter(lambda s: "B" not in s, list(row[i] for row in grid)))))):
+        if len(grid[:, i][~np.char.endswith(grid[:, i], "B")]) != len(pd.unique(grid[:, i][~np.char.endswith(grid[:, i], "B")])):
             return False
 
     # Simple BFS tile explorer to find size of connected white squares
@@ -78,13 +93,3 @@ def check(file):
     if path_length != n*n - number_of_black_squares: return False
 
     return True
-
-
-if __name__ == "__main__":
-
-    if len(sys.argv) < 2:
-        print("usage ./main.py input.singlessol")
-        exit(1)
-
-    filename = sys.argv[1]
-    print(check(filename))
