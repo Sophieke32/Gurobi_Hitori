@@ -1,7 +1,7 @@
 # Solving Hitori
 _This repo is currently still under development._ 
 
-The code in this repository is made for a BSc thesis. It investigates different ways of modeling the Hitori problem when
+The code in this repository is made for a Bachelor thesis. It investigates different ways of modeling the Hitori problem when
 using Integer Linear Programming to solve it.
 
 ## Hitori
@@ -12,11 +12,15 @@ The goal is to black out squares such that three conditions hold:
 3. All the white squares are connected through one orthogonal path
 
 ## Running the solver
-Running main.py in the root folder will run the solver. In src/main.py there is an open() statement which determines what
-.singles file to run. 
+The solver runs through the commandline. You can use 
+```commandline
+python main.py -d name_of_directory
+```
+and it will run all .singles files in that directory (and any subdirectories). Note that for each directory with a given name xyz
+that contains singles files the programme expects another directory xyz_solutions where it can put solutions to the puzzles. 
 
 ## Dependencies
-Currently this repository uses the following dependencies:
+Currently, this repository uses the following dependencies:
 - numpy
 - gurobipy (version 12.0.3)
 - networkx

@@ -3,11 +3,12 @@ import numpy as np
 import gurobipy as gp
 from gurobipy import GRB
 
-from src.duplicates_constraints.duplicates_adjacent_constraint import duplicates_adjacent_constraint
-from src.duplicates_constraints.duplicates_unique_constraint import duplicates_unique_constraint
-from src.duplicates_constraints.find_duplicates import find_duplicates
-from src.duplicates_constraints.create_duplicates_graph import create_graph
-from src.duplicates_constraints.duplicates_path_constraint import duplicates_path_constraint
+from src.duplicates_solver.duplicates_constraints.duplicates_adjacent_constraint import duplicates_adjacent_constraint
+from src.duplicates_solver.duplicates_constraints.duplicates_unique_constraint import duplicates_unique_constraint
+from src.duplicates_solver.duplicates_solver import duplicates_solver
+from src.duplicates_solver.helper_methods.find_duplicates import find_duplicates
+from src.duplicates_solver.helper_methods.create_duplicates_graph import create_graph
+from src.duplicates_solver.duplicates_constraints.duplicates_path_constraint import duplicates_path_constraint
 from src.pretty_print import pretty_print
 from src.solution_checker import run_solution_checker
 from src.write_results import get_results
@@ -49,41 +50,7 @@ def write_infeasible(cpu_time, root, file):
         file.write("# Model Infeasible in " + str(cpu_time) + " seconds")
 
 def model_and_solve(n, board):
-    # Create the duplicates array
-    duplicates = find_duplicates(n, board)
-
-    # Create a new model
-    m = gp.Model("Hitori")
-
-    # Make the variables. Only add variables for duplicate values.
-    # Values on the Hitori board that are unique in their row and column will never
-    # have to be blacked out.
-    is_black = list()
-
-    for i in range(n):
-        new_list = list()
-        for j in range(n):
-            if duplicates[i][j] == 0:
-                new_list.append(0)
-            else:
-                new_list.append(m.addVar(vtype=GRB.BINARY, name=f'is_black {i}_{j}'))
-        is_black.append(new_list)
-    m.update()
-
-    # Adjacency constraint
-    duplicates_adjacent_constraint(n, is_black, m, duplicates)
-
-    # Unique constraint
-    duplicates_unique_constraint(n, is_black, m, duplicates)
-
-    # Path constraint
-    g = create_graph(n, duplicates)
-    duplicates_path_constraint(is_black, m, g)
-
-    # Optimise the model
-    m.optimize()
-
-    return m, is_black
+    return duplicates_solver(n, board)
 
 def main(root, file):
     n, board = read_file(root, file)
