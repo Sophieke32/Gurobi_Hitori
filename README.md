@@ -1,8 +1,8 @@
 # Solving Hitori
 _This repo is currently still under development._ 
 
-The code in this repository is made for a Bachelor thesis. It investigates different ways of modeling the Hitori problem when
-using Integer Linear Programming to solve it.
+The code in this repository is made for a Bachelor thesis. It investigates different ways of modeling the Hitori problem as
+an Integer Linear Programming problem.
 
 ## Hitori
 Hitori is a logic puzzle in which the player is given an $n$ x $n$ grid filled with numbers ranging from 1 to $n$ (inclusive).
