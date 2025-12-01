@@ -4,7 +4,7 @@ import numpy as np
 def run_solution_checker(root, file):
     valid = check(root, file)
     if valid: print(file, "Solution is valid")
-    else: print(file, "Solution is not valid")
+    # else: print(file, "Solution is not valid")
 
     with open(root + "_solutions/" + file + "sol", "r+") as f:
         text = f.readlines()

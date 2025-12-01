@@ -1,14 +1,9 @@
 import time
 import numpy as np
-import gurobipy as gp
 from gurobipy import GRB
 
-from src.duplicates_solver.duplicates_constraints.duplicates_adjacent_constraint import duplicates_adjacent_constraint
-from src.duplicates_solver.duplicates_constraints.duplicates_unique_constraint import duplicates_unique_constraint
 from src.duplicates_solver.duplicates_solver import duplicates_solver
-from src.duplicates_solver.helper_methods.find_duplicates import find_duplicates
-from src.duplicates_solver.helper_methods.create_duplicates_graph import create_graph
-from src.duplicates_solver.duplicates_constraints.duplicates_path_constraint import duplicates_path_constraint
+from src.naive_solver.naive_solver import naive_solver
 from src.pretty_print import pretty_print
 from src.solution_checker import run_solution_checker
 from src.write_results import get_results
@@ -49,14 +44,17 @@ def write_infeasible(cpu_time, root, file):
     with open(root + "_solutions/" + file + "sol", "w") as file:
         file.write("# Model Infeasible in " + str(cpu_time) + " seconds")
 
-def model_and_solve(n, board):
-    return duplicates_solver(n, board)
-
-def main(root, file):
+def main(root, file, model):
     n, board = read_file(root, file)
 
+    m = None
+    is_black = None
+
     start = time.process_time()
-    m, is_black = model_and_solve(n, board)
+    if model == "duplicates":
+        m, is_black = duplicates_solver(n, board)
+    else:
+        m, is_black = naive_solver(n, board)
     end = time.process_time()
 
     cpu_time = end - start
@@ -64,9 +62,15 @@ def main(root, file):
     if m.status == GRB.INFEASIBLE:
         print(root + "/" + file, "was found to be infeasible")
         write_infeasible(cpu_time, root, file)
-        return
+        return n, time, "INVALID"
 
-    pretty_print(m, is_black, n, board)
-    write_to_file(m, is_black, n, board, cpu_time, root, file)
+    if run_solution_checker(root, file):
+        write_to_file(m, is_black, n, board, cpu_time, root, file)
+    else:
+        # If incorrect solution, print the solution for debugging
+        print("###### Incorrect Solution! ######\n")
+        print(root + "/" + file)
+        pretty_print(m, is_black, n, board)
+        print("\n#################################")
 
-    run_solution_checker(root, file)
+    return n, time, run_solution_checker(root, file)
