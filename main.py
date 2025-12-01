@@ -34,6 +34,10 @@ if __name__ == "__main__":
     model = args.model
     time = args.time
 
+    print("Solving all puzzles in file:", directory_name)
+    print("Using model:", model)
+    if time: print("Storing time!")
+
     if args.time:
         with open("experiments/" + model + "/" + str(datetime.datetime.now()), "w") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=["instance", "n", "cpu_time", "Solution"])
@@ -44,3 +48,5 @@ if __name__ == "__main__":
                     if file.endswith(".singles"):
                         n, time, solution = main(root, file, model)
                         writer.writerow({"instance": file, "n": n, "cpu_time": time, "Solution": solution})
+                        print(n, time)
+                print(root)

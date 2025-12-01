@@ -1,4 +1,5 @@
 import time
+import os
 import numpy as np
 from gurobipy import GRB
 
@@ -64,13 +65,15 @@ def main(root, file, model):
         write_infeasible(cpu_time, root, file)
         return n, time, "INVALID"
 
-    if run_solution_checker(root, file):
-        write_to_file(m, is_black, n, board, cpu_time, root, file)
-    else:
+    write_to_file(m, is_black, n, board, cpu_time, root, file)
+
+    if not run_solution_checker(root, file):
         # If incorrect solution, print the solution for debugging
         print("###### Incorrect Solution! ######\n")
         print(root + "/" + file)
         pretty_print(m, is_black, n, board)
         print("\n#################################")
 
-    return n, time, run_solution_checker(root, file)
+        os.remove(root + "_solutions/" + file + "sol")
+
+    return n, cpu_time, run_solution_checker(root, file)

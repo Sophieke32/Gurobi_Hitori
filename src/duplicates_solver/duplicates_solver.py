@@ -14,6 +14,7 @@ def duplicates_solver(n, board):
 
     # Create a new model
     m = gp.Model("Hitori_Solver_Duplicates")
+    m.params.OutputFlag = 0
 
     # Make the variables. Only add variables for duplicate values.
     # Values on the Hitori board that are unique in their row and column will never

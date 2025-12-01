@@ -12,6 +12,7 @@ from src.naive_solver.naive_constraints.naive_unique_constraint import naive_uni
 def naive_solver(n, board):
     # Create a new model
     m = gp.Model("Hitori")
+    m.params.OutputFlag = 0
 
     is_black = list()
 
