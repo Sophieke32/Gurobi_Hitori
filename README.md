@@ -30,4 +30,4 @@ Currently, this repository uses the following dependencies:
 - networkx
 - colorama (only for pretty printing)
 - matplotlib (only for visualising the graphs built in the duplicates_constraint solver)
-- panda (only for the solution checker)
+- pandas (only for the solution checker)
