@@ -7,10 +7,10 @@ __pycache__/
 *.so
 
 # Puzzle solutions and custom puzzle instances
-#*.singlessol
+*.singlessol
 custom_instances/
 custom_instances_solutions/
-#.csv
+*.csv
 
 # Distribution / packaging
 .Python
