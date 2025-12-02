@@ -51,14 +51,14 @@ def main(root, file, model):
     m = None
     is_black = None
 
-    start = time.process_time()
+    start = time.perf_counter_ns()
     if model == "duplicates":
         m, is_black = duplicates_solver(n, board)
     else:
         m, is_black = naive_solver(n, board)
-    end = time.process_time()
+    end = time.perf_counter_ns()
 
-    cpu_time = end - start
+    cpu_time = (end - start) /1000000000
 
     if m.status == GRB.INFEASIBLE:
         print(root + "/" + file, "was found to be infeasible")
