@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 
@@ -6,7 +7,8 @@ def run_solution_checker(root, file):
     # if valid: print(file, "Solution is valid")
     # else: print(file, "Solution is not valid")
 
-    with open(root + "_solutions/" + file + "sol", "r+") as f:
+    # with open(root + "_solutions/" + file + "sol", "r+") as f:
+    with open(os.path.join(root + "_solutions", file + "sol"), "r+") as f:
         text = f.readlines()
 
         if valid and "# Solution is valid" not in text:
@@ -17,7 +19,8 @@ def run_solution_checker(root, file):
     return valid
 
 def check(root, file):
-    with open(root + "_solutions/" + file + "sol", "r") as stream:
+    # with open(root + "_solutions/" + file + "sol", "r") as stream:
+    with open(os.path.join(root + "_solutions", file + "sol"), "r") as stream:
         lines = stream.read().splitlines()
 
         n = int(lines[0])

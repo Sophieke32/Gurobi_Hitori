@@ -10,7 +10,8 @@ from src.solution_checker import run_solution_checker
 from src.write_results import get_results
 
 def read_file(root, file):
-    with open(root + "/" + file, "r") as f:
+    with open(os.path.join(root, file), "r") as f:
+    # with open(root + "/" + file, "r") as f:
         line = f.readline()
         while type(int(line)) != int: continue
         n = int(line)
@@ -27,11 +28,12 @@ def read_file(root, file):
         return n, board
 
 def write_to_file(m, is_black, n, board, cpu_time, root, file):
-    with open(root + "_solutions/" + file + "sol", "w") as f:
+    # with open(root + "_solutions/" + file + "sol", "w") as f:
+    with open(os.path.join(root + "_solutions", file + "sol"), "w") as f:
         f.write(get_results(m, is_black, n, board))
         f.write("\n")
 
-        with open(root + "/" + file, "r") as source:
+        with open(os.path.join(root, file), "r") as source:
             for line in source:
                 if len(line) > 0 and line[0] != "@" and line[0] != "#":
                     continue
@@ -42,7 +44,7 @@ def write_to_file(m, is_black, n, board, cpu_time, root, file):
 
 
 def write_infeasible(cpu_time, root, file):
-    with open(root + "_solutions/" + file + "sol", "w") as file:
+    with open(os.path.join(root + "_solutions", file + "sol"), "w") as file:
         file.write("# Model Infeasible in " + str(cpu_time) + " seconds")
 
 def main(root, file, model):
