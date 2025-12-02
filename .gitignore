@@ -9,6 +9,8 @@ __pycache__/
 # Puzzle solutions and custom puzzle instances
 .singlessol
 custom_instances/
+custom_instances_solutions/
+.csv
 
 # Distribution / packaging
 .Python
