@@ -39,7 +39,7 @@ if __name__ == "__main__":
     if time: print("Storing time!")
 
     if args.time:
-        with open(os.path.join("experiments", model, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "_" + model + ".csv"), "w") as csvfile:
+        with open(os.path.join("experiments", model, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "_" + model + ".csv"), "w", newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=["instance", "n", "cpu_time", "Solution"])
             writer.writeheader()
 
