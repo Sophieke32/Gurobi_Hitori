@@ -47,7 +47,7 @@ if __name__ == "__main__":
                 for file in files:
                     if file.endswith(".singles"):
                         n, time, solution = main(root, file, model)
-                        writer.writerow({"instance": file, "n": n, "cpu_time": time, "Solution": solution})
+                        writer.writerow({"instance": file, "n": n, "cpu_time (s)": time, "solution found": solution})
                         print(n, time)
                 print(root)
     else:
