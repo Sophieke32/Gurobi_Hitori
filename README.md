@@ -24,7 +24,7 @@ There are another two optional flags:
 -t gives you the option to track the time the model took for all solutions in a csv file. Can be True or False. Default is 'False'
 
 ## Dependencies
-Currently, this repository uses the following dependencies:
+This project's dependencies are detailed in the `requirements.txt` file. Downloading the following using pip should cover them as well:
 - numpy
 - gurobipy (version 12.0.3)
 - networkx

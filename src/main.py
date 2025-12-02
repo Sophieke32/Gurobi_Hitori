@@ -76,4 +76,6 @@ def main(root, file, model):
 
         os.remove(root + "_solutions/" + file + "sol")
 
+    m.dispose()
+
     return n, cpu_time, run_solution_checker(root, file)

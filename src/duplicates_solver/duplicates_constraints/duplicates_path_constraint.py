@@ -5,7 +5,9 @@ import gurobipy as gp
 # Constrains the model to break every cycle in at least one spot
 # This ensures there is always a path between all white squares
 def duplicates_path_constraint(is_black, m, g):
+    number_of_cycles = 0
     for value in nx.simple_cycles(g):
+        number_of_cycles += 1
 
         expr = gp.LinExpr()
         length = -1
@@ -17,4 +19,5 @@ def duplicates_path_constraint(is_black, m, g):
 
         m.addConstr(expr <= length)
 
+    print("Number of cycles in this graph:", number_of_cycles)
     m.update()
