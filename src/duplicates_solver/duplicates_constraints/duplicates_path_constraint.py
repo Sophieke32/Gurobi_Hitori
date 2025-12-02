@@ -19,5 +19,6 @@ def duplicates_path_constraint(is_black, m, g):
 
         m.addConstr(expr <= length)
 
-    print("Number of cycles in this graph:", number_of_cycles)
     m.update()
+
+    return number_of_cycles

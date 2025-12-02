@@ -39,9 +39,9 @@ def duplicates_solver(n, board):
 
     # Path constraint
     g = create_graph(n, duplicates)
-    duplicates_path_constraint(is_black, m, g)
+    number_of_cycles = duplicates_path_constraint(is_black, m, g)
 
     # Optimise the model
     m.optimize()
 
-    return m, is_black
+    return m, is_black, number_of_cycles

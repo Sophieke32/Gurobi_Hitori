@@ -48,12 +48,11 @@ def write_infeasible(cpu_time, root, file):
 def main(root, file, model):
     n, board = read_file(root, file)
 
-    m = None
-    is_black = None
+    number_of_cycles = 0
 
     start = time.perf_counter_ns()
     if model == "duplicates":
-        m, is_black = duplicates_solver(n, board)
+        m, is_black, number_of_cycles = duplicates_solver(n, board)
     else:
         m, is_black = naive_solver(n, board)
     end = time.perf_counter_ns()
@@ -78,4 +77,4 @@ def main(root, file, model):
 
     m.dispose()
 
-    return n, cpu_time, run_solution_checker(root, file)
+    return n, number_of_cycles, cpu_time, run_solution_checker(root, file)
