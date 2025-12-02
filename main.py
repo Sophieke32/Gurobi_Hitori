@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     if args.time:
         with open(os.path.join("experiments", model, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "_" + model + ".csv"), "w", newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=["instance", "n", "cpu_time", "Solution"])
+            writer = csv.DictWriter(csvfile, fieldnames=["instance", "n", "cpu_time (s)", "solution found"])
             writer.writeheader()
 
             for root, dirs, files in os.walk(directory_name):
