@@ -3,7 +3,6 @@ def naive_unique_constraint(n, is_black, board, m):
     # on a square with that value. We sum all these variables, and that should not exceed 1
     for i in range(n):
         horizontal_map = {}
-        print(i)
         for j in range(n):
             if board[i][j] in horizontal_map:
                 horizontal_map[board[i][j]].add(1 - is_black[i][j])
@@ -16,7 +15,6 @@ def naive_unique_constraint(n, is_black, board, m):
     # on a square with that value. We sum all these variables, and that should not exceed 1
     for j in range(n):
         vertical_map = {}
-        print(j)
         for i in range(n):
             if board[i][j] in vertical_map:
                 vertical_map[board[i][j]].add(1 - is_black[i][j])

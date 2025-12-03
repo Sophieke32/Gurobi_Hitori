@@ -7,6 +7,7 @@ from src.naive_solver.helper_methods.path_checker import path_checker
 from src.naive_solver.minimise_black_squares_objective import minimise_black_squares_objective
 from src.naive_solver.naive_constraints.naive_adjacent_constraint import naive_adjacent_constraint
 from src.naive_solver.naive_constraints.naive_unique_constraint import naive_unique_constraint
+from src.pretty_print import pretty_print
 
 
 def naive_solver(n, board):
@@ -40,9 +41,10 @@ def naive_solver(n, board):
     iteration = 0
 
     while not path_checker(n, grid):
-        white, black, grid = extract_solution(n, m, is_black)
         add_illegal_solution(white, black, m, iteration)
         m.optimize()
+
+        white, black, grid = extract_solution(n, m, is_black)
         iteration += 1
 
     return m, is_black

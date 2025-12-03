@@ -45,7 +45,7 @@ def write_infeasible(cpu_time, root, file):
     with open(os.path.join(root + "_solutions", file + "sol"), "w") as file:
         file.write("# Model Infeasible in " + str(cpu_time) + " seconds")
 
-def main(root, file, model):
+def main(root, file, model, experiment):
     n, board = read_file(root, file)
 
     number_of_cycles = 0
@@ -64,17 +64,23 @@ def main(root, file, model):
         write_infeasible(cpu_time, root, file)
         return n, time, "INVALID"
 
-    write_to_file(m, is_black, n, board, cpu_time, root, file)
+    if experiment:
+        m.dispose()
+        return n, number_of_cycles, cpu_time, True
 
-    if not run_solution_checker(root, file):
-        # If incorrect solution, print the solution for debugging
-        print("###### Incorrect Solution! ######\n")
-        print(root + "/" + file)
-        pretty_print(m, is_black, n, board)
-        print("\n#################################")
+    # If we are not running an experiment, perform more checks write solutions
+    else:
+        write_to_file(m, is_black, n, board, cpu_time, root, file)
 
-        os.remove(root + "_solutions/" + file + "sol")
+        if not run_solution_checker(root, file):
+            # If incorrect solution, print the solution for debugging
+            print("###### Incorrect Solution! ######\n")
+            print(root + "/" + file)
+            pretty_print(m, is_black, n, board)
+            print("\n#################################")
 
-    m.dispose()
+            os.remove(root + "_solutions/" + file + "sol")
 
-    return n, number_of_cycles, cpu_time, run_solution_checker(root, file)
+        m.dispose()
+
+        return n, cpu_time, run_solution_checker(root, file)

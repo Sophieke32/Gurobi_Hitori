@@ -46,14 +46,15 @@ if __name__ == "__main__":
             for root, dirs, files in os.walk(directory_name):
                 for file in files:
                     if file.endswith(".singles"):
-                        n, number_of_cycles, time, solution = main(root, file, model)
+                        n, number_of_cycles, time, solution = main(root, file, model, time)
                         writer.writerow({"instance": file, "n": n, "number of cycles": number_of_cycles, "cpu_time (s)": time, "solution found": solution})
                         print(n, time)
                 print(root)
+
     else:
         for root, dirs, files in os.walk(directory_name):
             for file in files:
                 if file.endswith(".singles"):
-                    n, time, solution = main(root, file, model)
+                    n, time, solution = main(root, file, model, False)
                     print(n, time)
             print(root)

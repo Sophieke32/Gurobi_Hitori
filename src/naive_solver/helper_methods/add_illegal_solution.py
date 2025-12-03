@@ -7,16 +7,19 @@ from gurobipy import GRB
 # if v = 0, at least one of the current black squares must be made white
 # if v = 1, at least one additional square must be made black
 def add_illegal_solution(white, black, m, iteration):
-    v = m.addVar(vtype=GRB.BINARY, name=f'illegal solution {iteration} decision variable')
+    v0 = m.addVar(vtype=GRB.BINARY, name=f'illegal solution {iteration} decision variable')
+    v_covered = m.addVar(vtype=GRB.BINARY, name=f'illegal solution {iteration} decision variable covered squares')
 
     expr_white = gp.LinExpr()
+
     for w in white:
         expr_white += w
-    m.addConstr(v * expr_white != len(white))
+    m.addConstr(expr_white >= 1 - (v0 * 10000))
 
     expr_black = gp.LinExpr()
     for b in black:
         expr_black += b
-    m.addConstr((1-v) * expr_black != len(black))
+    m.addConstr(expr_black <= len(black) - 1 + (v_covered * 100000) + ((1 - v0) * 10000))
+    m.addConstr(expr_black >= len(black) + 1 - ((1 - v_covered) * 10000) - ((1 - v0) * 10000))
 
     m.update()

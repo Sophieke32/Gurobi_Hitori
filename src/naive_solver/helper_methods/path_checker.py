@@ -1,3 +1,4 @@
+# grid is a 2d array of zeroes and ones, where a 1 represents a covered tile
 def path_checker(n, grid):
     # Simple BFS tile explorer to find size of connected white squares
     i, j = 0, 0
