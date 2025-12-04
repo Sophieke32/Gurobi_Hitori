@@ -38,16 +38,16 @@ if __name__ == "__main__":
     print("Using model:", model)
     if time: print("Storing time!")
 
-    if args.time:
+    if time:
         with open(os.path.join("experiments", model, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "_" + model + ".csv"), "w", newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=["instance", "n", "number of cycles", "cpu_time (s)", "solution found"])
+            writer = csv.DictWriter(csvfile, fieldnames=["instance", "n", "number of cycles", "covered squares", "cpu_time (s)", "solution found"])
             writer.writeheader()
 
             for root, dirs, files in os.walk(directory_name):
                 for file in files:
                     if file.endswith(".singles"):
-                        n, number_of_cycles, time, solution = main(root, file, model, time)
-                        writer.writerow({"instance": file, "n": n, "number of cycles": number_of_cycles, "cpu_time (s)": time, "solution found": solution})
+                        n, number_of_cycles, number_of_covered_squares, time, solution = main(root, file, model, time)
+                        writer.writerow({"instance": file, "n": n, "number of cycles": number_of_cycles, "covered squares": number_of_covered_squares,"cpu_time (s)": time, "solution found": solution})
                         print(n, time)
                 print(root)
 

@@ -64,23 +64,32 @@ def main(root, file, model, experiment):
         write_infeasible(cpu_time, root, file)
         return n, time, "INVALID"
 
+    number_of_covered_squares = 0
+
+    for i in range(n):
+        for j in range(n):
+            if type(is_black[i][j]) != int and m.getAttr('X', [is_black[i][j]])[0]:
+                number_of_covered_squares += 1
+
     if experiment:
         m.dispose()
-        return n, number_of_cycles, cpu_time, True
+        return n, number_of_cycles, number_of_covered_squares, cpu_time, True
 
     # If we are not running an experiment, perform more checks write solutions
     else:
         write_to_file(m, is_black, n, board, cpu_time, root, file)
 
-        if not run_solution_checker(root, file):
+        valid = run_solution_checker(root, file)
+        if not valid:
             # If incorrect solution, print the solution for debugging
-            print("###### Incorrect Solution! ######\n")
-            print(root + "/" + file)
+            print("\n###### Incorrect Solution! ######\n")
+            print(root + "/" + file + "\n")
             pretty_print(m, is_black, n, board)
-            print("\n#################################")
+            print("\n#################################\n")
 
             os.remove(root + "_solutions/" + file + "sol")
 
         m.dispose()
 
-        return n, cpu_time, run_solution_checker(root, file)
+        return n, cpu_time, valid
+
