@@ -59,27 +59,60 @@ def get_csv(file):
         dtype={'names': ('instance', 'n', 'number of cycles', 'covered squares', 'cpu time', 'solution found'),
             'formats': ('S30', 'i4', 'i4', 'i4', 'f4', 'S1')})
 
+
 def main():
     file1 = "data_files/duplicates_n5_experiment_5_instances.csv" # duplicates model, n = 5, experiment_5_instances
-    file2 = "data_files/naive_n5_experiment_5_instances.csv"      # naive model,      n = 5, experiment_5_instances
+    file2 = "data_files/naive_n5_experiment_5_instances.csv" # naive model, n = 5, experiment_5_instances, no minimum-black-squares heuristic
+    file3 = "data_files/naive_n5_experiment_5_instances_with_heuristic.csv"      # naive model,      n = 5, experiment_5_instances
 
-    file3 = "data_files/duplicates_n10_experiment_10_instances.csv" # duplicates model, n = 10, experiment_10_instances
-    file4 = "data_files/naive_n5_experiment_5_instances_no_heuristic.csv" # naive model, n = 5, experiment_5_instances, no minimum-black-squares heuristic
+    file4 = "data_files/duplicates_n10_experiment_10_instances.csv" # duplicates model, n = 10, experiment_10_instances
 
     csv1 = get_csv(file1)
     csv2 = get_csv(file2)
     csv3 = get_csv(file3)
     csv4 = get_csv(file4)
 
-    print("t-test: Compare duplicates and naive", t_test(csv1, csv4))
-    print("t-test: Compare duplicates and naive with heuristic", t_test(csv1, csv2))
+    # save_plot_naive_vs_duplicates(csv1, csv2)
+
+    fig, ax = plt.subplots(
+        figsize=(6, 5)
+    )
+
+    zipped_values = list(zip(range(1, 14), range(14, 27)))
+    # zipped_values = list(zip(csv4['number of cycles'], csv4['cpu time']))
+    print(zipped_values)
+    ax.scatter(csv4['cpu time'], csv4['number of cycles'], color='#49c3fb')
+    ax.set_xlabel('Time (s)', size=15)
+    ax.set_ylabel('Number of cycles', size=15)
+
+    ax.spines["right"].set_visible(False)
+    ax.spines["top"].set_visible(False)
+
+    # Only show ticks on the left and bottom spines
+    ax.spines["bottom"].set_bounds(0, 1000)
+    ax.spines["left"].set_bounds(0, 0.8)
+
+    # # Set axes colours to white
+    ax.spines["bottom"].set_color("white")
+    ax.spines['left'].set_color('white')
+    ax.xaxis.label.set_color('white')
+    ax.yaxis.label.set_color('white')
+    ax.tick_params(axis='x', colors='white')
+    ax.tick_params(axis='y', colors='white')
+
+    plt.show()
+    # plt.savefig('figures/demo.png', transparent=True)
+
+
+    print("t-test: Compare duplicates and naive", t_test(csv1, csv2))
+    print("t-test: Compare duplicates and naive with heuristic", t_test(csv1, csv3))
 
     print("Spearman: Effect of number of cycles on duplicates (n=5)", spearman(csv1, 'number of cycles'))
-    print("Spearman: Effect of number of cycles on duplicates (n=10)", spearman(csv3, 'number of cycles'))
+    print("Spearman: Effect of number of cycles on duplicates (n=10)", spearman(csv4, 'number of cycles'))
     print("Spearman: Effect of number of covered tiles on duplicates (n=5)", spearman(csv1, 'covered squares'))
-    print("Spearman: Effect of number of covered tiles on duplicates (n=10)", spearman(csv3, 'covered squares'))
-    print("Spearman: Effect of number of covered tiles on naive", spearman(csv4, 'covered squares'))
-    print("Spearman: Effect of number of covered tiles on naive with heuristic", spearman(csv2, 'covered squares'))
+    print("Spearman: Effect of number of covered tiles on duplicates (n=10)", spearman(csv4, 'covered squares'))
+    print("Spearman: Effect of number of covered tiles on naive", spearman(csv2, 'covered squares'))
+    print("Spearman: Effect of number of covered tiles on naive with heuristic", spearman(csv3, 'covered squares'))
 
 
 if __name__ == "__main__":

@@ -10,6 +10,7 @@ __pycache__/
 *.singlessol
 custom_instances/
 custom_instances_solutions/
+data_analysis/figures/
 *.csv
 
 # Distribution / packaging
