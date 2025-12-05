@@ -1,11 +1,9 @@
 import matplotlib.pyplot as plt
 
-from statistics.main import remove_outliers
+from data_analysis.helper_methods.remove_outliers import remove_outliers
 
 def save_plot_naive_vs_duplicates(csv1, csv2):
-    fig, ax = plt.subplots(
-        figsize=(6, 5)
-    )
+    fig, ax = plt.subplots(figsize=(6, 5))
 
     cpu_time_1_cleaned, cpu_time_2_cleaned = remove_outliers(csv1['cpu time']), remove_outliers(csv2['cpu time'])
     ax.plot(cpu_time_2_cleaned, label="naive model", color='#49c3fb')
@@ -30,4 +28,4 @@ def save_plot_naive_vs_duplicates(csv1, csv2):
     ax.tick_params(axis='y', colors='white')
 
     # plt.show()
-    plt.savefig('figures/demo.png', transparent=True)
+    plt.savefig('figures/plot_naive_vs_duplicates.png', transparent=True)
