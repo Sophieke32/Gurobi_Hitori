@@ -7,13 +7,13 @@ from src.naive_solver.helper_methods.path_checker import path_checker
 from src.naive_solver.minimise_black_squares_objective import minimise_black_squares_objective
 from src.naive_solver.naive_constraints.naive_adjacent_constraint import naive_adjacent_constraint
 from src.naive_solver.naive_constraints.naive_unique_constraint import naive_unique_constraint
-from src.pretty_print import pretty_print
 
 
 def naive_solver(n, board):
     # Create a new model
     m = gp.Model("Hitori")
     m.params.OutputFlag = 0
+    m.params.MemLimit = 8
 
     is_black = list()
 
@@ -34,7 +34,12 @@ def naive_solver(n, board):
     minimise_black_squares_objective(n, is_black, m)
 
     # Optimise the model
-    m.optimize()
+    try:
+        m.optimize()
+    except GRB.ERROR_OUT_OF_MEMORY:
+        print("Out of Memory")
+    finally:
+        m.dispose()
 
     # Extract values
     white, black, grid = extract_solution(n, m, is_black)

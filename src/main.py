@@ -50,12 +50,12 @@ def main(root, file, model, experiment):
 
     number_of_cycles = 0
 
-    start = time.perf_counter_ns()
+    start = time.process_time_ns()
     if model == "duplicates":
         m, is_black, number_of_cycles = duplicates_solver(n, board)
     else:
         m, is_black = naive_solver(n, board)
-    end = time.perf_counter_ns()
+    end = time.process_time_ns()
 
     cpu_time = (end - start) /1000000000
 

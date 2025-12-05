@@ -15,6 +15,7 @@ def duplicates_solver(n, board):
     # Create a new model
     m = gp.Model("Hitori_Solver_Duplicates")
     m.params.OutputFlag = 0
+    m.params.MemLimit = 8
 
     # Make the variables. Only add variables for duplicate values.
     # Values on the Hitori board that are unique in their row and column will never
@@ -42,6 +43,9 @@ def duplicates_solver(n, board):
     number_of_cycles = duplicates_path_constraint(is_black, m, g)
 
     # Optimise the model
-    m.optimize()
+    try:
+        m.optimize()
+    except GRB.ERROR_OUT_OF_MEMORY: print("Out of Memory")
+    finally: m.dispose()
 
     return m, is_black, number_of_cycles
