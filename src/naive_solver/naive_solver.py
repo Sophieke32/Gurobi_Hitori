@@ -31,15 +31,13 @@ def naive_solver(n, board):
     naive_unique_constraint(n, is_black, board, m)
 
     # Heuristic: Minimise the number of black squares
-    minimise_black_squares_objective(n, is_black, m)
+    # minimise_black_squares_objective(n, is_black, m)
 
     # Optimise the model
     try:
         m.optimize()
     except GRB.ERROR_OUT_OF_MEMORY:
         print("Out of Memory")
-    finally:
-        m.dispose()
 
     # Extract values
     white, black, grid = extract_solution(n, m, is_black)

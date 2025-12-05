@@ -46,6 +46,5 @@ def duplicates_solver(n, board):
     try:
         m.optimize()
     except GRB.ERROR_OUT_OF_MEMORY: print("Out of Memory")
-    finally: m.dispose()
 
     return m, is_black, number_of_cycles

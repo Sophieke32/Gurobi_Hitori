@@ -41,7 +41,7 @@ def remove_outliers_two_arrays(data1, data2):
 # and the csv data needs to contain a 'cpu time' column which holds the solving time for each instance
 def t_test(csv1, csv2):
     data1, data2 = remove_outliers_two_arrays(csv1['cpu time'], csv2['cpu time'])
-    print(stats.ttest_rel(data1, data2))
+    return stats.ttest_rel(data1, data2)
 
 
 # Performs a spearman test on the given data
@@ -52,7 +52,7 @@ def spearman(csv, attribute):
     number_of_cycles = csv[attribute]
     cpu_time = csv['cpu time']
 
-    print(stats.spearmanr(number_of_cycles, cpu_time))
+    return stats.spearmanr(number_of_cycles, cpu_time)
 
 def get_csv(file):
     return np.loadtxt(file, delimiter=',', skiprows=1,
@@ -63,24 +63,23 @@ def main():
     file1 = "data_files/duplicates_n5_experiment_5_instances.csv" # duplicates model, n = 5, experiment_5_instances
     file2 = "data_files/naive_n5_experiment_5_instances.csv"      # naive model,      n = 5, experiment_5_instances
 
-    # file3 = "data_files/duplicates_n10_experiment_10_instances.csv" # duplicates model, n = 10, experiment_10_instances
-    # file4 = "data_files/naive_n5_experiment_5_instances_no_heuristic.csv" # naive model, n = 5, experiment_5_instances, no minimum-black-squares heuristic
+    file3 = "data_files/duplicates_n10_experiment_10_instances.csv" # duplicates model, n = 10, experiment_10_instances
+    file4 = "data_files/naive_n5_experiment_5_instances_no_heuristic.csv" # naive model, n = 5, experiment_5_instances, no minimum-black-squares heuristic
 
     csv1 = get_csv(file1)
     csv2 = get_csv(file2)
-    # csv3 = get_csv(file3)
-    # csv4 = get_csv(file4)
+    csv3 = get_csv(file3)
+    csv4 = get_csv(file4)
 
+    print("t-test: Compare duplicates and naive", t_test(csv1, csv4))
+    print("t-test: Compare duplicates and naive with heuristic", t_test(csv1, csv2))
 
-    # t_test(csv1, csv2) # Compare duplicates and naive model
-    # t_test(csv1, csv4) # Compare duplicates and naive model without heuristic
-
-    # spearman(csv1, 'number of cycles') # Check effect of number of cycles on duplicates
-    # spearman(csv3, 'number of cycles') # Check effect of number of cycles on duplicates
-    # spearman(csv1, 'covered squares') # Check effect of number of covered tiles on duplicates
-    # spearman(csv3, 'covered squares') # Check effect of number of covered tiles on duplicates, n = 10
-    # spearman(csv2, 'covered squares') # Check effect of number of covered tiles on duplicates
-    # spearman(csv4, 'covered squares') # Check effect of number of covered tiles on duplicates, no heuristic
+    print("Spearman: Effect of number of cycles on duplicates (n=5)", spearman(csv1, 'number of cycles'))
+    print("Spearman: Effect of number of cycles on duplicates (n=10)", spearman(csv3, 'number of cycles'))
+    print("Spearman: Effect of number of covered tiles on duplicates (n=5)", spearman(csv1, 'covered squares'))
+    print("Spearman: Effect of number of covered tiles on duplicates (n=10)", spearman(csv3, 'covered squares'))
+    print("Spearman: Effect of number of covered tiles on naive", spearman(csv4, 'covered squares'))
+    print("Spearman: Effect of number of covered tiles on naive with heuristic", spearman(csv2, 'covered squares'))
 
 
 if __name__ == "__main__":
