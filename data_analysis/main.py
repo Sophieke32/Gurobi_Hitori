@@ -4,7 +4,10 @@ import scipy.stats as stats
 
 from data_analysis.helper_methods.remove_outliers import remove_outliers_two_arrays
 from data_analysis.save_plot_naive_vs_duplicates import save_plot_naive_vs_duplicates
+from data_analysis.save_boxplots_covered_vs_time import save_boxplots_covered_vs_time
 from data_analysis.save_scatter_cycles_vs_time import save_scatter_cycles_vs_time
+from data_analysis.save_boxplot_two_models import save_boxplot_two_models
+from data_analysis.save_violin_two_models import save_violin_two_models
 
 
 # Generates a boxplot of the given data. Does not show the boxplot, this has to be done with plt.show()
@@ -58,7 +61,10 @@ def main():
     # save_plot_naive_vs_duplicates(csv1, csv2)
     # save_scatter_cycles_vs_time(csv4)
 
+    # save_boxplots_covered_vs_time(csv2, "naive", "Influence of covered squares on naive runtime")
+    # save_boxplots_covered_vs_time(csv4, "duplicates", "Influence of covered squares on duplicate runtime")
 
+    save_violin_two_models(csv2, csv1)
 
 
     print("t-test: Compare duplicates and naive", t_test(csv1, csv2))

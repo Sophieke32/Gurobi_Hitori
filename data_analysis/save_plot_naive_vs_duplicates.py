@@ -10,6 +10,8 @@ def save_plot_naive_vs_duplicates(csv1, csv2):
     ax.plot(cpu_time_1_cleaned, label="duplicates model", color='red')
     ax.set_ylabel('Time (s)', size=15)
     ax.set_xlabel('Problem instance', size=15)
+    ax.set_title("Solving time of naive and duplicate model", size=15, color='white')
+
     ax.legend()
 
     ax.spines["right"].set_visible(False)

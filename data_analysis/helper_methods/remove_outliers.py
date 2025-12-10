@@ -8,6 +8,10 @@ def remove_outliers(data):
 
     return data[(z < 3)]
 
+def remove_outliers_csv(csv):
+    z = np.abs(stats.zscore(csv['cpu time']))
+
+    return csv[(z < 3)]
 
 # Function to remove the outliers of 2 arrays of data.
 # Outliers are defined as values whose absolute z-score is larger than 3

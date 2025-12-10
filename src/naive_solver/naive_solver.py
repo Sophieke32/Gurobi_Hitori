@@ -4,7 +4,6 @@ from gurobipy import GRB
 from src.naive_solver.helper_methods.add_illegal_solution import add_illegal_solution
 from src.naive_solver.helper_methods.extract_solution import extract_solution
 from src.naive_solver.helper_methods.path_checker import path_checker
-from src.naive_solver.minimise_black_squares_objective import minimise_black_squares_objective
 from src.naive_solver.naive_constraints.naive_adjacent_constraint import naive_adjacent_constraint
 from src.naive_solver.naive_constraints.naive_unique_constraint import naive_unique_constraint
 
