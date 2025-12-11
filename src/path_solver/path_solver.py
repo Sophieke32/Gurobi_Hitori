@@ -1,14 +1,18 @@
 import gurobipy as gp
 from gurobipy import GRB
 
-from src.naive_solver.helper_methods.add_illegal_solution import add_illegal_solution
-from src.naive_solver.helper_methods.extract_solution import extract_solution
-from src.naive_solver.helper_methods.path_checker import path_checker
 from src.naive_solver.naive_constraints.naive_adjacent_constraint import naive_adjacent_constraint
 from src.naive_solver.naive_constraints.naive_unique_constraint import naive_unique_constraint
+from src.path_solver.path_constraints.path_constraint import path_path_constraint
 
 
-def naive_solver(n, board):
+# THIS SOLVER IS BROKEN AND SHOULD NOT BE USED
+#
+# It uses an experimental path_constraint algorithm that has not passed the testing phase
+# Use of this solver may result in a correct solution, in which case you were lucky
+# Don't actually use this to solve puzzles
+
+def path_solver(n, board):
     # Create a new model
     m = gp.Model("Hitori")
 
@@ -32,24 +36,13 @@ def naive_solver(n, board):
     # Unique constraint
     naive_unique_constraint(n, is_black, board, m)
 
-    # Heuristic: Minimise the number of black squares
-    # minimise_black_squares_objective(n, is_black, m)
+    # Path constraint
+    path_path_constraint(n, is_black, board, m)
 
     # Optimise the model
     try:
         m.optimize()
     except GRB.ERROR_OUT_OF_MEMORY:
         print("Out of Memory")
-
-    # Extract values
-    white, black, grid = extract_solution(n, m, is_black)
-    iteration = 0
-
-    while not path_checker(n, grid):
-        add_illegal_solution(white, black, m, iteration)
-        m.optimize()
-
-        white, black, grid = extract_solution(n, m, is_black)
-        iteration += 1
 
     return m, is_black

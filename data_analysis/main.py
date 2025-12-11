@@ -64,8 +64,10 @@ def main():
     # save_boxplots_covered_vs_time(csv2, "naive", "Influence of covered squares on naive runtime")
     # save_boxplots_covered_vs_time(csv4, "duplicates", "Influence of covered squares on duplicate runtime")
 
-    save_violin_two_models(csv2, csv1)
+    # save_violin_two_models(csv2, csv1)
 
+    print("Descriptive statistics duplicates n = 5", stats.describe(csv1['cpu time']))
+    print("Descriptive statistics naive n = 5", stats.describe(csv2['cpu time']))
 
     print("t-test: Compare duplicates and naive", t_test(csv1, csv2))
     print("t-test: Compare duplicates and naive with heuristic", t_test(csv1, csv3))
