@@ -58,13 +58,15 @@ def main():
     csv3 = get_csv(file3)
     csv4 = get_csv(file4)
 
-    # save_plot_naive_vs_duplicates(csv1, csv2)
-    # save_scatter_cycles_vs_time(csv4)
+    generate_for_poster = False
 
-    # save_boxplots_covered_vs_time(csv2, "naive", "Influence of covered squares on naive runtime")
-    # save_boxplots_covered_vs_time(csv4, "duplicates", "Influence of covered squares on duplicate runtime")
+    save_plot_naive_vs_duplicates(csv1, csv2, generate_for_poster)
+    save_scatter_cycles_vs_time(csv4, generate_for_poster)
 
-    # save_violin_two_models(csv2, csv1)
+    save_boxplots_covered_vs_time(csv2, generate_for_poster, "naive", "Influence of covered squares on naive runtime")
+    save_boxplots_covered_vs_time(csv4, generate_for_poster, "duplicates", "Influence of covered squares on duplicate runtime")
+
+    save_boxplot_two_models(csv2, csv1, generate_for_poster)
 
     print("Descriptive statistics duplicates n = 5", stats.describe(csv1['cpu time']))
     print("Descriptive statistics naive n = 5", stats.describe(csv2['cpu time']))

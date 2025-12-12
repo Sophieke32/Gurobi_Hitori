@@ -4,7 +4,7 @@ import seaborn as sns
 from data_analysis.helper_methods.remove_outliers import remove_outliers, remove_outliers_two_arrays
 
 
-def save_violin_two_models(csv1, csv2):
+def save_violin_two_models(csv1, csv2, generate_for_poster):
     fig, ax = plt.subplots(figsize=(6, 5))
 
     data1, data2 = remove_outliers_two_arrays(csv1['cpu time'], csv2['cpu time'])

@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def save_scatter_cycles_vs_time(csv):
+def save_scatter_cycles_vs_time(csv, generate_for_poster):
     fig, ax = plt.subplots(figsize=(7, 5))
 
     ax.scatter(csv['cpu time'], csv['number of cycles'], color='#49c3fb')
@@ -11,13 +11,18 @@ def save_scatter_cycles_vs_time(csv):
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
 
-    # # Set axes colours to white
-    ax.spines["bottom"].set_color("white")
-    ax.spines['left'].set_color('white')
-    ax.xaxis.label.set_color('white')
-    ax.yaxis.label.set_color('white')
-    ax.tick_params(axis='x', colors='white')
-    ax.tick_params(axis='y', colors='white')
+    if generate_for_poster:
+        # Set axes colours to white
+        ax.spines["bottom"].set_color("white")
+        ax.spines['left'].set_color('white')
+        ax.xaxis.label.set_color('white')
+        ax.yaxis.label.set_color('white')
+        ax.tick_params(axis='x', colors='white')
+        ax.tick_params(axis='y', colors='white')
 
-    # plt.show()
-    plt.savefig('figures/scatter_cycles_vs_time.png', transparent=True)
+        # plt.show()
+        plt.savefig('figures/poster/scatter_cycles_vs_time_poster.png', transparent=True)
+
+    else:
+        # plt.show()
+        plt.savefig('figures/scatter_cycles_vs_time.png')

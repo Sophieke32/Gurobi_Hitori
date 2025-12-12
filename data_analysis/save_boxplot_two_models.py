@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from data_analysis.helper_methods.remove_outliers import remove_outliers_two_arrays
 
 
-def save_boxplot_two_models(csv1, csv2):
+def save_boxplot_two_models(csv1, csv2, generate_for_poster):
     fig, ax = plt.subplots(figsize=(6, 5))
 
     data1, data2 = remove_outliers_two_arrays(csv1['cpu time'], csv2['cpu time'])
@@ -32,16 +32,20 @@ def save_boxplot_two_models(csv1, csv2):
     # ax.spines["bottom"].set_bounds(0, 1000)
     # ax.spines["left"].set_bounds(0, 0.8)
 
-    # Set axes colours to white
-    ax.spines["bottom"].set_color("white")
-    ax.spines['left'].set_color('white')
-    ax.xaxis.label.set_color('white')
-    ax.yaxis.label.set_color('white')
-    ax.tick_params(axis='x', colors='white')
-    ax.tick_params(axis='y', colors='white')
-
     ax.grid()
     ax.grid(which="minor", color="0.5")
 
-    # plt.show()
-    plt.savefig('figures/boxplot_plot_two_models.png', transparent=True)
+    if generate_for_poster:
+        # Set axes colours to white
+        ax.spines["bottom"].set_color("white")
+        ax.spines['left'].set_color('white')
+        ax.xaxis.label.set_color('white')
+        ax.yaxis.label.set_color('white')
+        ax.tick_params(axis='x', colors='white')
+        ax.tick_params(axis='y', colors='white')
+
+        # plt.show()
+        plt.savefig('figures/poster/boxplot_plot_two_models_poster.png', transparent=True)
+
+    else:
+        plt.savefig('figures/boxplot_plot_two_models.png')
