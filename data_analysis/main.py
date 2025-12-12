@@ -2,7 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 
-from data_analysis.helper_methods.remove_outliers import remove_outliers_two_arrays
+from data_analysis.helper_methods.remove_outliers import remove_outliers_two_arrays, remove_outliers, \
+    remove_outliers_csv
 from data_analysis.save_plot_naive_vs_duplicates import save_plot_naive_vs_duplicates
 from data_analysis.save_boxplots_covered_vs_time import save_boxplots_covered_vs_time
 from data_analysis.save_scatter_cycles_vs_time import save_scatter_cycles_vs_time
@@ -35,10 +36,11 @@ def t_test(csv1, csv2):
 # solving time for each instance, and another column with the name sent here as attribute, which is what
 # the spearman tries to relate to solving time.
 def spearman(csv, attribute):
-    number_of_cycles = csv[attribute]
+    csv = remove_outliers_csv(csv)
+    attribute_array = csv[attribute]
     cpu_time = csv['cpu time']
 
-    return stats.spearmanr(number_of_cycles, cpu_time)
+    return stats.spearmanr(attribute_array, cpu_time)
 
 def get_csv(file):
     return np.loadtxt(file, delimiter=',', skiprows=1,
@@ -63,13 +65,13 @@ def main():
     save_plot_naive_vs_duplicates(csv1, csv2, generate_for_poster)
     save_scatter_cycles_vs_time(csv4, generate_for_poster)
 
-    save_boxplots_covered_vs_time(csv2, generate_for_poster, "naive", "Influence of covered squares on naive runtime")
-    save_boxplots_covered_vs_time(csv4, generate_for_poster, "duplicates", "Influence of covered squares on duplicate runtime")
+    save_boxplots_covered_vs_time(csv2, generate_for_poster, "naive", "Influence of number of covered tiles on naive runtime")
+    save_boxplots_covered_vs_time(csv4, generate_for_poster, "duplicates", "Influence of number of covered tiles on duplicates runtime")
 
     save_boxplot_two_models(csv2, csv1, generate_for_poster)
 
-    print("Descriptive statistics duplicates n = 5", stats.describe(csv1['cpu time']))
-    print("Descriptive statistics naive n = 5", stats.describe(csv2['cpu time']))
+    print("Descriptive statistics duplicates n = 5", stats.describe(remove_outliers(csv1['cpu time'])))
+    print("Descriptive statistics naive n = 5", stats.describe(remove_outliers(csv2['cpu time'])))
 
     print("t-test: Compare duplicates and naive", t_test(csv1, csv2))
     print("t-test: Compare duplicates and naive with heuristic", t_test(csv1, csv3))

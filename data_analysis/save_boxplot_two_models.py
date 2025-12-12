@@ -1,36 +1,50 @@
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 
 from data_analysis.helper_methods.remove_outliers import remove_outliers_two_arrays
 
 
 def save_boxplot_two_models(csv1, csv2, generate_for_poster):
+    # Define the fonts
+    font = {'fontname': 'Nimbus Roman'}
+    font_manager = fm.FontProperties(family='Nimbus Roman')
+    if generate_for_poster:
+        font = {'fontname': 'DejaVu Sans'}
+        font_manager = fm.FontProperties(family='DejaVu Sans')
+
     fig, ax = plt.subplots(figsize=(6, 5))
 
     data1, data2 = remove_outliers_two_arrays(csv1['cpu time'], csv2['cpu time'])
     data = [data1, data2]
 
-    color = "#49c3fb"
+    blue_color = "#49c3fb"
+    whisker_props_color = 'black'
+
+    if generate_for_poster:
+        whisker_props_color = 'white'
+
     ax.boxplot(data, patch_artist=True,
-               boxprops=dict(facecolor=color, color=color),
-               capprops=dict(color='white'),
-               whiskerprops=dict(color='white'),
-               flierprops=dict(color=color, markeredgecolor=color),
+               boxprops=dict(facecolor=blue_color, color=blue_color),
+               capprops=dict(color=whisker_props_color),
+               whiskerprops=dict(color=whisker_props_color),
+               flierprops=dict(color=blue_color, markeredgecolor=blue_color),
                medianprops=dict(color='red'),
                tick_labels=["Naive model", "Duplicates model"]
                )
     ax.set_yscale('log')
 
-    ax.set_ylabel('Time (s)', size=15)
-    ax.set_title("Solving time of naive and duplicate model", size=15, color='white')
+    ax.set_ylabel('Time (s)', size=15, **font)
+    ax.set_title("Solving time of naive and duplicate model", size=15, color='white', **font)
 
-    # ax.legend()
+    # Set the ticks' font
+    for label in ax.get_xticklabels():
+        label.set_fontproperties(font_manager)
+
+    for label in ax.get_yticklabels():
+        label.set_fontproperties(font_manager)
 
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
-
-    # Only show ticks on the left and bottom spines
-    # ax.spines["bottom"].set_bounds(0, 1000)
-    # ax.spines["left"].set_bounds(0, 0.8)
 
     ax.grid()
     ax.grid(which="minor", color="0.5")
@@ -48,4 +62,5 @@ def save_boxplot_two_models(csv1, csv2, generate_for_poster):
         plt.savefig('figures/poster/boxplot_plot_two_models_poster.png', transparent=True)
 
     else:
-        plt.savefig('figures/boxplot_plot_two_models.png')
+        # plt.show()
+        plt.savefig('figures/boxplot_plot_two_models.svg')

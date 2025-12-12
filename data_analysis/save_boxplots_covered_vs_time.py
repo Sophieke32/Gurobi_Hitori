@@ -1,10 +1,18 @@
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 import numpy as np
 
 from data_analysis.helper_methods.remove_outliers import remove_outliers_csv
 
 
 def save_boxplots_covered_vs_time(csv, generate_for_poster, file_addition, title):
+    # Define the fonts
+    font = {'fontname': 'Nimbus Roman'}
+    font_manager = fm.FontProperties(family='Nimbus Roman')
+    if generate_for_poster:
+        font = {'fontname': 'DejaVu Sans'}
+        font_manager = fm.FontProperties(family='DejaVu Sans')
+
     csv = remove_outliers_csv(csv)
 
     values = np.unique(csv['covered squares'])
@@ -16,18 +24,31 @@ def save_boxplots_covered_vs_time(csv, generate_for_poster, file_addition, title
 
     fig, ax = plt.subplots(figsize=(6, 5))
     color = "#49c3fb"
+    whisker_props_color = 'black'
+
+    if generate_for_poster:
+        whisker_props_color = 'white'
+
     ax.boxplot(example_data, patch_artist=True,
         boxprops=dict(facecolor = color, color = color),
-        capprops=dict(color = 'white'),
-        whiskerprops=dict(color = 'white'),
+        capprops=dict(color = whisker_props_color),
+        whiskerprops=dict(color = whisker_props_color),
         flierprops=dict(color = color, markeredgecolor = color),
         medianprops=dict(color = 'red'),
         )
     ax.set_yscale('log')
 
-    ax.set_ylabel('Time (s)', size=15)
-    ax.set_xlabel('Number of covered squares', size=15)
-    ax.set_title(title, size=15, color='white')
+    # Set the ticks' font
+    for label in ax.get_xticklabels():
+        label.set_fontproperties(font_manager)
+
+    for label in ax.get_yticklabels():
+        label.set_fontproperties(font_manager)
+
+    # Set labels and title
+    ax.set_ylabel('Time (s)', size=15, **font)
+    ax.set_xlabel('Number of covered squares', size=15, **font)
+    ax.set_title(title, size=15, color='white', **font)
 
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
@@ -47,5 +68,6 @@ def save_boxplots_covered_vs_time(csv, generate_for_poster, file_addition, title
         plt.savefig('figures/poster/boxplot_covered_vs_time_' + file_addition + '_poster.png', transparent=True)
 
     else:
-        plt.savefig('figures/boxplot_covered_vs_time_' + file_addition + '.png')
+        # plt.show()
+        plt.savefig('figures/boxplot_covered_vs_time_' + file_addition + '.svg')
 

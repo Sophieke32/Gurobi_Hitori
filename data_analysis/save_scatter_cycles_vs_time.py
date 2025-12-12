@@ -1,12 +1,25 @@
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 
 def save_scatter_cycles_vs_time(csv, generate_for_poster):
-    fig, ax = plt.subplots(figsize=(7, 5))
+    # Define the fonts
+    font = {'fontname': 'Nimbus Roman'}
+    font_manager = fm.FontProperties(family='Nimbus Roman')
+    if generate_for_poster:
+        font = {'fontname': 'DejaVu Sans'}
+        font_manager = fm.FontProperties(family='DejaVu Sans')
 
-    ax.scatter(csv['cpu time'], csv['number of cycles'], color='#49c3fb')
-    ax.set_xlabel('Time (s)', size=15)
-    ax.set_ylabel('Number of cycles', size=15)
-    ax.set_title("Influence of number of cycles on runtime", size=15, color='white')
+    fig, ax = plt.subplots(figsize=(7, 5))
+    color = "#49c3fb"
+    whisker_props_color = 'black'
+
+    if generate_for_poster:
+        whisker_props_color = 'white'
+
+    ax.scatter(csv['cpu time'], csv['number of cycles'], color=color)
+    ax.set_xlabel('Time (s)', size=15, **font)
+    ax.set_ylabel('Number of cycles', size=15, **font)
+    ax.set_title("Influence of number of cycles in duplicates model on runtime", size=15, color='white', **font)
 
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
@@ -25,4 +38,4 @@ def save_scatter_cycles_vs_time(csv, generate_for_poster):
 
     else:
         # plt.show()
-        plt.savefig('figures/scatter_cycles_vs_time.png')
+        plt.savefig('figures/scatter_cycles_vs_time.svg')
