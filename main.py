@@ -2,6 +2,7 @@ import argparse
 import os
 import datetime
 import csv
+
 from src.main import main
 
 if __name__ == "__main__":

@@ -43,12 +43,11 @@ def duplicates_solver(n, board):
 
     # Path constraint
     g = create_graph(n, duplicates)
-    # number_of_cycles = duplicates_path_constraint(is_black, m, g)
-    duplicates_path_constraint(is_black, m, g)
+    number_of_cycles = duplicates_path_constraint(is_black, m, g)
 
     # Optimise the model
     try:
         m.optimize()
     except GRB.ERROR_OUT_OF_MEMORY: print("Out of Memory")
 
-    return m, is_black
+    return m, is_black, number_of_cycles

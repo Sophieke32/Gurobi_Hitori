@@ -1,5 +1,6 @@
 import time
 import os
+import signal
 import numpy as np
 from gurobipy import GRB
 
@@ -23,9 +24,16 @@ def read_file(root, file):
         for i in range(n):
             board[i] = [int(number) for number in f.readline().split()]
 
-        f.close()
+        # Skip to the relevant lines
+        f.readline()
+        f.readline()
+        f.readline()
 
-        return n, board
+        # print(f.readline().replace("# Computed in ", "").replace(" nanoseconds", ""))
+        number_of_covered_tiles = f.readline().replace("# Number of covered squares: ", "")
+        number_of_cycles = f.readline().replace("# Number of cycles: ", "")
+
+        return n, board, number_of_covered_tiles, number_of_cycles
 
 def write_to_file(m, is_black, n, board, cpu_time, root, file):
     with open(os.path.join(root + "_solutions", file + "sol"), "w") as f:
@@ -47,18 +55,42 @@ def write_infeasible(cpu_time, root, file):
         file.write("# Model Infeasible in " + str(cpu_time) + " seconds")
 
 def main(root, file, model, experiment):
-    n, board = read_file(root, file)
+    n, board, number_of_covered_tiles, number_of_cycles = read_file(root, file)
 
-    number_of_cycles = 0
+    time_out = 10 # Number of seconds before it times out
 
-    start = time.process_time_ns()
-    if model == "duplicates":
-        m, is_black, number_of_cycles = duplicates_solver(n, board)
-    elif model == "path":
-        m, is_black = path_solver(n, board)
-    else:
-        m, is_black = naive_solver(n, board)
-    end = time.process_time_ns()
+    # Handle timeouts
+    signal.signal(signal.SIGALRM, handle_timeout)
+
+    try:
+        if model == "duplicates":
+            signal.alarm(time_out)
+            start = time.process_time_ns()
+            m, is_black = duplicates_solver(n, board)
+            end = time.process_time_ns()
+            signal.alarm(0)
+        elif model == "path":
+            signal.alarm(time_out)
+            start = time.process_time_ns()
+            m, is_black = path_solver(n, board)
+            end = time.process_time_ns()
+            signal.alarm(0)
+        else:
+            signal.alarm(time_out)
+            start = time.process_time_ns()
+            m, is_black = naive_solver(n, board)
+            end = time.process_time_ns()
+            signal.alarm(0)
+
+    except TimeoutError as exc:
+        print("Oopsie")
+        cpu_time = 2 * time_out * 1000000000
+        if experiment:
+            return n, -1, -1, cpu_time, False
+        else:
+            return n, cpu_time, False
+
+
 
     cpu_time = (end - start) /1000000000
 
@@ -67,16 +99,9 @@ def main(root, file, model, experiment):
         write_infeasible(cpu_time, root, file)
         return n, time, "INVALID"
 
-    number_of_covered_squares = 0
-
-    for i in range(n):
-        for j in range(n):
-            if type(is_black[i][j]) != int and m.getAttr('X', [is_black[i][j]])[0]:
-                number_of_covered_squares += 1
-
     if experiment:
         m.dispose()
-        return n, number_of_cycles, number_of_covered_squares, cpu_time, True
+        return n, number_of_cycles, number_of_covered_tiles, cpu_time, True
 
     # If we are not running an experiment, perform more checks write solutions
     else:
@@ -96,3 +121,6 @@ def main(root, file, model, experiment):
 
         return n, cpu_time, valid
 
+
+def handle_timeout(sig, frame):
+    raise TimeoutError('took too long')
