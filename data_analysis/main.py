@@ -48,13 +48,12 @@ def get_csv(file):
 
 
 def main():
-    naive_no_heuristic_n5_file = "data_files/naive_n5_min_heuristic.csv" # naive model, n = 5, experiment_5_instances, no minimum-black-squares heuristic
-    # naive_no_heuristic_n5_file = "data_files/naive_n5_experiment_5_instances_no_heuristic.csv" # naive model, n = 5, experiment_5_instances, no minimum-black-squares heuristic
-    naive_max_heuristic_n5_file = "data_files/naive_n5_experiment_5_instances_max_heuristic.csv"      # naive model,      n = 5, experiment_5_instances
-    naive_min_heuristic_n5_file = "data_files/naive_n5_experiment_5_instances_min_heuristic.csv"      # naive model,      n = 5, experiment_5_instances
-    naive_min_heuristic_n10_file = "data_files/naive_n10_experiment_10_instances_min_heuristic.csv"      # naive model,      n = 5, experiment_5_instances
-    duplicates_n5_file = "data_files/duplicates_n5_experiment_5_instances.csv" # duplicates model, n = 5, experiment_5_instances
-    duplicates_n10_file = "data_files/duplicates_n10_experiment_10_instances.csv" # duplicates model, n = 10, experiment_10_instances
+    naive_no_heuristic_n5_file = "data_files/naive_n5_no_heuristic.csv" # naive model, n = 5, experiment_5_instances, no minimum-black-squares heuristic
+    naive_max_heuristic_n5_file = "data_files/naive_n5_max_heuristic.csv"      # naive model,      n = 5, experiment_5_instances
+    naive_min_heuristic_n5_file = "data_files/naive_n5_min_heuristic.csv"      # naive model,      n = 5, experiment_5_instances
+    naive_min_heuristic_n10_file = "data_files/naive_n10_min_heuristic.csv"      # naive model,      n = 5, experiment_5_instances
+    duplicates_n5_file = "data_files/duplicates_n5.csv" # duplicates model, n = 5, experiment_5_instances
+    duplicates_n10_file = "data_files/duplicates_n10.csv" # duplicates model, n = 10, experiment_10_instances
 
     naive_no_heuristic_n5_csv = get_csv(naive_no_heuristic_n5_file)
     naive_max_heuristic_n5_csv = get_csv(naive_max_heuristic_n5_file)
@@ -73,19 +72,22 @@ def main():
 
     save_boxplot_two_models(naive_min_heuristic_n5_csv, duplicates_n5_csv, generate_for_poster)
 
+    print()
     print("Descriptive statistics duplicates n = 5", stats.describe(remove_outliers(duplicates_n5_csv['cpu time'])))
     print("Descriptive statistics duplicates n = 10", stats.describe(remove_outliers(duplicates_n10_csv['cpu time'])))
 
+    print()
     print("Descriptive statistics naive n = 5", stats.describe(remove_outliers(naive_no_heuristic_n5_csv['cpu time'])))
     print("Descriptive statistics naive n = 5 + max heuristic", stats.describe(remove_outliers(naive_max_heuristic_n5_csv['cpu time'])))
     print("Descriptive statistics naive n = 5 + min heuristic", stats.describe(remove_outliers(naive_min_heuristic_n5_csv['cpu time'])))
     print("Descriptive statistics naive n = 10 + min heuristic", stats.describe(remove_outliers(naive_min_heuristic_n10_csv['cpu time'])))
 
+    print()
     print("t-test: Compare naive no heuristic and naive with min heuristic", t_test(naive_no_heuristic_n5_csv, naive_min_heuristic_n5_csv))
     print("t-test: Compare naive no heuristic and naive with max heuristic", t_test(naive_no_heuristic_n5_csv, naive_max_heuristic_n5_csv))
-
     print("t-test: Compare duplicates and naive with min heuristic", t_test(naive_min_heuristic_n10_csv, duplicates_n10_csv))
 
+    print()
     print("Spearman: Effect of number of cycles on duplicates (n=5)", spearman(duplicates_n5_csv, 'number of cycles'))
     print("Spearman: Effect of number of cycles on duplicates (n=10)", spearman(duplicates_n10_csv, 'number of cycles'))
     print("Spearman: Effect of number of covered tiles on duplicates (n=5)", spearman(duplicates_n5_csv, 'covered squares'))
