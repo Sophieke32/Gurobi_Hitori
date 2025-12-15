@@ -91,13 +91,7 @@ def main(root, file, model, experiment):
             return n, cpu_time, False
 
 
-
     cpu_time = (end - start) /1000000000
-
-    if m.status == GRB.INFEASIBLE:
-        print(root + "/" + file, "was found to be infeasible")
-        write_infeasible(cpu_time, root, file)
-        return n, time, "INVALID"
 
     if experiment:
         m.dispose()
@@ -105,6 +99,11 @@ def main(root, file, model, experiment):
 
     # If we are not running an experiment, perform more checks write solutions
     else:
+        if m.status == GRB.INFEASIBLE:
+            print(root + "/" + file, "was found to be infeasible")
+            write_infeasible(cpu_time, root, file)
+            return n, time, "INVALID"
+
         write_to_file(m, is_black, n, board, cpu_time, root, file)
 
         valid = run_solution_checker(root, file)
