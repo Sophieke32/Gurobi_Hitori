@@ -30,8 +30,8 @@ def read_file(root, file):
         f.readline()
 
         # print(f.readline().replace("# Computed in ", "").replace(" nanoseconds", ""))
-        number_of_covered_tiles = f.readline().replace("# Number of covered squares: ", "")
-        number_of_cycles = f.readline().replace("# Number of cycles: ", "")
+        number_of_covered_tiles = f.readline().replace("# Number of covered squares: ", "").replace("\n", "")
+        number_of_cycles = f.readline().replace("# Number of cycles: ", "").replace("\n", "")
 
         return n, board, number_of_covered_tiles, number_of_cycles
 
