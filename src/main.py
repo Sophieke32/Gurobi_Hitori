@@ -54,7 +54,7 @@ def main(root, file, model, experiment):
     start = time.process_time_ns()
     if model == "duplicates":
         m, is_black, number_of_cycles = duplicates_solver(n, board)
-    if model == "path":
+    elif model == "path":
         m, is_black = path_solver(n, board)
     else:
         m, is_black = naive_solver(n, board)

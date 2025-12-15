@@ -12,7 +12,7 @@ def save_boxplot_two_models(csv1, csv2, generate_for_poster):
         font = {'fontname': 'DejaVu Sans'}
         font_manager = fm.FontProperties(family='DejaVu Sans')
 
-    fig, ax = plt.subplots(figsize=(6, 5))
+    fig, ax = plt.subplots(figsize=(6, 4))
 
     data1, data2 = remove_outliers_two_arrays(csv1['cpu time'], csv2['cpu time'])
     data = [data1, data2]
@@ -34,7 +34,6 @@ def save_boxplot_two_models(csv1, csv2, generate_for_poster):
     ax.set_yscale('log')
 
     ax.set_ylabel('Time (s)', size=15, **font)
-    ax.set_title("Solving time of naive and duplicate model", size=15, color='white', **font)
 
     # Set the ticks' font
     for label in ax.get_xticklabels():
@@ -50,6 +49,9 @@ def save_boxplot_two_models(csv1, csv2, generate_for_poster):
     ax.grid(which="minor", color="0.5")
 
     if generate_for_poster:
+        # Generate with a title
+        ax.set_title("Solving time of naive and duplicate model", size=15, color='white', **font)
+
         # Set axes colours to white
         ax.spines["bottom"].set_color("white")
         ax.spines['left'].set_color('white')

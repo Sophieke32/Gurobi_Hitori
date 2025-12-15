@@ -18,7 +18,7 @@ def duplicates_solver(n, board):
     # Silence model, set memory limit to 8 GB and threads to 1
     m.params.OutputFlag = 0
     m.params.MemLimit = 8
-    m.params.Thread = 1
+    m.params.Threads = 1
 
     # Make the variables. Only add variables for duplicate values.
     # Values on the Hitori board that are unique in their row and column will never

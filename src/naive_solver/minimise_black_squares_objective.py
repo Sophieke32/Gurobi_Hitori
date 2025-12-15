@@ -8,4 +8,4 @@ def minimise_black_squares_objective(n, is_black, m):
         for j in range(n):
             expr += is_black[i][j]
 
-    m.setObjective(expr, GRB.MAXIMIZE)
+    m.setObjective(expr, GRB.MINIMIZE)

@@ -8,7 +8,6 @@ from data_analysis.save_plot_naive_vs_duplicates import save_plot_naive_vs_dupli
 from data_analysis.save_boxplots_covered_vs_time import save_boxplots_covered_vs_time
 from data_analysis.save_scatter_cycles_vs_time import save_scatter_cycles_vs_time
 from data_analysis.save_boxplot_two_models import save_boxplot_two_models
-from data_analysis.save_violin_two_models import save_violin_two_models
 
 
 # Generates a boxplot of the given data. Does not show the boxplot, this has to be done with plt.show()
@@ -49,39 +48,46 @@ def get_csv(file):
 
 
 def main():
-    file1 = "data_files/duplicates_n5_experiment_5_instances.csv" # duplicates model, n = 5, experiment_5_instances
-    file2 = "data_files/naive_n5_experiment_5_instances.csv" # naive model, n = 5, experiment_5_instances, no minimum-black-squares heuristic
-    file3 = "data_files/naive_n5_experiment_5_instances_with_heuristic.csv"      # naive model,      n = 5, experiment_5_instances
+    duplicates_n5_file = "data_files/duplicates_n5_experiment_5_instances.csv" # duplicates model, n = 5, experiment_5_instances
+    naive_no_heuristic_file = "data_files/naive_n5_experiment_5_instances_no_heuristic.csv" # naive model, n = 5, experiment_5_instances, no minimum-black-squares heuristic
+    naive_min_heuristic_file = "data_files/naive_n5_experiment_5_instances_min_heuristic.csv"      # naive model,      n = 5, experiment_5_instances
+    naive_max_heuristic_file = "data_files/naive_n5_experiment_5_instances_max_heuristic.csv"      # naive model,      n = 5, experiment_5_instances
+    duplicates_n10_file = "data_files/duplicates_n10_experiment_10_instances.csv" # duplicates model, n = 10, experiment_10_instances
 
-    file4 = "data_files/duplicates_n10_experiment_10_instances.csv" # duplicates model, n = 10, experiment_10_instances
-
-    csv1 = get_csv(file1)
-    csv2 = get_csv(file2)
-    csv3 = get_csv(file3)
-    csv4 = get_csv(file4)
+    duplicates_n5_csv = get_csv(duplicates_n5_file)
+    naive_no_heuristic_csv = get_csv(naive_no_heuristic_file)
+    naive_min_heuristic_csv = get_csv(naive_min_heuristic_file)
+    naive_max_heuristic_csv = get_csv(naive_max_heuristic_file)
+    duplicates_n10_csv = get_csv(duplicates_n10_file)
 
     generate_for_poster = False
 
-    save_plot_naive_vs_duplicates(csv1, csv2, generate_for_poster)
-    save_scatter_cycles_vs_time(csv4, generate_for_poster)
+    save_plot_naive_vs_duplicates(duplicates_n5_csv, naive_min_heuristic_csv, generate_for_poster)
+    save_scatter_cycles_vs_time(duplicates_n10_csv, generate_for_poster)
 
-    save_boxplots_covered_vs_time(csv2, generate_for_poster, "naive", "Influence of number of covered tiles on naive runtime")
-    save_boxplots_covered_vs_time(csv4, generate_for_poster, "duplicates", "Influence of number of covered tiles on duplicates runtime")
+    save_boxplots_covered_vs_time(naive_min_heuristic_csv, generate_for_poster, "naive", "Influence of number of covered tiles on naive runtime")
+    save_boxplots_covered_vs_time(duplicates_n10_csv, generate_for_poster, "duplicates", "Influence of number of covered tiles on duplicates runtime")
 
-    save_boxplot_two_models(csv2, csv1, generate_for_poster)
+    save_boxplot_two_models(naive_min_heuristic_csv, duplicates_n5_csv, generate_for_poster)
 
-    print("Descriptive statistics duplicates n = 5", stats.describe(remove_outliers(csv1['cpu time'])))
-    print("Descriptive statistics naive n = 5", stats.describe(remove_outliers(csv2['cpu time'])))
+    print("Descriptive statistics duplicates n = 5", stats.describe(remove_outliers(duplicates_n5_csv['cpu time'])))
+    print("Descriptive statistics duplicates n = 10", stats.describe(remove_outliers(duplicates_n10_csv['cpu time'])))
 
-    print("t-test: Compare duplicates and naive", t_test(csv1, csv2))
-    print("t-test: Compare duplicates and naive with heuristic", t_test(csv1, csv3))
+    print("Descriptive statistics naive n = 5", stats.describe(remove_outliers(naive_no_heuristic_csv['cpu time'])))
+    print("Descriptive statistics naive n = 5 + min heuristic", stats.describe(remove_outliers(naive_min_heuristic_csv['cpu time'])))
+    print("Descriptive statistics naive n = 5 + max heuristic", stats.describe(remove_outliers(naive_max_heuristic_csv['cpu time'])))
 
-    print("Spearman: Effect of number of cycles on duplicates (n=5)", spearman(csv1, 'number of cycles'))
-    print("Spearman: Effect of number of cycles on duplicates (n=10)", spearman(csv4, 'number of cycles'))
-    print("Spearman: Effect of number of covered tiles on duplicates (n=5)", spearman(csv1, 'covered squares'))
-    print("Spearman: Effect of number of covered tiles on duplicates (n=10)", spearman(csv4, 'covered squares'))
-    print("Spearman: Effect of number of covered tiles on naive", spearman(csv2, 'covered squares'))
-    print("Spearman: Effect of number of covered tiles on naive with heuristic", spearman(csv3, 'covered squares'))
+    print("t-test: Compare naive no heuristic and naive with min heuristic", t_test(naive_no_heuristic_csv, naive_min_heuristic_csv))
+    print("t-test: Compare naive no heuristic and naive with max heuristic", t_test(naive_no_heuristic_csv, naive_max_heuristic_csv))
+
+    print("t-test: Compare duplicates and naive with min heuristic", t_test(naive_min_heuristic_csv, duplicates_n5_csv))
+
+    print("Spearman: Effect of number of cycles on duplicates (n=5)", spearman(duplicates_n5_csv, 'number of cycles'))
+    print("Spearman: Effect of number of cycles on duplicates (n=10)", spearman(duplicates_n10_csv, 'number of cycles'))
+    print("Spearman: Effect of number of covered tiles on duplicates (n=5)", spearman(duplicates_n5_csv, 'covered squares'))
+    print("Spearman: Effect of number of covered tiles on duplicates (n=10)", spearman(duplicates_n10_csv, 'covered squares'))
+    print("Spearman: Effect of number of covered tiles on naive minimise", spearman(naive_min_heuristic_csv, 'covered squares'))
+    # print("Spearman: Effect of number of covered tiles on naive with heuristic", spearman(naive_min_heuristic_csv, 'covered squares'))
 
 
 if __name__ == "__main__":

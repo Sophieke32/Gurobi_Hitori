@@ -19,7 +19,6 @@ def save_plot_naive_vs_duplicates(csv1, csv2, generate_for_poster):
 
     ax.set_ylabel('Time (s)', size=15, **font)
     ax.set_xlabel('Problem instance', size=15, **font)
-    ax.set_title("Solving time of naive and duplicate model", size=15, color='white', **font)
 
     # Create legend and set its, and the ticks' font
     ax.legend(prop=font_manager)
@@ -36,6 +35,9 @@ def save_plot_naive_vs_duplicates(csv1, csv2, generate_for_poster):
     ax.spines["left"].set_bounds(0, 0.8)
 
     if generate_for_poster:
+        # Set title
+        ax.set_title("Solving time of naive and duplicate model", size=15, color='white', **font)
+
         # Set axes colours to white
         ax.spines["bottom"].set_color("white")
         ax.spines['left'].set_color('white')
