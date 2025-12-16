@@ -84,6 +84,7 @@ def main():
     duplicates_n10_file = "data_files/duplicates_n10.csv" # duplicates model, n = 10, experiment_10_instances
 
     optimised_naive_n10_file = "data_files/optimised_naive_n10.csv"
+    optimised_naive_n10_corner_close_file = "data_files/optimised_naive_n10_corner_close.csv"
 
     duplicates_n10_with_corner_close_file = "data_files/duplicates_n10_with_corner_checking.csv"
     naive_n10_with_corner_close_file = "data_files/naive_n10_with_corner_checking.csv"
@@ -96,6 +97,7 @@ def main():
     duplicates_n10_csv = get_csv(duplicates_n10_file)
 
     optimised_naive_n10_csv = get_csv(optimised_naive_n10_file)
+    optimised_naive_n10_corner_close_csv = get_csv(optimised_naive_n10_corner_close_file)
 
     duplicates_n10_with_corner_close_csv = get_csv(duplicates_n10_with_corner_close_file)
     naive_n10_with_corner_close_csv = get_csv(naive_n10_with_corner_close_file)
@@ -122,8 +124,9 @@ def main():
 
     print("Descriptive statistics naive n = 10:", print_descriptive_statistics(naive_min_heuristic_n10_csv))
     print("Descriptive statistics optimised naive n = 10:", print_descriptive_statistics(optimised_naive_n10_csv))
-    print("### t-test: Compare naive with optimised naive ###",
-          print_t_test(naive_min_heuristic_n10_csv, optimised_naive_n10_csv))
+    print("Descriptive statistics optimised naive n = 10 with corner close:", print_descriptive_statistics(optimised_naive_n10_corner_close_csv))
+    print("### t-test: Compare optimised naive with/without corner close ###",
+          print_t_test(optimised_naive_n10_csv, optimised_naive_n10_corner_close_csv))
 
     # print("Descriptive statistics duplicates n = 10:", print_descriptive_statistics(duplicates_n10_csv))
     # print("Descriptive statistics duplicates with corner checking:", print_descriptive_statistics(duplicates_n10_with_corner_close_csv))

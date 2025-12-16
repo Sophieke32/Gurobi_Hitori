@@ -1,6 +1,8 @@
 import gurobipy as gp
 from gurobipy import GRB
 
+from src.optimisation_rules.corner_close import corner_check
+from src.optimisation_rules.sandwiches import sandwiches
 from src.optimised_naive_solver.helper_methods.add_illegal_solution import add_illegal_solution
 from src.optimised_naive_solver.helper_methods.extract_solution import extract_solution
 from src.optimised_naive_solver.helper_methods.path_checker import path_checker
@@ -39,6 +41,7 @@ def optimised_naive_solver(n, board):
 
     # Add optimisations
     # corner_close(board, is_black, duplicates, n, m)
+    sandwiches(board, is_black, duplicates, n, m)
 
     # Adjacency constraint
     optimised_naive_adjacent_constraint(n, is_black, m, duplicates)
