@@ -1,10 +1,13 @@
 import gurobipy as gp
 from gurobipy import GRB
 
-from src.optimisation_rules.corner_close import corner_check
+from src.optimisation_rules.corner_check import corner_check
+from src.optimisation_rules.corner_close import corner_close
 from src.optimisation_rules.sandwiches import sandwiches
 from src.optimised_naive_solver.helper_methods.add_illegal_solution import add_illegal_solution
 from src.optimised_naive_solver.helper_methods.extract_solution import extract_solution
+from src.optimised_naive_solver.helper_methods.graph_path_checker import graph_path_checker_cycles, \
+    graph_path_checker_connected_components
 from src.optimised_naive_solver.helper_methods.path_checker import path_checker
 from src.optimised_naive_solver.minimise_black_squares_objective import minimise_black_squares_objective
 from src.optimised_naive_solver.optimised_naive_constraints.optimised_naive_adjacent_constraint import optimised_naive_adjacent_constraint
@@ -40,8 +43,9 @@ def optimised_naive_solver(n, board):
     m.update()
 
     # Add optimisations
-    # corner_close(board, is_black, duplicates, n, m)
-    sandwiches(board, is_black, duplicates, n, m)
+    # corner_close(is_black, m)
+    # corner_check(board, is_black, duplicates, n, m)
+    # sandwiches(board, is_black, duplicates, n, m)
 
     # Adjacency constraint
     optimised_naive_adjacent_constraint(n, is_black, m, duplicates)
@@ -63,6 +67,8 @@ def optimised_naive_solver(n, board):
     iteration = 0
 
     while not path_checker(n, grid):
+    # while not graph_path_checker_cycles(n, grid):
+    # while not graph_path_checker_connected_components(n, grid):
         add_illegal_solution(white, black, m, iteration)
         m.optimize()
 

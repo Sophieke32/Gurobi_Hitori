@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import numpy as np
 
-from data_analysis.helper_methods.remove_outliers import remove_outliers_csv
 
 
 def save_boxplots_covered_vs_time(csv, generate_for_poster, file_addition, title):
@@ -13,7 +12,7 @@ def save_boxplots_covered_vs_time(csv, generate_for_poster, file_addition, title
         font = {'fontname': 'DejaVu Sans'}
         font_manager = fm.FontProperties(family='DejaVu Sans')
 
-    csv = remove_outliers_csv(csv)
+    # csv = remove_outliers_csv(csv)
 
     values = np.unique(csv['covered squares'])
     example_data = [[]]

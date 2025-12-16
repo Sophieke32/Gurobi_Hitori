@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-from data_analysis.helper_methods.remove_outliers import remove_outliers
 
 def save_plot_naive_vs_duplicates(csv1, csv2, generate_for_poster):
     # Define the fonts
@@ -13,7 +12,8 @@ def save_plot_naive_vs_duplicates(csv1, csv2, generate_for_poster):
 
     fig, ax = plt.subplots(figsize=(6, 5))
 
-    cpu_time_1_cleaned, cpu_time_2_cleaned = remove_outliers(csv1['cpu time']), remove_outliers(csv2['cpu time'])
+    # cpu_time_1_cleaned, cpu_time_2_cleaned = remove_outliers(csv1['cpu time']), remove_outliers(csv2['cpu time'])
+    cpu_time_1_cleaned, cpu_time_2_cleaned = csv1['cpu time'], csv2['cpu time']
     ax.plot(cpu_time_2_cleaned, label="Naive model", color='#49c3fb')
     ax.plot(cpu_time_1_cleaned, label="Duplicates model", color='red')
 

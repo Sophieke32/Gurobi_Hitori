@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-from data_analysis.helper_methods.remove_outliers import remove_outliers_two_arrays
-
 
 def save_boxplot_two_models(csv1, csv2, generate_for_poster):
     # Define the fonts
@@ -14,7 +12,8 @@ def save_boxplot_two_models(csv1, csv2, generate_for_poster):
 
     fig, ax = plt.subplots(figsize=(6, 4))
 
-    data1, data2 = remove_outliers_two_arrays(csv1['cpu time'], csv2['cpu time'])
+    # data1, data2 = remove_outliers_two_arrays(csv1['cpu time'], csv2['cpu time'])
+    data1, data2 = csv1['cpu time'], csv2['cpu time']
     data = [data1, data2]
 
     blue_color = "#49c3fb"

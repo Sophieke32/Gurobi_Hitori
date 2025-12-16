@@ -1,11 +1,14 @@
 from itertools import islice
 
-# These methods check for a board-corner of the form
+# This does both Sandwich Pair (SP) and Sandwich Triple (ST).
+# It looks for a set of tiles in the form of
 #
-#             x x x
+#                               x
+#        x y x      OR          y
+#                               x
 #
-# and if there is, automatically assigns the middle to uncovered, and the outer two
-# to be covered
+# When it finds such a set of tiles it sets y to 0.
+# if y == x then it also immediately sets the x-tiles to 1
 def sandwiches(board, is_black, duplicates, n, m, has_duplicates=False):
 
     index_iter = iter(range(n-2))
@@ -14,8 +17,6 @@ def sandwiches(board, is_black, duplicates, n, m, has_duplicates=False):
         for i in index_iter:
             if board[i][j] == board[i+2][j]:
                 if board[i][j] == board[i+1][j]:
-
-                    print("Triple Sandwich")
 
                     m.addConstr(is_black[i][j] == 1)
                     if type(is_black[i + 1][j]) != int: m.addConstr(is_black[i + 1][j] == 0)
@@ -27,7 +28,6 @@ def sandwiches(board, is_black, duplicates, n, m, has_duplicates=False):
                         duplicates[i][j] = 0
                         duplicates[i + 2][j] = 0
                 else:
-                    print("Double Sandwich")
                     if type(is_black[i + 1][j]) != int: m.addConstr(is_black[i + 1][j] == 0)
 
                 # Skip the next two squares
@@ -39,7 +39,6 @@ def sandwiches(board, is_black, duplicates, n, m, has_duplicates=False):
         for i in range(n):
             if board[i][j] == board[i][j + 2]:
                 if board[i][j] == board[i][j + 1]:
-                    print("Triple Sandwich")
 
                     m.addConstr(is_black[i][j] == 1)
                     if type(is_black[i][j + 1]) != int: m.addConstr(is_black[i][j + 1] == 0)
@@ -51,7 +50,6 @@ def sandwiches(board, is_black, duplicates, n, m, has_duplicates=False):
                         duplicates[i][j] = 0
                         duplicates[i][j + 2] = 0
                 else:
-                    print("Double Sandwich")
                     if type(is_black[i][j + 1]) != int: m.addConstr(is_black[i][j + 1] == 0)
 
                 # Skip the next two squares

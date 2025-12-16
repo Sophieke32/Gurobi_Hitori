@@ -7,7 +7,7 @@ from src.naive_solver.helper_methods.path_checker import path_checker
 from src.naive_solver.minimise_black_squares_objective import minimise_black_squares_objective
 from src.naive_solver.naive_constraints.naive_adjacent_constraint import naive_adjacent_constraint
 from src.naive_solver.naive_constraints.naive_unique_constraint import naive_unique_constraint
-from src.optimisation_rules.corner_close import corner_check
+from src.optimisation_rules.corner_close import corner_close
 
 
 def naive_solver(n, board):
@@ -29,7 +29,7 @@ def naive_solver(n, board):
     m.update()
 
     # Add optimisations
-    corner_check(board, is_black, [], n, m)
+    # corner_check(board, is_black, [], n, m)
 
     # Adjacency constraint
     naive_adjacent_constraint(n, is_black, m)
