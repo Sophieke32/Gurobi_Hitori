@@ -1,3 +1,5 @@
+from math import sqrt
+from statistics import stdev, mean
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as stats
@@ -27,8 +29,17 @@ def show_histogram(data):
 # and the csv data needs to contain a 'cpu time' column which holds the solving time for each instance
 def t_test(csv1, csv2):
     data1, data2 = remove_outliers_two_arrays(csv1['cpu time'], csv2['cpu time'])
-    return stats.ttest_rel(data1, data2)
+    return stats.ttest_ind(data1, data2, equal_var=False)
 
+# Strength of the t-test effect
+def cohens_d(csv1, csv2):
+    data1, data2 = remove_outliers_two_arrays(csv1['cpu time'], csv2['cpu time'])
+    return (mean(data1) - mean(data2)) / (sqrt((stdev(data1) ** 2 + stdev(data2) ** 2) / 2))
+
+# Method for pretty printing t-test data
+def print_t_test(csv1, csv2):
+    stat = t_test(csv1, csv2)
+    return "\nT-score: {}\np-value: {}\ndf: {}\nCohen's d: {}\n".format(stat.statistic, stat.pvalue, stat.df, cohens_d(csv1, csv2))
 
 # Performs a spearman test on the given data
 # Expects the csv data of an experiment which needs to contain a 'cpu time' column which holds all the
@@ -41,10 +52,27 @@ def spearman(csv, attribute):
 
     return stats.spearmanr(attribute_array, cpu_time)
 
+# Gets data from a csv file
 def get_csv(file):
     return np.loadtxt(file, delimiter=',', skiprows=1,
         dtype={'names': ('instance', 'n', 'number of cycles', 'covered squares', 'cpu time', 'solution found'),
             'formats': ('S30', 'i4', 'i4', 'i4', 'f4', 'S1')})
+
+# Pretty prints descriptive statistics
+def print_descriptive_statistics(csv):
+    desc_stat = stats.describe(remove_outliers(csv['cpu time']))
+
+    return "\nMean: {}\nVariance: {}\n".format(desc_stat[2], desc_stat[3])
+
+# Printing all descriptive statistics
+def print_all_descriptive_statistics(csvs):
+    print("Descriptive statistics duplicates n = 5:", print_descriptive_statistics(csvs[0]))
+    print("Descriptive statistics duplicates n = 10:", print_descriptive_statistics(csvs[1]))
+
+    print("Descriptive statistics naive no heuristic n = 5:", print_descriptive_statistics(csvs[2]))
+    print("Descriptive statistics naive max heuristic n = 5:", print_descriptive_statistics(csvs[3]))
+    print("Descriptive statistics naive min heuristic n = 5:", print_descriptive_statistics(csvs[4]))
+    print("Descriptive statistics naive min heuristic n = 10:", print_descriptive_statistics(csvs[5]))
 
 
 def main():
@@ -72,20 +100,12 @@ def main():
 
     save_boxplot_two_models(naive_min_heuristic_n5_csv, duplicates_n5_csv, generate_for_poster)
 
-    print()
-    print("Descriptive statistics duplicates n = 5", stats.describe(remove_outliers(duplicates_n5_csv['cpu time'])))
-    print("Descriptive statistics duplicates n = 10", stats.describe(remove_outliers(duplicates_n10_csv['cpu time'])))
+    # Print all descriptive statistics
+    # print_all_descriptive_statistics([duplicates_n5_csv, duplicates_n10_csv, naive_no_heuristic_n5_csv, naive_max_heuristic_n5_csv, naive_min_heuristic_n5_csv, naive_min_heuristic_n10_csv])
 
-    print()
-    print("Descriptive statistics naive n = 5", stats.describe(remove_outliers(naive_no_heuristic_n5_csv['cpu time'])))
-    print("Descriptive statistics naive n = 5 + max heuristic", stats.describe(remove_outliers(naive_max_heuristic_n5_csv['cpu time'])))
-    print("Descriptive statistics naive n = 5 + min heuristic", stats.describe(remove_outliers(naive_min_heuristic_n5_csv['cpu time'])))
-    print("Descriptive statistics naive n = 10 + min heuristic", stats.describe(remove_outliers(naive_min_heuristic_n10_csv['cpu time'])))
-
-    print()
-    print("t-test: Compare naive no heuristic and naive with min heuristic", t_test(naive_no_heuristic_n5_csv, naive_min_heuristic_n5_csv))
-    print("t-test: Compare naive no heuristic and naive with max heuristic", t_test(naive_no_heuristic_n5_csv, naive_max_heuristic_n5_csv))
-    print("t-test: Compare duplicates and naive with min heuristic", t_test(naive_min_heuristic_n10_csv, duplicates_n10_csv))
+    print("### t-test: Compare naive no heuristic and naive with min heuristic ###", print_t_test(naive_no_heuristic_n5_csv, naive_min_heuristic_n5_csv))
+    print("### t-test: Compare naive no heuristic and naive with max heuristic ###", print_t_test(naive_no_heuristic_n5_csv, naive_max_heuristic_n5_csv))
+    print("### t-test: Compare duplicates and naive with min heuristic ###", print_t_test(naive_min_heuristic_n10_csv, duplicates_n10_csv))
 
     print()
     print("Spearman: Effect of number of cycles on duplicates (n=5)", spearman(duplicates_n5_csv, 'number of cycles'))
