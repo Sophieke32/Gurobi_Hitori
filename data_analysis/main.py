@@ -83,6 +83,11 @@ def main():
     duplicates_n5_file = "data_files/duplicates_n5.csv" # duplicates model, n = 5, experiment_5_instances
     duplicates_n10_file = "data_files/duplicates_n10.csv" # duplicates model, n = 10, experiment_10_instances
 
+    optimised_naive_n10_file = "data_files/optimised_naive_n10.csv"
+
+    duplicates_n10_with_corner_close_file = "data_files/duplicates_n10_with_corner_checking.csv"
+    naive_n10_with_corner_close_file = "data_files/naive_n10_with_corner_checking.csv"
+
     naive_no_heuristic_n5_csv = get_csv(naive_no_heuristic_n5_file)
     naive_max_heuristic_n5_csv = get_csv(naive_max_heuristic_n5_file)
     naive_min_heuristic_n5_csv = get_csv(naive_min_heuristic_n5_file)
@@ -90,30 +95,62 @@ def main():
     duplicates_n5_csv = get_csv(duplicates_n5_file)
     duplicates_n10_csv = get_csv(duplicates_n10_file)
 
-    generate_for_poster = False
+    optimised_naive_n10_csv = get_csv(optimised_naive_n10_file)
 
-    save_plot_naive_vs_duplicates(duplicates_n5_csv, naive_min_heuristic_n5_csv, generate_for_poster)
-    save_scatter_cycles_vs_time(duplicates_n10_csv, generate_for_poster)
+    duplicates_n10_with_corner_close_csv = get_csv(duplicates_n10_with_corner_close_file)
+    naive_n10_with_corner_close_csv = get_csv(naive_n10_with_corner_close_file)
 
-    save_boxplots_covered_vs_time(naive_min_heuristic_n5_csv, generate_for_poster, "naive", "Influence of number of covered tiles on naive runtime")
-    save_boxplots_covered_vs_time(duplicates_n10_csv, generate_for_poster, "duplicates", "Influence of number of covered tiles on duplicates runtime")
 
-    save_boxplot_two_models(naive_min_heuristic_n5_csv, duplicates_n5_csv, generate_for_poster)
+    #################################
+    #         Generate graphs       #
+    #################################
+
+    # generate_for_poster = False
+
+    # save_plot_naive_vs_duplicates(duplicates_n5_csv, naive_min_heuristic_n5_csv, generate_for_poster)
+    # save_scatter_cycles_vs_time(duplicates_n10_csv, generate_for_poster)
+
+    # save_boxplots_covered_vs_time(naive_min_heuristic_n5_csv, generate_for_poster, "naive", "Influence of number of covered tiles on naive runtime")
+    # save_boxplots_covered_vs_time(duplicates_n10_csv, generate_for_poster, "duplicates", "Influence of number of covered tiles on duplicates runtime")
+
+    # save_boxplot_two_models(naive_min_heuristic_n5_csv, duplicates_n5_csv, generate_for_poster)
+
+
+    #################################
+    #       Print statistics        #
+    #################################
+
+    print("Descriptive statistics naive n = 10:", print_descriptive_statistics(naive_min_heuristic_n10_csv))
+    print("Descriptive statistics optimised naive n = 10:", print_descriptive_statistics(optimised_naive_n10_csv))
+    print("### t-test: Compare naive with optimised naive ###",
+          print_t_test(naive_min_heuristic_n10_csv, optimised_naive_n10_csv))
+
+    # print("Descriptive statistics duplicates n = 10:", print_descriptive_statistics(duplicates_n10_csv))
+    # print("Descriptive statistics duplicates with corner checking:", print_descriptive_statistics(duplicates_n10_with_corner_close_csv))
+    # print("Descriptive statistics naive n10 without corner checking:", print_descriptive_statistics(naive_min_heuristic_n10_csv))
+    # print("Descriptive statistics naive n10 with corner checking:", print_descriptive_statistics(naive_n10_with_corner_close_csv))
+    # print("### t-test: Compare duplicates with duplicates + corner checking ###",
+    #       print_t_test(naive_min_heuristic_n10_csv, naive_n10_with_corner_close_csv))
+    # print("### t-test: Compare duplicates with duplicates + corner checking ###",
+    #       print_t_test(duplicates_n10_csv, duplicates_n10_with_corner_close_csv))
+
+
+
 
     # Print all descriptive statistics
     # print_all_descriptive_statistics([duplicates_n5_csv, duplicates_n10_csv, naive_no_heuristic_n5_csv, naive_max_heuristic_n5_csv, naive_min_heuristic_n5_csv, naive_min_heuristic_n10_csv])
 
-    print("### t-test: Compare naive no heuristic and naive with min heuristic ###", print_t_test(naive_no_heuristic_n5_csv, naive_min_heuristic_n5_csv))
-    print("### t-test: Compare naive no heuristic and naive with max heuristic ###", print_t_test(naive_no_heuristic_n5_csv, naive_max_heuristic_n5_csv))
-    print("### t-test: Compare duplicates and naive with min heuristic ###", print_t_test(naive_min_heuristic_n10_csv, duplicates_n10_csv))
+    # print("### t-test: Compare naive no heuristic and naive with min heuristic ###", print_t_test(naive_no_heuristic_n5_csv, naive_min_heuristic_n5_csv))
+    # print("### t-test: Compare naive no heuristic and naive with max heuristic ###", print_t_test(naive_no_heuristic_n5_csv, naive_max_heuristic_n5_csv))
+    # print("### t-test: Compare duplicates and naive with min heuristic ###", print_t_test(naive_min_heuristic_n10_csv, duplicates_n10_csv))
 
-    print()
-    print("Spearman: Effect of number of cycles on duplicates (n=5)", spearman(duplicates_n5_csv, 'number of cycles'))
-    print("Spearman: Effect of number of cycles on duplicates (n=10)", spearman(duplicates_n10_csv, 'number of cycles'))
-    print("Spearman: Effect of number of covered tiles on duplicates (n=5)", spearman(duplicates_n5_csv, 'covered squares'))
-    print("Spearman: Effect of number of covered tiles on duplicates (n=10)", spearman(duplicates_n10_csv, 'covered squares'))
-    print("Spearman: Effect of number of covered tiles on naive (n=5)", spearman(naive_no_heuristic_n5_csv, 'covered squares'))
-    print("Spearman: Effect of number of covered tiles on naive minimise (n=10)", spearman(naive_min_heuristic_n10_csv, 'covered squares'))
+    # print()
+    # print("Spearman: Effect of number of cycles on duplicates (n=5)", spearman(duplicates_n5_csv, 'number of cycles'))
+    # print("Spearman: Effect of number of cycles on duplicates (n=10)", spearman(duplicates_n10_csv, 'number of cycles'))
+    # print("Spearman: Effect of number of covered tiles on duplicates (n=5)", spearman(duplicates_n5_csv, 'covered squares'))
+    # print("Spearman: Effect of number of covered tiles on duplicates (n=10)", spearman(duplicates_n10_csv, 'covered squares'))
+    # print("Spearman: Effect of number of covered tiles on naive (n=5)", spearman(naive_no_heuristic_n5_csv, 'covered squares'))
+    # print("Spearman: Effect of number of covered tiles on naive minimise (n=10)", spearman(naive_min_heuristic_n10_csv, 'covered squares'))
     # print("Spearman: Effect of number of covered tiles on naive with heuristic", spearman(naive_min_heuristic_csv, 'covered squares'))
 
 

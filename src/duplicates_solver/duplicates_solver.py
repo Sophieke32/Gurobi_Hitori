@@ -6,6 +6,7 @@ from src.duplicates_solver.duplicates_constraints.duplicates_unique_constraint i
 from src.duplicates_solver.helper_methods.find_duplicates import find_duplicates
 from src.duplicates_solver.helper_methods.create_duplicates_graph import create_graph
 from src.duplicates_solver.duplicates_constraints.duplicates_path_constraint import duplicates_path_constraint
+from src.optimisation_rules.corner_close import corner_close
 
 
 def duplicates_solver(n, board):
@@ -34,6 +35,9 @@ def duplicates_solver(n, board):
                 new_list.append(m.addVar(vtype=GRB.BINARY, name=f'is_black {i}_{j}'))
         is_black.append(new_list)
     m.update()
+
+    # Add optimisations
+    corner_close(board, is_black, duplicates, n, m, has_duplicates=True)
 
     # Adjacency constraint
     duplicates_adjacent_constraint(n, is_black, m, duplicates)

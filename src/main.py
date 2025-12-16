@@ -6,6 +6,7 @@ from gurobipy import GRB
 
 from src.duplicates_solver.duplicates_solver import duplicates_solver
 from src.naive_solver.naive_solver import naive_solver
+from src.optimised_naive_solver.optimised_naive_solver import optimised_naive_solver
 from src.path_solver.path_solver import path_solver
 from src.pretty_print import pretty_print
 from src.solution_checker import run_solution_checker
@@ -73,6 +74,12 @@ def main(root, file, model, experiment):
             signal.alarm(time_out)
             start = time.process_time_ns()
             m, is_black = path_solver(n, board)
+            end = time.process_time_ns()
+            signal.alarm(0)
+        elif model == "optimised_naive":
+            signal.alarm(time_out)
+            start = time.process_time_ns()
+            m, is_black = optimised_naive_solver(n, board)
             end = time.process_time_ns()
             signal.alarm(0)
         else:
