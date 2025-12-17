@@ -56,21 +56,30 @@ def main():
     optimised_naive_corner_checking_file = "data_files/redundant_constraints/optimised_naive_corner_check.csv"
     optimised_naive_sandwiches_file = "data_files/redundant_constraints/optimised_naive_sandwiches.csv"
     optimised_naive_all_file = "data_files/redundant_constraints/optimised_naive_all.csv"
+    optimised_naive_max_black_file = "data_files/redundant_constraints/optimised_naive_max_black.csv"
+    optimised_naive_least_whites_file = "data_files/redundant_constraints/optimised_naive_least_whites.csv"
 
     duplicates_corner_close_file = "data_files/redundant_constraints/duplicates_corner_close.csv"
     duplicates_corner_checking_file = "data_files/redundant_constraints/duplicates_corner_check.csv"
     duplicates_sandwiches_file = "data_files/redundant_constraints/duplicates_sandwiches.csv"
     duplicates_all_file = "data_files/redundant_constraints/duplicates_all.csv"
+    duplicates_max_black_file = "data_files/redundant_constraints/duplicates_max_black.csv"
+    duplicates_least_whites_file = "data_files/redundant_constraints/duplicates_least_whites.csv"
+
 
     optimised_naive_corner_close_csv = get_csv(optimised_naive_corner_close_file)
     optimised_naive_corner_checking_csv = get_csv(optimised_naive_corner_checking_file)
     optimised_naive_sandwiches_csv = get_csv(optimised_naive_sandwiches_file)
     optimised_naive_all_csv = get_csv(optimised_naive_all_file)
+    optimised_naive_max_black_csv = get_csv(optimised_naive_max_black_file)
+    optimised_naive_least_whites_csv = get_csv(optimised_naive_least_whites_file)
 
     duplicates_corner_close_csv = get_csv(duplicates_corner_close_file)
     duplicates_corner_checking_csv = get_csv(duplicates_corner_checking_file)
     duplicates_sandwiches_csv = get_csv(duplicates_sandwiches_file)
     duplicates_all_csv = get_csv(duplicates_all_file)
+    duplicates_max_black_csv = get_csv(duplicates_max_black_file)
+    duplicates_least_whites_csv = get_csv(duplicates_least_whites_file)
 
 
     #################################
@@ -127,11 +136,17 @@ def main():
         print("Optimised naive corner close:", print_descriptive_statistics(optimised_naive_corner_close_csv))
         print("Optimised naive corner checking:", print_descriptive_statistics(optimised_naive_corner_checking_csv))
         print("Optimised naive sandwiches:", print_descriptive_statistics(optimised_naive_sandwiches_csv))
+
+        print("Optimised naive max black", print_descriptive_statistics(optimised_naive_max_black_csv))
+        print("Optimised naive least whites", print_descriptive_statistics(optimised_naive_least_whites_csv))
         print("Optimised naive all:", print_descriptive_statistics(optimised_naive_all_csv))
         print()
         print("Duplicates corner close:", print_descriptive_statistics(duplicates_corner_close_csv))
         print("Duplicates corner checking:", print_descriptive_statistics(duplicates_corner_checking_csv))
         print("Duplicates sandwiches:", print_descriptive_statistics(duplicates_sandwiches_csv))
+
+        print("Duplicates max black", print_descriptive_statistics(duplicates_max_black_csv))
+        print("Duplicates least whites", print_descriptive_statistics(duplicates_least_whites_csv))
         print("Duplicates all:", print_descriptive_statistics(duplicates_all_csv))
 
     #################################
@@ -173,11 +188,15 @@ def main():
         print("Optimised Naive: Base vs corner close:", print_t_test(optimised_naive_n10_csv, optimised_naive_corner_close_csv))
         print("Optimised Naive: Base vs corner check:", print_t_test(optimised_naive_n10_csv, optimised_naive_corner_checking_csv))
         print("Optimised Naive: Base vs sandwiches:", print_t_test(optimised_naive_n10_csv, optimised_naive_sandwiches_csv))
+        print("Optimised Naive: Base vs max black:", print_t_test(optimised_naive_n10_csv, optimised_naive_max_black_csv))
+        print("Optimised Naive: Base vs least whites:", print_t_test(optimised_naive_n10_csv, optimised_naive_least_whites_csv))
         print("Optimised Naive: Base vs all:", print_t_test(optimised_naive_n10_csv, optimised_naive_all_csv))
 
         print("Duplicates: Base vs corner close:", print_t_test(duplicates_n10_csv, duplicates_corner_close_csv))
         print("Duplicates: Base vs corner checking:", print_t_test(duplicates_n10_csv, duplicates_corner_checking_csv))
         print("Duplicates: Base vs sandwiches:", print_t_test(duplicates_n10_csv, duplicates_sandwiches_csv))
+        print("Duplicates: Base vs max black:", print_t_test(duplicates_n10_csv, duplicates_max_black_csv))
+        print("Duplicates: Base vs least whites:", print_t_test(duplicates_n10_csv, duplicates_least_whites_csv))
         print("Duplicates: Base vs all:", print_t_test(duplicates_n10_csv, duplicates_all_csv))
 
 

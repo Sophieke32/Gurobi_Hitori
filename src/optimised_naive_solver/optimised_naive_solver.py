@@ -3,6 +3,10 @@ from gurobipy import GRB
 
 from src.optimisation_rules.corner_check import corner_check
 from src.optimisation_rules.corner_close import corner_close
+from src.optimisation_rules.edge_pairs import edge_pairs
+from src.optimisation_rules.least_whites import least_whites
+from src.optimisation_rules.most_blacks import most_blacks
+from src.optimisation_rules.pair_isolation import pair_isolation
 from src.optimisation_rules.sandwiches import sandwiches
 from src.optimised_naive_solver.helper_methods.add_illegal_solution import add_illegal_solution
 from src.optimised_naive_solver.helper_methods.extract_solution import extract_solution
@@ -46,6 +50,10 @@ def optimised_naive_solver(n, board):
     # corner_close(is_black, m)
     # corner_check(board, is_black, duplicates, n, m)
     # sandwiches(board, is_black, duplicates, n, m)
+    # edge_pairs(board, is_black, duplicates, n, m, has_duplicates=True)
+    # most_blacks(is_black, duplicates, n, m, has_duplicates=True)
+    # least_whites(is_black, duplicates, n, m, has_duplicates=True)
+    # pair_isolation(board, is_black, n, m)
 
     # Adjacency constraint
     optimised_naive_adjacent_constraint(n, is_black, m, duplicates)
