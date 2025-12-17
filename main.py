@@ -39,6 +39,8 @@ if __name__ == "__main__":
     print("Using model:", model)
     if time: print("Storing time!")
 
+    i = 0
+
     if time:
         with open(os.path.join("experiments", model, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "_" + model + ".csv"), "w", newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=["instance", "n", "number of cycles", "covered squares", "cpu_time (s)", "solution found"])
@@ -49,7 +51,8 @@ if __name__ == "__main__":
                     if file.endswith(".singles"):
                         n, number_of_cycles, number_of_covered_squares, time, solution = main(root, file, model, time)
                         writer.writerow({"instance": file, "n": n, "number of cycles": number_of_cycles, "covered squares": number_of_covered_squares,"cpu_time (s)": time, "solution found": solution})
-                        print(n, time)
+                        print(i, n, time)
+                        i = i + 1
                 print(root)
 
     else:
@@ -57,5 +60,6 @@ if __name__ == "__main__":
             for file in files:
                 if file.endswith(".singles"):
                     n, time, solution = main(root, file, model, False)
-                    print(n, time)
+                    print(i, n, time)
+                    i = i + 1
             print(root)

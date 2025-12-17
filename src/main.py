@@ -91,9 +91,9 @@ def main(root, file, model, experiment):
 
     except TimeoutError as exc:
         print("Oopsie")
-        cpu_time = 2 * time_out * 1000000000
+        cpu_time = 2 * time_out
         if experiment:
-            return n, -1, -1, cpu_time, False
+            return n, number_of_cycles, number_of_covered_tiles, cpu_time, False
         else:
             return n, cpu_time, False
 

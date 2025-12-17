@@ -24,3 +24,9 @@ def remove_outliers_two_arrays(data1, data2):
     z_combined = np.logical_and(z1 < 3, z2 < 3)
 
     return data1[z_combined], data2[z_combined]
+
+# Gets data from a csv file
+def get_csv(file):
+    return np.loadtxt(file, delimiter=',', skiprows=1,
+        dtype={'names': ('instance', 'n', 'number of cycles', 'covered squares', 'cpu time', 'solution found'),
+            'formats': ('S30', 'i4', 'i4', 'i4', 'f4', 'S1')})
