@@ -9,6 +9,7 @@ from src.duplicates_solver.duplicates_constraints.duplicates_path_constraint imp
 from src.optimisation_rules.corner_check import corner_check
 from src.optimisation_rules.corner_close import corner_close
 from src.optimisation_rules.edge_pairs import edge_pairs
+from src.optimisation_rules.most_blacks import most_blacks
 from src.optimisation_rules.sandwiches import sandwiches
 
 
@@ -43,7 +44,8 @@ def duplicates_solver(n, board):
     # corner_close(is_black, m)
     # corner_check(board, is_black, duplicates, n, m)
     # sandwiches(board, is_black, duplicates, n, m)
-    edge_pairs(board, is_black, duplicates, n, m, has_duplicates=True)
+    # edge_pairs(board, is_black, duplicates, n, m, has_duplicates=True)
+    most_blacks(is_black, duplicates, n, m, has_duplicates=True)
 
     # Adjacency constraint
     duplicates_adjacent_constraint(n, is_black, m, duplicates)
