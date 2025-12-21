@@ -22,10 +22,11 @@ def duplicates_solver(n, board):
     # Create a new model
     m = gp.Model("Hitori_Solver_Duplicates")
 
-    # Silence model, set memory limit to 8 GB and threads to 1
+    # Silence model, set memory limit to 8 GB and threads to 1, set seed to 32
     m.params.OutputFlag = 0
     m.params.MemLimit = 8
     m.params.Threads = 1
+    m.params.Seed = 32
 
     # Make the variables. Only add variables for duplicate values.
     # Values on the Hitori board that are unique in their row and column will never

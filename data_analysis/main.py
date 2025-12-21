@@ -1,95 +1,90 @@
 from data_analysis.helper_methods.descriptive_statistics import print_descriptive_statistics
 from data_analysis.helper_methods.process_data import get_csv
-from data_analysis.helper_methods.spearman_test import spearman, print_spearman
+from data_analysis.helper_methods.spearman_test import print_spearman
 from data_analysis.helper_methods.t_tests import print_t_test
+
+#################################
+#           Load Files          #
+#################################
+
+### Base Cases
+duplicates_n5_file = "data_files/duplicates_n5.csv"  # duplicates model, n = 5, experiment_5_instances
+duplicates_n10_file = "data_files/duplicates_n10.csv"  # duplicates model, n = 10, experiment_10_instances
+naive_n5_file = "data_files/naive_n5.csv"  # duplicates model, n = 10, experiment_10_instances
+naive_n10_file = "data_files/naive_n10.csv"  # duplicates model, n = 10, experiment_10_instances
+optimised_naive_n5_file = "data_files/optimised_naive_n5.csv"  # duplicates model, n = 10, experiment_10_instances
+optimised_naive_n10_file = "data_files/optimised_naive_n10.csv"  # duplicates model, n = 10, experiment_10_instances
+
+duplicates_n5_csv = get_csv(duplicates_n5_file)
+duplicates_n10_csv = get_csv(duplicates_n10_file)
+naive_n5_csv = get_csv(naive_n5_file)
+naive_n10_csv = get_csv(naive_n10_file)
+optimised_naive_n5_csv = get_csv(optimised_naive_n5_file)
+optimised_naive_n10_csv = get_csv(optimised_naive_n10_file)
+
+### Naive Heuristics
+naive_no_heuristic_n5_file = "data_files/naive_heuristics/naive_n5_no_heuristic.csv"  # naive model, n = 5, experiment_5_instances, no minimum-black-squares heuristic
+naive_max_heuristic_n5_file = "data_files/naive_heuristics/naive_n5_max_heuristic.csv"  # naive model,      n = 5, experiment_5_instances
+naive_min_heuristic_n5_file = "data_files/naive_heuristics/naive_n5_min_heuristic.csv"  # naive model,      n = 5, experiment_5_instances
+
+naive_no_heuristic_n10_file = "data_files/naive_heuristics/naive_n10_no_heuristic.csv"
+naive_min_heuristic_n10_file = "data_files/naive_heuristics/naive_n10_min_heuristic.csv"
+
+naive_no_heuristic_n5_csv = get_csv(naive_no_heuristic_n5_file)
+naive_max_heuristic_n5_csv = get_csv(naive_max_heuristic_n5_file)
+naive_min_heuristic_n5_csv = get_csv(naive_min_heuristic_n5_file)
+
+naive_no_heuristic_n10_csv = get_csv(naive_no_heuristic_n10_file)
+naive_min_heuristic_n10_csv = get_csv(naive_min_heuristic_n10_file)
+
+### Path Checkers
+optimised_naive_path_checker_bfs_file = "data_files/path_checkers/optimised_naive_path_checker_bfs.csv"
+optimised_naive_path_checker_cycles_file = "data_files/path_checkers/optimised_naive_path_checker_cycles.csv"
+optimised_naive_path_checker_cc_file = "data_files/path_checkers/optimised_naive_path_checker_cc.csv"
+
+optimised_naive_path_checker_bfs_csv = get_csv(optimised_naive_path_checker_bfs_file)
+optimised_naive_path_checker_cycles_csv = get_csv(optimised_naive_path_checker_cycles_file)
+optimised_naive_path_checker_cc_csv = get_csv(optimised_naive_path_checker_cc_file)
+
+# Redundant Constraints (all are n = 10, BFS, min heuristic)
+optimised_naive_corner_close_file = "data_files/redundant_constraints/optimised_naive_corner_close.csv"
+optimised_naive_corner_checking_file = "data_files/redundant_constraints/optimised_naive_corner_check.csv"
+optimised_naive_sandwiches_file = "data_files/redundant_constraints/optimised_naive_sandwiches.csv"
+optimised_naive_edge_pairs_file = "data_files/redundant_constraints/optimised_naive_edge_pairs.csv"
+optimised_naive_max_black_file = "data_files/redundant_constraints/optimised_naive_max_black.csv"
+optimised_naive_least_whites_file = "data_files/redundant_constraints/optimised_naive_least_whites.csv"
+optimised_naive_pair_isolation_file = "data_files/redundant_constraints/optimised_naive_pair_isolation.csv"
+optimised_naive_all_file = "data_files/redundant_constraints/optimised_naive_all.csv"
+
+duplicates_corner_close_file = "data_files/redundant_constraints/duplicates_corner_close.csv"
+duplicates_corner_checking_file = "data_files/redundant_constraints/duplicates_corner_check.csv"
+duplicates_sandwiches_file = "data_files/redundant_constraints/duplicates_sandwiches.csv"
+duplicates_edge_pairs_file = "data_files/redundant_constraints/duplicates_edge_pairs.csv"
+duplicates_max_black_file = "data_files/redundant_constraints/duplicates_max_black.csv"
+duplicates_least_whites_file = "data_files/redundant_constraints/duplicates_least_whites.csv"
+duplicates_pair_isolation_file = "data_files/redundant_constraints/duplicates_pair_isolation.csv"
+duplicates_all_file = "data_files/redundant_constraints/duplicates_all.csv"
+
+optimised_naive_corner_close_csv = get_csv(optimised_naive_corner_close_file)
+optimised_naive_corner_checking_csv = get_csv(optimised_naive_corner_checking_file)
+optimised_naive_sandwiches_csv = get_csv(optimised_naive_sandwiches_file)
+optimised_naive_edge_pairs_csv = get_csv(optimised_naive_edge_pairs_file)
+optimised_naive_all_csv = get_csv(optimised_naive_all_file)
+optimised_naive_max_black_csv = get_csv(optimised_naive_max_black_file)
+optimised_naive_pair_isolation_csv = get_csv(optimised_naive_pair_isolation_file)
+optimised_naive_least_whites_csv = get_csv(optimised_naive_least_whites_file)
+
+duplicates_corner_close_csv = get_csv(duplicates_corner_close_file)
+duplicates_corner_checking_csv = get_csv(duplicates_corner_checking_file)
+duplicates_sandwiches_csv = get_csv(duplicates_sandwiches_file)
+duplicates_edge_pairs_csv = get_csv(duplicates_edge_pairs_file)
+duplicates_all_csv = get_csv(duplicates_all_file)
+duplicates_max_black_csv = get_csv(duplicates_max_black_file)
+duplicates_pair_isolation_csv = get_csv(duplicates_pair_isolation_file)
+duplicates_least_whites_csv = get_csv(duplicates_least_whites_file)
 
 
 def main():
-    #################################
-    #           Load Files          #
-    #################################
-
-    ### Base Cases
-    duplicates_n5_file = "data_files/duplicates_n5.csv"  # duplicates model, n = 5, experiment_5_instances
-    duplicates_n10_file = "data_files/duplicates_n10.csv"  # duplicates model, n = 10, experiment_10_instances
-    naive_n5_file = "data_files/naive_n5.csv"  # duplicates model, n = 10, experiment_10_instances
-    naive_n10_file = "data_files/naive_n10.csv"  # duplicates model, n = 10, experiment_10_instances
-    optimised_naive_n5_file = "data_files/optimised_naive_n5.csv"  # duplicates model, n = 10, experiment_10_instances
-    optimised_naive_n10_file = "data_files/optimised_naive_n10.csv"  # duplicates model, n = 10, experiment_10_instances
-
-    duplicates_n5_csv = get_csv(duplicates_n5_file)
-    duplicates_n10_csv = get_csv(duplicates_n10_file)
-    naive_n5_csv = get_csv(naive_n5_file)
-    naive_n10_csv = get_csv(naive_n10_file)
-    optimised_naive_n5_csv = get_csv(optimised_naive_n5_file)
-    optimised_naive_n10_csv = get_csv(optimised_naive_n10_file)
-
-
-    ### Naive Heuristics
-    naive_no_heuristic_n5_file = "data_files/naive_heuristics/naive_n5_no_heuristic.csv"  # naive model, n = 5, experiment_5_instances, no minimum-black-squares heuristic
-    naive_max_heuristic_n5_file = "data_files/naive_heuristics/naive_n5_max_heuristic.csv"  # naive model,      n = 5, experiment_5_instances
-    naive_min_heuristic_n5_file = "data_files/naive_heuristics/naive_n5_min_heuristic.csv"  # naive model,      n = 5, experiment_5_instances
-
-    naive_no_heuristic_n10_file = "data_files/naive_heuristics/naive_n10_no_heuristic.csv"
-    naive_min_heuristic_n10_file = "data_files/naive_heuristics/naive_n10_min_heuristic.csv"
-
-    naive_no_heuristic_n5_csv = get_csv(naive_no_heuristic_n5_file)
-    naive_max_heuristic_n5_csv = get_csv(naive_max_heuristic_n5_file)
-    naive_min_heuristic_n5_csv = get_csv(naive_min_heuristic_n5_file)
-
-    naive_no_heuristic_n10_csv = get_csv(naive_no_heuristic_n10_file)
-    naive_min_heuristic_n10_csv = get_csv(naive_min_heuristic_n10_file)
-
-
-    ### Path Checkers
-    optimised_naive_path_checker_bfs_file = "data_files/path_checkers/optimised_naive_path_checker_bfs.csv"
-    optimised_naive_path_checker_cycles_file = "data_files/path_checkers/optimised_naive_path_checker_cycles.csv"
-    optimised_naive_path_checker_cc_file = "data_files/path_checkers/optimised_naive_path_checker_cc.csv"
-
-    optimised_naive_path_checker_bfs_csv = get_csv(optimised_naive_path_checker_bfs_file)
-    optimised_naive_path_checker_cycles_csv = get_csv(optimised_naive_path_checker_cycles_file)
-    optimised_naive_path_checker_cc_csv = get_csv(optimised_naive_path_checker_cc_file)
-
-
-    # Redundant Constraints (all are n = 10, BFS, min heuristic)
-    optimised_naive_corner_close_file = "data_files/redundant_constraints/optimised_naive_corner_close.csv"
-    optimised_naive_corner_checking_file = "data_files/redundant_constraints/optimised_naive_corner_check.csv"
-    optimised_naive_sandwiches_file = "data_files/redundant_constraints/optimised_naive_sandwiches.csv"
-    optimised_naive_edge_pairs_file = "data_files/redundant_constraints/optimised_naive_edge_pairs.csv"
-    optimised_naive_max_black_file = "data_files/redundant_constraints/optimised_naive_max_black.csv"
-    optimised_naive_least_whites_file = "data_files/redundant_constraints/optimised_naive_least_whites.csv"
-    optimised_naive_pair_isolation_file = "data_files/redundant_constraints/optimised_naive_pair_isolation.csv"
-    optimised_naive_all_file = "data_files/redundant_constraints/optimised_naive_all.csv"
-
-    duplicates_corner_close_file = "data_files/redundant_constraints/duplicates_corner_close.csv"
-    duplicates_corner_checking_file = "data_files/redundant_constraints/duplicates_corner_check.csv"
-    duplicates_sandwiches_file = "data_files/redundant_constraints/duplicates_sandwiches.csv"
-    duplicates_edge_pairs_file = "data_files/redundant_constraints/duplicates_edge_pairs.csv"
-    duplicates_max_black_file = "data_files/redundant_constraints/duplicates_max_black.csv"
-    duplicates_least_whites_file = "data_files/redundant_constraints/duplicates_least_whites.csv"
-    duplicates_pair_isolation_file = "data_files/redundant_constraints/duplicates_pair_isolation.csv"
-    duplicates_all_file = "data_files/redundant_constraints/duplicates_all.csv"
-
-
-    optimised_naive_corner_close_csv = get_csv(optimised_naive_corner_close_file)
-    optimised_naive_corner_checking_csv = get_csv(optimised_naive_corner_checking_file)
-    optimised_naive_sandwiches_csv = get_csv(optimised_naive_sandwiches_file)
-    optimised_naive_edge_pairs_csv = get_csv(optimised_naive_edge_pairs_file)
-    optimised_naive_all_csv = get_csv(optimised_naive_all_file)
-    optimised_naive_max_black_csv = get_csv(optimised_naive_max_black_file)
-    optimised_naive_pair_isolation_csv = get_csv(optimised_naive_pair_isolation_file)
-    optimised_naive_least_whites_csv = get_csv(optimised_naive_least_whites_file)
-
-    duplicates_corner_close_csv = get_csv(duplicates_corner_close_file)
-    duplicates_corner_checking_csv = get_csv(duplicates_corner_checking_file)
-    duplicates_sandwiches_csv = get_csv(duplicates_sandwiches_file)
-    duplicates_edge_pairs_csv = get_csv(duplicates_edge_pairs_file)
-    duplicates_all_csv = get_csv(duplicates_all_file)
-    duplicates_max_black_csv = get_csv(duplicates_max_black_file)
-    duplicates_pair_isolation_csv = get_csv(duplicates_pair_isolation_file)
-    duplicates_least_whites_csv = get_csv(duplicates_least_whites_file)
-
-
     #################################
     #         Generate graphs       #
     #################################

@@ -24,27 +24,27 @@ def path_path_constraint(n, is_covered, board, m):
             if i == 0 and j == 1: continue
             m.addConstr(3* path[i][j] + is_covered[i][j] - (3* path[i+1][j] + is_covered[i+1][j]) <= 2)
 
-    # for i in range(1, n):
-    #     for j in range(n):
-    #         if i == 1 and j == 0: continue
-    #         if i == 1 and j == 1: continue
-    #         m.addConstr(3 * path[i][j] + is_covered[i][j] - (3 * path[i - 1][j] + is_covered[i - 1][j]) <= 2)
+    for i in range(1, n):
+        for j in range(n):
+            if i == 1 and j == 0: continue
+            if i == 1 and j == 1: continue
+            m.addConstr(3 * path[i][j] + is_covered[i][j] - (3 * path[i - 1][j] + is_covered[i - 1][j]) <= 2)
 
-    # for i in range(n):
-    #     for j in range(n-1):
-    #         if i == 0 and j == 0: continue
-    #         if i == 0 and j == 1: continue
-    #         m.addConstr(3 * path[i][j] + is_covered[i][j] - (3 * path[i][j + 1] + is_covered[i][j + 1]) <= 2)
-    #
-    # for i in range(n):
-    #     for j in range(1, n):
-    #         if i == 0 and j == 1: continue
-    #         if i == 0 and j == 2: continue
-    #         m.addConstr(3 * path[i][j] + is_covered[i][j] - (3 * path[i][j - 1] + is_covered[i][j - 1]) <= 2)
+    for i in range(n):
+        for j in range(n-1):
+            if i == 0 and j == 0: continue
+            if i == 0 and j == 1: continue
+            m.addConstr(3 * path[i][j] + is_covered[i][j] - (3 * path[i][j + 1] + is_covered[i][j + 1]) <= 2)
+
+    for i in range(n):
+        for j in range(1, n):
+            if i == 0 and j == 1: continue
+            if i == 0 and j == 2: continue
+            m.addConstr(3 * path[i][j] + is_covered[i][j] - (3 * path[i][j - 1] + is_covered[i][j - 1]) <= 2)
 
     # Either a tile is uncovered and on the path, or covered and off the path
-    m.addConstrs(
-        path[x][y] == 1 - is_covered[x][y] for x in range(n) for y in range(n))
+    # m.addConstrs(
+    #     path[x][y] == 1 - is_covered[x][y] for x in range(n) for y in range(n))
 
 
 
