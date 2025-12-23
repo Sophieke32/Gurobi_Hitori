@@ -46,14 +46,14 @@ def save_boxplots_covered_vs_time(csv, generate_for_poster, file_addition, title
 
     # Set labels and title
     ax.set_ylabel('Time (s)', size=15, **font)
-    ax.set_xlabel('Number of covered squares', size=15, **font)
+    ax.set_xlabel('Number of covered tiles', size=15, **font)
     ax.set_title(title, size=15, color='white', **font)
 
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
 
     ax.grid()
-    ax.grid(which="minor", color="0.5")
+    # ax.grid(which="minor", color="0.8")
 
     if generate_for_poster:
         # Set axes colours to white

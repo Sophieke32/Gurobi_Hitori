@@ -1,5 +1,6 @@
 import gurobipy as gp
 from gurobipy import GRB
+import time
 
 from src.duplicates_solver.duplicates_constraints.duplicates_adjacent_constraint import duplicates_adjacent_constraint
 from src.duplicates_solver.duplicates_constraints.duplicates_unique_constraint import duplicates_unique_constraint

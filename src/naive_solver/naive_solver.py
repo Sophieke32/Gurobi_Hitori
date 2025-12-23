@@ -3,6 +3,8 @@ from gurobipy import GRB
 
 from src.naive_solver.helper_methods.add_illegal_solution import add_illegal_solution
 from src.naive_solver.helper_methods.extract_solution import extract_solution
+from src.naive_solver.helper_methods.graph_path_checker import graph_path_checker_cycles, \
+    graph_path_checker_connected_components
 from src.naive_solver.helper_methods.path_checker import path_checker
 from src.naive_solver.minimise_black_squares_objective import minimise_black_squares_objective
 from src.naive_solver.naive_constraints.naive_adjacent_constraint import naive_adjacent_constraint
@@ -39,7 +41,7 @@ def naive_solver(n, board):
     naive_unique_constraint(n, is_black, board, m)
 
     # Heuristic: Minimise the number of black squares
-    minimise_black_squares_objective(n, is_black, m)
+    # minimise_black_squares_objective(n, is_black, m)
 
     # Optimise the model
     try:
@@ -52,6 +54,8 @@ def naive_solver(n, board):
     iteration = 0
 
     while not path_checker(n, grid):
+    # while not graph_path_checker_cycles(n, grid):
+    # while not graph_path_checker_connected_components(n, grid):
         add_illegal_solution(white, black, m, iteration)
         m.optimize()
 

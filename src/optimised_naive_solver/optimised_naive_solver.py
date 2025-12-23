@@ -1,6 +1,8 @@
 import gurobipy as gp
 from gurobipy import GRB
 
+from src.naive_solver.naive_constraints.naive_adjacent_constraint import naive_adjacent_constraint
+from src.naive_solver.naive_constraints.naive_unique_constraint import naive_unique_constraint
 from src.optimisation_rules.corner_check import corner_check
 from src.optimisation_rules.corner_close import corner_close
 from src.optimisation_rules.edge_pairs import edge_pairs
@@ -10,18 +12,15 @@ from src.optimisation_rules.pair_isolation import pair_isolation
 from src.optimisation_rules.sandwiches import sandwiches
 from src.optimised_naive_solver.helper_methods.add_illegal_solution import add_illegal_solution
 from src.optimised_naive_solver.helper_methods.extract_solution import extract_solution
-from src.optimised_naive_solver.helper_methods.graph_path_checker import graph_path_checker_cycles, \
-    graph_path_checker_connected_components
 from src.optimised_naive_solver.helper_methods.path_checker import path_checker
 from src.optimised_naive_solver.minimise_black_squares_objective import minimise_black_squares_objective
+from src.optimised_naive_solver.maximise_black_squares_objective import maximise_black_squares_objective
 from src.optimised_naive_solver.optimised_naive_constraints.optimised_naive_adjacent_constraint import optimised_naive_adjacent_constraint
 from src.optimised_naive_solver.optimised_naive_constraints.optimised_naive_unique_constraint import optimised_naive_unique_constraint
 from src.optimised_naive_solver.helper_methods.find_duplicates import find_duplicates
 
 
 def optimised_naive_solver(n, board):
-    # Create the duplicates array
-    duplicates = find_duplicates(n, board)
 
     # Create a new model
     m = gp.Model("Hitori optimised naive")
@@ -32,38 +31,33 @@ def optimised_naive_solver(n, board):
     m.params.Threads = 1
     m.params.Seed = 32
 
-    # Make the variables. Only add variables for duplicate values.
-    # Values on the Hitori board that are unique in their row and column will never
-    # have to be blacked out.
     is_black = list()
 
     for i in range(n):
         new_list = list()
         for j in range(n):
-            if duplicates[i][j] == 0:
-                new_list.append(0)
-            else:
-                new_list.append(m.addVar(vtype=GRB.BINARY, name=f'is_black {i}_{j}'))
+            new_list.append(m.addVar(vtype=GRB.BINARY, name=f'is_black {i}_{j}'))
         is_black.append(new_list)
     m.update()
 
     # Add optimisations
     # corner_close(is_black, m)
-    # corner_check(board, is_black, duplicates, n, m)
-    # sandwiches(board, is_black, duplicates, n, m)
-    # edge_pairs(board, is_black, duplicates, n, m, has_duplicates=True)
-    # most_blacks(is_black, duplicates, n, m, has_duplicates=True)
-    # least_whites(is_black, duplicates, n, m, has_duplicates=True)
+    # corner_check(board, is_black, [], n, m)
+    # sandwiches(board, is_black, [], n, m)
+    # edge_pairs(board, is_black, [], n, m, has_duplicates=False)
+    # most_blacks(is_black, [], n, m, has_duplicates=False)
+    # least_whites(is_black, [], n, m, has_duplicates=False)
     # pair_isolation(board, is_black, n, m)
 
     # Adjacency constraint
-    optimised_naive_adjacent_constraint(n, is_black, m, duplicates)
+    naive_adjacent_constraint(n, is_black, m)
 
     # Unique constraint
-    optimised_naive_unique_constraint(n, is_black, m, duplicates)
+    naive_unique_constraint(n, is_black, board, m)
 
     # Heuristic: Minimise the number of black squares
-    minimise_black_squares_objective(n, is_black, m)
+    # minimise_black_squares_objective(n, is_black, m)
+    maximise_black_squares_objective(n, is_black, m)
 
     # Optimise the model
     try:
