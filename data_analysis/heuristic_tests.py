@@ -13,6 +13,7 @@ naive_max_heuristic_n5_file = "data_files/naive_heuristics/naive_n5_max_heuristi
 naive_min_heuristic_n5_file = "data_files/naive_heuristics/naive_n5_min_heuristic.csv"  # naive model,      n = 5, experiment_5_instances
 
 naive_no_heuristic_n10_file = "data_files/naive_heuristics/naive_n10_no_heuristic.csv"
+naive_max_heuristic_n10_file = "data_files/naive_heuristics/naive_n10_max_heuristic.csv"
 naive_min_heuristic_n10_file = "data_files/naive_heuristics/naive_n10_min_heuristic.csv"
 
 naive_no_heuristic_n5_csv = get_csv(naive_no_heuristic_n5_file)
@@ -20,25 +21,28 @@ naive_max_heuristic_n5_csv = get_csv(naive_max_heuristic_n5_file)
 naive_min_heuristic_n5_csv = get_csv(naive_min_heuristic_n5_file)
 
 naive_no_heuristic_n10_csv = get_csv(naive_no_heuristic_n10_file)
+naive_max_heuristic_n10_csv = get_csv(naive_max_heuristic_n10_file)
 naive_min_heuristic_n10_csv = get_csv(naive_min_heuristic_n10_file)
 
 
 def heuristic_tests():
     print("\n########################### Describe Naive Heuristics: ###########################")
-    print("No heuristics n = 5:", print_descriptive_statistics(naive_no_heuristic_n5_csv))
-    print("Min heuristics n = 5:", print_descriptive_statistics(naive_min_heuristic_n5_csv))
-    print("Max heuristics n = 5:", print_descriptive_statistics(naive_max_heuristic_n5_csv))
+    # print("No heuristics n = 5:", print_descriptive_statistics(naive_no_heuristic_n5_csv))
+    # print("Min heuristics n = 5:", print_descriptive_statistics(naive_min_heuristic_n5_csv))
+    # print("Max heuristics n = 5:", print_descriptive_statistics(naive_max_heuristic_n5_csv))
 
     print("No heuristics n = 10:", print_descriptive_statistics(naive_no_heuristic_n10_csv))
     print("Min heuristics n = 10:", print_descriptive_statistics(naive_min_heuristic_n10_csv))
+    print("Max heuristics n = 10:", print_descriptive_statistics(naive_max_heuristic_n10_csv))
 
 
     print("\n########################### Shapiro Wilk test optimised naive: ###########################")
-    shapiro_test(naive_no_heuristic_n5_csv)
-    shapiro_test(naive_min_heuristic_n5_csv)
-    shapiro_test(naive_max_heuristic_n5_csv)
+    # shapiro_test(naive_no_heuristic_n5_csv)
+    # shapiro_test(naive_min_heuristic_n5_csv)
+    # shapiro_test(naive_max_heuristic_n5_csv)
     shapiro_test(naive_no_heuristic_n10_csv)
     shapiro_test(naive_min_heuristic_n10_csv)
+    shapiro_test(naive_max_heuristic_n10_csv)
 
 
     print("\n########################### QQ plots: ###########################")
@@ -51,21 +55,23 @@ def heuristic_tests():
     print("Non-parametric")
 
     print("\n########################### Compare Variances: ###########################")
-    bartlett_test_3(naive_no_heuristic_n5_csv, naive_max_heuristic_n5_csv, naive_min_heuristic_n5_csv)
-    bartlett_test_2(naive_no_heuristic_n10_csv, naive_min_heuristic_n10_csv)
+    # bartlett_test_3(naive_no_heuristic_n5_csv, naive_max_heuristic_n5_csv, naive_min_heuristic_n5_csv)
+    bartlett_test_3(naive_no_heuristic_n10_csv, naive_min_heuristic_n10_csv, naive_max_heuristic_n10_csv)
     print("So variances differ")
 
-    print("\n########################### Friedman Chi-squared test n = 5: ###########################")
-    print(stats.friedmanchisquare(naive_no_heuristic_n5_csv['cpu time'], naive_min_heuristic_n5_csv['cpu time'],
-                                  naive_max_heuristic_n5_csv['cpu time']))
+    print("\n########################### Friedman Chi-squared test n = 10: ###########################")
+    print(stats.friedmanchisquare(naive_no_heuristic_n10_csv['cpu time'], naive_min_heuristic_n10_csv['cpu time'],
+                                  naive_max_heuristic_n10_csv['cpu time']))
     print("So there is a difference between the algorithms")
 
 
-    print("\n########################### Pair-wise Wilcoxon n = 5: ###########################")
+    # print("\n########################### Pair-wise Wilcoxon n = 5: ###########################")
     # print("None vs min:", print_wilcoxon_test(naive_no_heuristic_n5_csv, naive_min_heuristic_n5_csv))
-    print("None vs max:", print_wilcoxon_test(naive_no_heuristic_n5_csv, naive_max_heuristic_n5_csv, alternative='less'))
+    # print("None vs max:", print_wilcoxon_test(naive_no_heuristic_n5_csv, naive_max_heuristic_n5_csv, alternative='less'))
     # print("Min vs max:", print_wilcoxon_test(naive_min_heuristic_n5_csv, naive_max_heuristic_n5_csv, alternative='less'))
 
 
     print("\n########################### Pair-wise Wilcoxon n = 10: ###########################")
     print("None vs min:", print_wilcoxon_test(naive_no_heuristic_n10_csv, naive_min_heuristic_n10_csv, alternative='greater'))
+    print("None vs max:", print_wilcoxon_test(naive_no_heuristic_n10_csv, naive_max_heuristic_n10_csv, alternative='less'))
+    print("Min vs max:", print_wilcoxon_test(naive_min_heuristic_n10_csv, naive_max_heuristic_n10_csv, alternative='less'))

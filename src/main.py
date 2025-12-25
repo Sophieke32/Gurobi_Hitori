@@ -12,6 +12,8 @@ from src.pretty_print import pretty_print
 from src.solution_checker import run_solution_checker
 from src.write_results import get_results
 
+from src.duplicates_solver.helper_methods.find_duplicates import find_duplicates
+
 def read_file(root, file):
     with open(os.path.join(root, file), "r") as f:
         line = f.readline()
@@ -58,6 +60,13 @@ def write_infeasible(cpu_time, root, file):
 def main(root, file, model, experiment):
     n, board, number_of_covered_tiles, number_of_cycles = read_file(root, file)
 
+    # duplicates = find_duplicates(n, board)
+    #
+    # num_duplicates = 0
+    # for i in range(n):
+    #     for j in range(n):
+    #         if duplicates[i][j] != 0: num_duplicates += 1
+
     time_out = 10 # Number of seconds before it times out
 
     # Handle timeouts
@@ -68,6 +77,7 @@ def main(root, file, model, experiment):
             signal.alarm(time_out)
             start = time.process_time_ns()
             m, is_black = duplicates_solver(n, board)
+            # m, is_black, graph_time = duplicates_solver(n, board)
             end = time.process_time_ns()
             signal.alarm(0)
         elif model == "path":
@@ -89,7 +99,7 @@ def main(root, file, model, experiment):
             end = time.process_time_ns()
             signal.alarm(0)
 
-    except TimeoutError as exc:
+    except TimeoutError:
         print("Oopsie")
         cpu_time = 2 * time_out
         if experiment:

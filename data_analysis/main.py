@@ -38,6 +38,7 @@ naive_max_heuristic_n5_file = "data_files/naive_heuristics/naive_n5_max_heuristi
 naive_min_heuristic_n5_file = "data_files/naive_heuristics/naive_n5_min_heuristic.csv"  # naive model,      n = 5, experiment_5_instances
 
 naive_no_heuristic_n10_file = "data_files/naive_heuristics/naive_n10_no_heuristic.csv"
+naive_max_heuristic_n10_file = "data_files/naive_heuristics/naive_n10_max_heuristic.csv"
 naive_min_heuristic_n10_file = "data_files/naive_heuristics/naive_n10_min_heuristic.csv"
 
 naive_no_heuristic_n5_csv = get_csv(naive_no_heuristic_n5_file)
@@ -45,6 +46,7 @@ naive_max_heuristic_n5_csv = get_csv(naive_max_heuristic_n5_file)
 naive_min_heuristic_n5_csv = get_csv(naive_min_heuristic_n5_file)
 
 naive_no_heuristic_n10_csv = get_csv(naive_no_heuristic_n10_file)
+naive_max_heuristic_n10_csv = get_csv(naive_max_heuristic_n10_file)
 naive_min_heuristic_n10_csv = get_csv(naive_min_heuristic_n10_file)
 
 ### Path Checkers - New Optimised definition: uses minimisation
@@ -93,6 +95,10 @@ duplicates_most_blacks_csv = get_csv(duplicates_most_blacks_file)
 duplicates_pair_isolation_csv = get_csv(duplicates_pair_isolation_file)
 duplicates_least_whites_csv = get_csv(duplicates_least_whites_file)
 
+# Number of duplicates and graph time
+# number_of_duplicates_csv = get_csv("data_files/num_duplicates/duplicates_num_duplicates.csv")
+# graph_time_csv = get_csv("data_files/graph_time_share/duplicates_graph_time_share.csv")
+
 
 def main():
     #################################
@@ -104,11 +110,11 @@ def main():
     # optimisation_rules_tests()
     # hitori_properties_tests()
 
-    print(sum(optimised_naive_n10_csv['cpu time']))
-    print(sum(duplicates_n10_csv['cpu time']))
+    # print(sum(optimised_naive_n10_csv['cpu time']))
+    # print(sum(duplicates_n10_csv['cpu time']))
 
-    print("max naive", sum(sorted(optimised_naive_n10_csv['cpu time'])[990:]))
-    print("max duplicates", sorted(duplicates_n10_csv['cpu time']))
+    # print("max naive", sum(sorted(optimised_naive_n10_csv['cpu time'])[990:]))
+    # print("max duplicates", sorted(duplicates_n10_csv['cpu time']))
 
     #################################
     #         Generate graphs       #
@@ -116,7 +122,7 @@ def main():
 
     generate_for_poster = False
 
-    # save_survival_plot(optimised_naive_n10_csv, duplicates_n10_csv, generate_for_poster)
+    save_survival_plot(optimised_naive_n10_csv, duplicates_n10_csv, generate_for_poster)
 
     # save_plot_naive_vs_duplicates(duplicates_n5_csv, naive_min_heuristic_n5_csv, generate_for_poster)
     # save_scatter_cycles_vs_time(duplicates_n10_csv, generate_for_poster)

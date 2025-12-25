@@ -21,9 +21,11 @@ def save_survival_plot(csv1, csv2, generate_for_poster):
     # Define the fonts
     font = {'fontname': 'Nimbus Roman'}
     font_manager = fm.FontProperties(family='Nimbus Roman')
+    legend_font = {'family': 'Nimbus Roman'}
     if generate_for_poster:
         font = {'fontname': 'DejaVu Sans'}
         font_manager = fm.FontProperties(family='DejaVu Sans')
+        legend_font = {'family': 'DejaVu Sans'}
 
 
     fig, ax = plt.subplots(figsize=(6, 5))
@@ -32,7 +34,7 @@ def save_survival_plot(csv1, csv2, generate_for_poster):
     ax.plot(datapoints[0], x, label="Naive model", color='#49c3fb')
     ax.plot(datapoints[1], x, label="Duplicates model", color='red')
 
-    ax.legend()
+    ax.legend(prop=legend_font)
 
     ax.set_xscale('log')
 
