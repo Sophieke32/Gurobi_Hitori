@@ -1,6 +1,7 @@
 import gurobipy as gp
 from gurobipy import GRB
 
+from src.naive_solver.helper_methods.graph_path_checker import graph_path_checker_cycles
 from src.naive_solver.naive_constraints.naive_adjacent_constraint import naive_adjacent_constraint
 from src.naive_solver.naive_constraints.naive_unique_constraint import naive_unique_constraint
 from src.optimisation_rules.corner_check import corner_check
@@ -69,8 +70,8 @@ def optimised_naive_solver(n, board):
     white, black, grid = extract_solution(n, m, is_black)
     iteration = 0
 
-    while not path_checker(n, grid):
-    # while not graph_path_checker_cycles(n, grid):
+    # while not path_checker(n, grid):
+    while not graph_path_checker_cycles(n, grid):
     # while not graph_path_checker_connected_components(n, grid):
         add_illegal_solution(white, black, m, iteration)
         m.optimize()
