@@ -42,7 +42,7 @@ class NaiveSolver(Solver):
 
         #Add optimisations
         for redundant_constraint in self.redundant_constraints:
-            redundant_constraint.apply()
+            redundant_constraint.apply(board, is_covered, [], n, m)
 
         # Adjacency constraint
         naive_adjacent_constraint(n, is_covered, m)
@@ -69,5 +69,5 @@ class NaiveSolver(Solver):
             white, black, grid = extract_solution(n, m, is_covered)
             iteration += 1
 
-        pretty_print(m, is_covered, n, board)
+        # pretty_print(m, is_covered, n, board)
         return m, is_covered

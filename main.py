@@ -3,6 +3,8 @@ import os
 import datetime
 import csv
 
+import numpy as np
+
 from src.connected_checkers.bfs_connected_checker import BFSConnectedChecker
 from src.connected_checkers.connected_components_connected_checker import ConnectedComponentsConnectedChecker
 from src.connected_checkers.cycles_connected_checker import CyclesConnectedChecker
@@ -17,6 +19,7 @@ from src.heuristics.max_heuristic import MaxHeuristic
 from src.heuristics.min_heuristic import MinHeuristic
 from src.heuristics.no_heuristic import NoHeuristic
 from src.main import main
+from src.solvers.duplicates_solver.duplicates_solver import DuplicatesSolver
 from src.solvers.naive_solver.naive_solver import NaiveSolver
 
 
@@ -27,14 +30,21 @@ def test():
                              "least whites": LeastWhitesConstraint(), "most blacks": MostBlacksConstraint(),
                              "pair isolation": PairIsolationConstraint(), "sandwiches": SandwichesConstraint()}
     naive_solver = NaiveSolver("naive solver", [], connected_checkers["bfs"], heuristics["min"])
+    duplicates_solver = DuplicatesSolver("duplicates solver", [redundant_constraints["most blacks"]])
 
-
-    naive_solver.solve(5, [
+    naive_solver.solve(5, np.array([
         [1, 5, 5, 3, 1],
         [3, 2, 4, 3, 1],
         [5, 3, 1, 5, 2],
         [4, 5, 2, 5, 3],
-        [1, 1, 4, 2, 4]])
+        [1, 1, 4, 2, 4]]))
+
+    duplicates_solver.solve(5, np.array([
+        [1, 5, 5, 3, 1],
+        [3, 2, 4, 3, 1],
+        [5, 3, 1, 5, 2],
+        [4, 5, 2, 5, 3],
+        [1, 1, 4, 2, 4]]))
 
 
 if __name__ == "__main__":
