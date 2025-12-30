@@ -4,15 +4,30 @@ import datetime
 import csv
 
 from src.connected_checkers.bfs_connected_checker import BFSConnectedChecker
+from src.connected_checkers.connected_components_connected_checker import ConnectedComponentsConnectedChecker
+from src.connected_checkers.cycles_connected_checker import CyclesConnectedChecker
+from src.constraints.redundant_constraints.corner_check_constraint import CornerCheckConstraint
+from src.constraints.redundant_constraints.corner_close_constraint import CornerCloseConstraint
+from src.constraints.redundant_constraints.edge_pairs import EdgePairsConstraint
+from src.constraints.redundant_constraints.least_whites import LeastWhitesConstraint
+from src.constraints.redundant_constraints.most_blacks import MostBlacksConstraint
+from src.constraints.redundant_constraints.pair_isolation import PairIsolationConstraint
+from src.constraints.redundant_constraints.sandwiches import SandwichesConstraint
+from src.heuristics.max_heuristic import MaxHeuristic
 from src.heuristics.min_heuristic import MinHeuristic
+from src.heuristics.no_heuristic import NoHeuristic
 from src.main import main
 from src.solvers.naive_solver.naive_solver import NaiveSolver
 
 
 def test():
-    min_heuristic = MinHeuristic()
-    connected_checker = BFSConnectedChecker()
-    naive_solver = NaiveSolver("naive solver", [], connected_checker, min_heuristic)
+    heuristics = {"min": MinHeuristic(), "max": MaxHeuristic(), "no": NoHeuristic()}
+    connected_checkers = {"bfs": BFSConnectedChecker(), "cycles": CyclesConnectedChecker(), "cc": ConnectedComponentsConnectedChecker()}
+    redundant_constraints = {"cc": CornerCloseConstraint(), "cch": CornerCheckConstraint, "edge pairs": EdgePairsConstraint(),
+                             "least whites": LeastWhitesConstraint(), "most blacks": MostBlacksConstraint(),
+                             "pair isolation": PairIsolationConstraint(), "sandwiches": SandwichesConstraint()}
+    naive_solver = NaiveSolver("naive solver", [], connected_checkers["bfs"], heuristics["min"])
+
 
     naive_solver.solve(5, [
         [1, 5, 5, 3, 1],

@@ -1,7 +1,7 @@
 import gurobipy as gp
 from gurobipy import GRB
 
-from src.heuristics.abstract_heuristic import Heuristic
+from src.heuristics.heuristic import Heuristic
 
 
 class NoHeuristic(Heuristic):

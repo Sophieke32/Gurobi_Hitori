@@ -1,6 +1,6 @@
 import networkx as nx
 
-from src.connected_checkers.abstract_connected_checker import ConnectedChecker
+from src.connected_checkers.connected_checker import ConnectedChecker
 
 
 class ConnectedComponentsConnectedChecker(ConnectedChecker):
