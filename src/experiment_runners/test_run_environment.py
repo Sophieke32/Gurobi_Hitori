@@ -1,29 +1,21 @@
-# import csv
-# import os
-# from datetime import datetime
-#
-# from src.experiment_runners.run_environment import RunEnvironment
-#
-#
-# class TestRunEnvironment(RunEnvironment):
-#     solver = None
-#     writer = None
-#
-#     def __init__(self, solver):
-#         self.solver = solver
-#
-#         with open(os.path.join("experiments", self.solver.name,
-#                      datetime.now().strftime("%Y-%m-%d_%H-%M-%S"), ".csv"), "w",
-#         newline = '') as csvfile:
-#             self.writer = csv.DictWriter(csvfile,
-#                                     fieldnames=["instance", "n", "cpu_time (s)",
-#                                                 "solution found"])
-#             self.writer.writeheader()
-#
-#     def run_puzzle(self, file):
-#         n, number_of_cycles, number_of_covered_squares, time, solution = self.solver.solve(self.solver.)
-#
-#         # pretty_print(m, is_covered, n, board)
-#         self.writer.writerow({"instance": file, "n": n, "cpu_time (s)": time,
-#             "solution found": solution})
-#
+from src.check_solution import check_solution
+from src.experiment_runners.run_environment import RunEnvironment
+from src.pretty_print import path_pretty_print, pretty_print
+from src.solvers.naive_solver.helper_methods.extract_solution import extract_solution
+
+
+class TestRunEnvironment(RunEnvironment):
+    solver = None
+    time_out = 10
+
+    def __init__(self, solver, time_out=10):
+        self.solver = solver
+        self.time_out = time_out
+
+    def run_puzzle(self, n, board, file, **kwargs):
+        m, is_covered, path = self.solver.solve(n, board)
+
+        path_pretty_print(m, is_covered, path, n, board)
+
+        uncovered, covered, grid = extract_solution(n, m, is_covered)
+        print("Solution validity:", check_solution(board, grid, n))

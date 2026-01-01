@@ -19,6 +19,7 @@ from src.constraints.redundant_constraints.set_unique_values import SetUniqueVal
 from src.experiment_runners.experiment_run_environment import ExperimentRunEnvironment
 from src.experiment_runners.preprocess_run_environment import PreprocessRunEnvironment
 from src.experiment_runners.run_environment import RunEnvironment
+from src.experiment_runners.test_run_environment import TestRunEnvironment
 from src.heuristics.max_heuristic import MaxHeuristic
 from src.heuristics.min_heuristic import MinHeuristic
 from src.heuristics.no_heuristic import NoHeuristic
@@ -26,6 +27,7 @@ from src.main import main
 from src.read_file import read_file
 from src.solvers.duplicates_solver.duplicates_solver import DuplicatesSolver
 from src.solvers.naive_solver.naive_solver import NaiveSolver
+from src.solvers.path_solver.path_solver import PathSolver
 from src.solvers.preprocessing_solver.preprocessing_solver import PreprocessingSolver
 
 #############################
@@ -186,6 +188,17 @@ if __name__ == "__main__":
         print("Solving all puzzles in file:", directory_name)
         print("Using model:", model)
         if time: print("Storing time!")
+
+    if model == "path":
+        solver = PathSolver("path solver", [])
+        env = TestRunEnvironment(solver)
+
+        root = "problem_instances/custom_instances/experiment_10_instances"
+        file = "0a1e3f7c-02b3-4b5f-a923-3d6d9fde1c01.singles"
+
+        n, board, number_of_covered_tiles, number_of_cycles = read_file(root, file)
+        env.run_puzzle(n, board, "")
+
 
         # i = 0
     #

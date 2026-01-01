@@ -1,11 +1,10 @@
 import gurobipy as gp
 from gurobipy import GRB
 
-from src.constraints.duplicates_adjacent_constraint import duplicates_adjacent_constraint
+from src.constraints.duplicates_connected_constraint import duplicates_connected_constraint
 from src.constraints.duplicates_path_constraint import duplicates_path_constraint
 from src.constraints.duplicates_unique_constraint import duplicates_unique_constraint
 from src.constraints.redundant_constraints.redundant_constraint import RedundantConstraint
-from src.pretty_print import pretty_print
 from src.solvers.duplicates_solver.helper_methods.create_duplicates_graph import create_graph
 from src.solvers.duplicates_solver.helper_methods.find_duplicates import find_duplicates
 from src.solvers.solver import Solver
@@ -49,12 +48,12 @@ class DuplicatesSolver(Solver):
             redundant_constraint.apply(board, is_covered, duplicates, n, m, has_duplicates=True)
 
         # Adjacency constraint
-        duplicates_adjacent_constraint(n, is_covered, m, duplicates)
+        duplicates_connected_constraint(n, is_covered, m, duplicates)
 
         # Unique constraint
         duplicates_unique_constraint(n, is_covered, m, duplicates)
 
-        # Path constraint
+        # Connected constraint
         g = create_graph(n, duplicates)
         # number_of_cycles = duplicates_path_constraint(is_black, m, g)
         duplicates_path_constraint(is_covered, m, g)
@@ -65,5 +64,4 @@ class DuplicatesSolver(Solver):
         except GRB.ERROR_OUT_OF_MEMORY:
             print("Out of Memory")
 
-        # pretty_print(m, is_covered, n, board)
         return m, is_covered

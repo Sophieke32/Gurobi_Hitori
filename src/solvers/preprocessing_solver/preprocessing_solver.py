@@ -1,7 +1,7 @@
 import gurobipy as gp
 from gurobipy import GRB
 
-from src.constraints.duplicates_adjacent_constraint import duplicates_adjacent_constraint
+from src.constraints.duplicates_connected_constraint import duplicates_connected_constraint
 from src.constraints.duplicates_unique_constraint import duplicates_unique_constraint
 from src.constraints.duplicates_path_constraint import duplicates_path_constraint
 
@@ -48,7 +48,7 @@ class PreprocessingSolver(Solver):
         m.update()
 
         # Adjacency constraint
-        duplicates_adjacent_constraint(n, is_covered, m, duplicates)
+        duplicates_connected_constraint(n, is_covered, m, duplicates)
 
         # Unique constraint
         duplicates_unique_constraint(n, is_covered, m, duplicates)
