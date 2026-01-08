@@ -4,39 +4,38 @@ import signal
 import numpy as np
 from gurobipy import GRB
 
-from src.duplicates_solver.duplicates_solver import duplicates_solver
-from src.naive_solver.naive_solver import naive_solver
-from src.optimised_naive_solver.optimised_naive_solver import optimised_naive_solver
-from src.path_solver.path_solver import path_solver
+from src.solvers.duplicates_solver import duplicates_solver
+from src.solvers.naive_solver import naive_solver
+# from src.optimised_naive_solver.optimised_naive_solver import optimised_naive_solver
+# from src.path_solver.path_solver import path_solver
 from src.pretty_print import pretty_print
+from src.read_file import read_file
 from src.solution_checker import run_solution_checker
 from src.write_results import get_results
 
-from src.duplicates_solver.helper_methods.find_duplicates import find_duplicates
-
-def read_file(root, file):
-    with open(os.path.join(root, file), "r") as f:
-        line = f.readline()
-        while type(int(line)) != int: continue
-        n = int(line)
-
-        board = np.zeros((n,n), dtype=int)
-
-        f.readline()
-
-        for i in range(n):
-            board[i] = [int(number) for number in f.readline().split()]
-
-        # Skip to the relevant lines
-        f.readline()
-        f.readline()
-        f.readline()
-
-        # print(f.readline().replace("# Computed in ", "").replace(" nanoseconds", ""))
-        number_of_covered_tiles = f.readline().replace("# Number of covered squares: ", "").replace("\n", "")
-        number_of_cycles = f.readline().replace("# Number of cycles: ", "").replace("\n", "")
-
-        return n, board, number_of_covered_tiles, number_of_cycles
+# def read_file(root, file):
+#     with open(os.path.join(root, file), "r") as f:
+#         line = f.readline()
+#         while type(int(line)) != int: continue
+#         n = int(line)
+#
+#         board = np.zeros((n,n), dtype=int)
+#
+#         f.readline()
+#
+#         for i in range(n):
+#             board[i] = [int(number) for number in f.readline().split()]
+#
+#         # Skip to the relevant lines
+#         f.readline()
+#         f.readline()
+#         f.readline()
+#
+#         # print(f.readline().replace("# Computed in ", "").replace(" nanoseconds", ""))
+#         number_of_covered_tiles = f.readline().replace("# Number of covered squares: ", "").replace("\n", "")
+#         number_of_cycles = f.readline().replace("# Number of cycles: ", "").replace("\n", "")
+#
+#         return n, board, number_of_covered_tiles, number_of_cycles
 
 def write_to_file(m, is_black, n, board, cpu_time, root, file):
     with open(os.path.join(root + "_solutions", file + "sol"), "w") as f:
@@ -80,18 +79,18 @@ def main(root, file, model, experiment):
             # m, is_black, graph_time = duplicates_solver(n, board)
             end = time.process_time_ns()
             signal.alarm(0)
-        elif model == "path":
-            signal.alarm(time_out)
-            start = time.process_time_ns()
-            m, is_black = path_solver(n, board)
-            end = time.process_time_ns()
-            signal.alarm(0)
-        elif model == "optimised_naive":
-            signal.alarm(time_out)
-            start = time.process_time_ns()
-            m, is_black = optimised_naive_solver(n, board)
-            end = time.process_time_ns()
-            signal.alarm(0)
+        # elif model == "path":
+        #     signal.alarm(time_out)
+        #     start = time.process_time_ns()
+        #     m, is_black = path_solver(n, board)
+        #     end = time.process_time_ns()
+        #     signal.alarm(0)
+        # elif model == "optimised_naive":
+        #     signal.alarm(time_out)
+        #     start = time.process_time_ns()
+        #     m, is_black = optimised_naive_solver(n, board)
+        #     end = time.process_time_ns()
+        #     signal.alarm(0)
         else:
             signal.alarm(time_out)
             start = time.process_time_ns()

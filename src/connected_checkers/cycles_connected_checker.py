@@ -1,0 +1,58 @@
+import networkx as nx
+
+from src.connected_checkers.connected_checker import ConnectedChecker
+
+
+class CyclesConnectedChecker(ConnectedChecker):
+    def check(self, n, grid):
+        g = nx.Graph()
+        g.add_node("BORDER")
+
+        # Add all 1's in grid to the graph
+        for i in range(n):
+            for j in range(n):
+                if grid[i][j] == 1: g.add_node((i, j))
+
+        for i in range(n):
+            if grid[i][0] == 1:
+                g.add_edge("BORDER", (i, 0))
+            if grid[i][-1] == 1:
+                g.add_edge("BORDER", (i, n - 1))
+
+        for i in range(1, n - 1):
+            if grid[0][i] == 1:
+                g.add_edge("BORDER", (0, i))
+            if grid[-1][i] == 1:
+                g.add_edge("BORDER", (n - 1, i))
+
+        for i in range(1, n - 1):
+            for j in range(1, n - 1):
+                if grid[i][j] == 1:
+                    if grid[i - 1][j - 1] == 1:
+                        g.add_edge((i, j), (i - 1, j - 1))
+                    if grid[i + 1][j - 1] == 1:
+                        g.add_edge((i, j), (i + 1, j - 1))
+                    if grid[i - 1][j + 1] == 1:
+                        g.add_edge((i, j), (i - 1, j + 1))
+                    if grid[i + 1][j + 1] == 1:
+                        g.add_edge((i, j), (i + 1, j + 1))
+
+        # if the two squares next to a corner-square are duplicates, connect them
+        if grid[0][1] == 1 and grid[1][0] == 1:
+            g.add_edge((0, 1), (1, 0))
+
+        if grid[0][n - 2] == 1 and grid[1][n - 1] == 1:
+            g.add_edge((0, n - 2), (1, n - 1))
+
+        if grid[n - 2][0] == 1 and grid[n - 1][1] == 1:
+            g.add_edge((n - 2, 0), (n - 1, 1))
+
+        if grid[n - 2][n - 1] == 1 and grid[n - 1][n - 2] == 1:
+            g.add_edge((n - 2, n - 1), (n - 1, n - 2))
+
+        # If there is a cycle in this graph: connected constraint is not satisfied
+        try:
+            nx.find_cycle(g)
+        except nx.NetworkXNoCycle:
+            return True
+        return False

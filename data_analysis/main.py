@@ -107,7 +107,7 @@ def main():
     # heuristic_tests()
     # connected_algorithms_tests()
     # naive_vs_duplicates_test()
-    # optimisation_rules_tests()
+    optimisation_rules_tests()
     # hitori_properties_tests()
 
     # print(sum(optimised_naive_n10_csv['cpu time']))
@@ -122,7 +122,7 @@ def main():
 
     generate_for_poster = False
 
-    save_survival_plot(optimised_naive_n10_csv, duplicates_n10_csv, generate_for_poster)
+    # save_survival_plot(optimised_naive_n10_csv, duplicates_n10_csv, generate_for_poster)
 
     # save_plot_naive_vs_duplicates(duplicates_n5_csv, naive_min_heuristic_n5_csv, generate_for_poster)
     # save_scatter_cycles_vs_time(duplicates_n10_csv, generate_for_poster)
@@ -136,7 +136,7 @@ def main():
     #       Print Descriptive       #
     #################################
 
-    descriptive_statistics()
+    # descriptive_statistics()
 
     #################################
     #   Print comparative studies   #
@@ -153,13 +153,13 @@ def main():
 
 def descriptive_statistics():
     ### Base Cases
-    # print("\n############################## Describe base cases: ##############################")
+    print("\n############################## Describe base cases: ##############################")
     # # print("Duplicates n = 5", print_descriptive_statistics(duplicates_n5_csv))
     # # print("Naive n = 5", print_descriptive_statistics(naive_n5_csv))
     # # print("Optimised naive n = 5", print_descriptive_statistics(optimised_naive_n5_csv))
-    print("Duplicates n = 10", print_descriptive_statistics(duplicates_n10_csv))
+    # print("Duplicates n = 10", print_descriptive_statistics(duplicates_n10_csv))
     # print("Naive n = 10", print_descriptive_statistics(naive_n10_csv))
-    print("Optimised naive n = 10", print_descriptive_statistics(optimised_naive_n10_csv))
+    # print("Optimised naive n = 10", print_descriptive_statistics(optimised_naive_n10_csv))
 
     ### Naive Heuristics
     # print("\n########################### Describe Naive Heuristics: ###########################")
