@@ -15,8 +15,8 @@ class ExperimentRunEnvironment(RunEnvironment):
     def __init__(self, solver, time_out=10):
         self.solver = solver
         self.time_out = time_out
-        self.path = os.path.join("experiments", self.solver.name,
-                     datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".csv")
+        self.path = os.path.join("experiments",
+                     self.solver.name + ".csv")
 
         with open(self.path, "w", newline = '') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=["instance", "n", "cpu_time (s)", "duplicates time (s)",
@@ -30,6 +30,8 @@ class ExperimentRunEnvironment(RunEnvironment):
             writer.writeheader()
 
     def run_puzzle(self, n, board, file, **kwargs):
+
+        signal.signal(signal.SIGALRM, handle_timeout)
 
         try:
             signal.alarm(self.time_out)
