@@ -15,6 +15,8 @@ class SandwichesConstraint(RedundantConstraint):
     # When it finds such a set of tiles it sets y to 0.
     # if y == x then it also immediately sets the x-tiles to 1
     def apply(self, board, is_covered, duplicates, n, m, has_duplicates=False):
+        pairs = 0
+        triples = 0
 
         index_iter = iter(range(n - 2))
 
@@ -22,6 +24,7 @@ class SandwichesConstraint(RedundantConstraint):
             for i in index_iter:
                 if board[i][j] == board[i + 2][j]:
                     if board[i][j] == board[i + 1][j]:
+                        triples += 1
 
                         m.addConstr(is_covered[i][j] == 1)
                         if type(is_covered[i + 1][j]) != int: m.addConstr(is_covered[i + 1][j] == 0)
@@ -33,6 +36,7 @@ class SandwichesConstraint(RedundantConstraint):
                             duplicates[i][j] = 0
                             duplicates[i + 2][j] = 0
                     else:
+                        pairs += 1
                         if type(is_covered[i + 1][j]) != int: m.addConstr(is_covered[i + 1][j] == 0)
 
                     # Skip the next two squares
@@ -44,6 +48,7 @@ class SandwichesConstraint(RedundantConstraint):
             for i in range(n):
                 if board[i][j] == board[i][j + 2]:
                     if board[i][j] == board[i][j + 1]:
+                        triples += 1
 
                         m.addConstr(is_covered[i][j] == 1)
                         if type(is_covered[i][j + 1]) != int: m.addConstr(is_covered[i][j + 1] == 0)
@@ -55,7 +60,10 @@ class SandwichesConstraint(RedundantConstraint):
                             duplicates[i][j] = 0
                             duplicates[i][j + 2] = 0
                     else:
+                        pairs += 1
                         if type(is_covered[i][j + 1]) != int: m.addConstr(is_covered[i][j + 1] == 0)
 
                     # Skip the next two squares
                     next(islice(index_iter, 1, 2), 0)
+
+        return pairs, triples

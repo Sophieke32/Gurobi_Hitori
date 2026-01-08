@@ -36,11 +36,11 @@ from src.solvers.preprocessing_solver.preprocessing_solver import PreprocessingS
 
 heuristics = {"min": MinHeuristic(), "max": MaxHeuristic(), "no": NoHeuristic()}
 connected_checkers = {"bfs": BFSConnectedChecker(), "cycles": CyclesConnectedChecker(), "cc": ConnectedComponentsConnectedChecker()}
-redundant_constraints = {"cch": CornerCheckConstraint, "edge pairs": EdgePairsConstraint(),
+redundant_constraints = {"cch": CornerCheckConstraint(), "edge pairs": EdgePairsConstraint(),
     "least whites": LeastWhitesConstraint(), "most blacks": MostBlacksConstraint(),
     "pair isolation": PairIsolationConstraint(), "sandwiches": SandwichesConstraint()}
 naive_only_redundant_constraints = {"cc": CornerCloseConstraint()}
-duplicates_only_redundant_constraints = {"set unique values": SetUniqueValuesConstraint()}
+# duplicates_only_redundant_constraints = {"set unique values": SetUniqueValuesConstraint()}
 
 
 def collect_all_data(directory_name):
@@ -175,7 +175,7 @@ if __name__ == "__main__":
             solver = DuplicatesSolver("duplicates_solver", [])
         elif model == "path":
             print("Running the path model")
-            solver = PathSolver("path_solver", [])
+            solver = PathSolver("path_solver", [SandwichesConstraint()])
         else:
             print("Running the naive model")
             solver = NaiveSolver("naive_solver", [])

@@ -11,12 +11,16 @@ class CornerCheckConstraint(RedundantConstraint):
     # and if there is, automatically assigns (0,0) and (1,1) to covered and the
     # other two to uncovered
     def apply(self, board, is_covered, duplicates, n, m, has_duplicates=False):
+        occurrences = 0
         if not has_duplicates or has_duplicates and duplicates[0][0] != 0 and duplicates[-1][0] != 0 and \
                     duplicates[0][-1] != 0 and duplicates[-1][-1] != 0:
-            self.top_left_corner(board, is_covered, duplicates, m, has_duplicates=has_duplicates)
-            self.top_right_corner(board, is_covered, duplicates, m, has_duplicates=has_duplicates)
-            self.bottom_left_corner(board, is_covered, duplicates, m, has_duplicates=has_duplicates)
-            self.bottom_right_corner(board, is_covered, duplicates, m, has_duplicates=has_duplicates)
+
+            occurrences += self.top_left_corner(board, is_covered, duplicates, m, has_duplicates=has_duplicates)
+            occurrences += self.top_right_corner(board, is_covered, duplicates, m, has_duplicates=has_duplicates)
+            occurrences += self.bottom_left_corner(board, is_covered, duplicates, m, has_duplicates=has_duplicates)
+            occurrences += self.bottom_right_corner(board, is_covered, duplicates, m, has_duplicates=has_duplicates)
+
+        return occurrences
 
     @staticmethod
     def top_left_corner(board, is_covered, duplicates, m, has_duplicates=False):
@@ -37,6 +41,9 @@ class CornerCheckConstraint(RedundantConstraint):
                 # in other constraints
                 duplicates[0][0] = 0
                 duplicates[1][1] = 0
+
+            return 1
+        else: return 0
 
     @staticmethod
     def top_right_corner(board, is_covered, duplicates, m, has_duplicates=False):
@@ -59,6 +66,9 @@ class CornerCheckConstraint(RedundantConstraint):
                 duplicates[-1][0] = 0
                 duplicates[-2][1] = 0
 
+            return 1
+        else: return 0
+
     @staticmethod
     def bottom_left_corner(board, is_covered, duplicates, m, has_duplicates=False):
         if (board[0][-1] == board[1][-1] and board[0][-2] == board[1][-2]
@@ -80,6 +90,9 @@ class CornerCheckConstraint(RedundantConstraint):
                 duplicates[0][-1] = 0
                 duplicates[1][-2] = 0
 
+            return 1
+        else: return 0
+
     @staticmethod
     def bottom_right_corner(board, is_covered, duplicates, m, has_duplicates=False):
         if (board[-1][-1] == board[-2][-1] and board[-1][-2] == board[-2][-2]
@@ -100,3 +113,6 @@ class CornerCheckConstraint(RedundantConstraint):
                 # in other constraints
                 duplicates[0][0] = 0
                 duplicates[1][1] = 0
+
+            return 1
+        else: return 0

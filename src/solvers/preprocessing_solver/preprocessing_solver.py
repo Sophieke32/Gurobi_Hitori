@@ -4,8 +4,12 @@ from gurobipy import GRB
 from src.constraints.duplicates_connected_constraint import duplicates_connected_constraint
 from src.constraints.duplicates_unique_constraint import duplicates_unique_constraint
 from src.constraints.duplicates_path_constraint import duplicates_path_constraint
+from src.constraints.redundant_constraints.corner_check_constraint import CornerCheckConstraint
+from src.constraints.redundant_constraints.edge_pairs import EdgePairsConstraint
+from src.constraints.redundant_constraints.pair_isolation import PairIsolationConstraint
 
 from src.constraints.redundant_constraints.redundant_constraint import RedundantConstraint
+from src.constraints.redundant_constraints.sandwiches import SandwichesConstraint
 from src.solvers.naive_solver.helper_methods.extract_solution import extract_solution
 from src.solvers.preprocessing_solver.helper_methods.create_duplicates_graph import create_graph
 from src.solvers.preprocessing_solver.helper_methods.find_duplicates import find_duplicates
@@ -47,6 +51,12 @@ class PreprocessingSolver(Solver):
             is_covered.append(new_list)
         m.update()
 
+        # add redundant constraints and gather data from it
+        corner_checks = CornerCheckConstraint().apply(board, is_covered, duplicates, n, m, has_duplicates=True)
+        edge_pairs = EdgePairsConstraint().apply(board, is_covered, duplicates, n, m, has_duplicates=True)
+        pair_isolations = PairIsolationConstraint().apply(board, is_covered, duplicates, n, m, has_duplicates=True)
+        pairs, triples = SandwichesConstraint().apply(board, is_covered, duplicates, n, m, has_duplicates=True)
+
         # Adjacency constraint
         duplicates_connected_constraint(n, is_covered, m, duplicates)
 
@@ -69,4 +79,15 @@ class PreprocessingSolver(Solver):
             for j in range(n):
                 if duplicates[i][j] != 0: number_of_duplicates += 1
 
-        return number_of_cycles, len(black), number_of_duplicates
+        data = {
+            "number_of_covered_tiles": len(black),
+            "number_of_duplicates": number_of_duplicates,
+            "number_of_cycles": number_of_cycles,
+            "corner_check_hits": corner_checks,
+            "edge_pairs_hits": edge_pairs,
+            "pairs_isolation_hits": pair_isolations,
+            "sandwich_pairs_hits": pairs,
+            "sandwich_triple_hits": triples
+        }
+
+        return data
