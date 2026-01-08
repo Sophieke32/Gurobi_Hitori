@@ -9,5 +9,5 @@ class RunEnvironment(ABC):
     writer = None
 
     @abstractmethod
-    def run_puzzle(self, n, board, file):
+    def run_puzzle(self, n, board, file, **kwargs):
         pass

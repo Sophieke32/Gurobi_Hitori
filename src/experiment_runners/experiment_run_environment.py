@@ -20,7 +20,11 @@ class ExperimentRunEnvironment(RunEnvironment):
 
         with open(self.path, "w", newline = '') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=["instance", "n", "cpu_time (s)", "number_of_cycles",
-                                                         "number_of_duplicates", "number_of_covered_tiles"])
+                                                         "number_of_duplicates", "number_of_covered_tiles",
+                                                         "corner_check_hits", "edge_pairs_hits",
+                                                         "pairs_isolation_hits", "sandwich_pairs_hits",
+                                                         "sandwich_triple_hits"
+                                                         ])
             writer.writeheader()
 
     def run_puzzle(self, n, board, file, **kwargs):
@@ -43,11 +47,21 @@ class ExperimentRunEnvironment(RunEnvironment):
         with open(self.path, "a", newline = '') as csvfile:
             self.writer = csv.DictWriter(csvfile,
                                     fieldnames=["instance", "n", "cpu_time (s)", "number_of_cycles",
-                                                         "number_of_duplicates", "number_of_covered_tiles"])
+                                                "number_of_duplicates", "number_of_covered_tiles",
+                                                "corner_check_hits", "edge_pairs_hits",
+                                                "pairs_isolation_hits", "sandwich_pairs_hits",
+                                                "sandwich_triple_hits"
+                                                ])
             self.writer.writerow({"instance": file, "n": n, "cpu_time (s)": cpu_time,
-                                  "number_of_cycles": kwargs["number_of_cycles"],
-                                  "number_of_duplicates": kwargs["number_of_duplicates"],
-                                  "number_of_covered_tiles": kwargs["number_of_covered_tiles"]})
+                                  "number_of_cycles": kwargs["data"]["number_of_cycles"],
+                                  "number_of_duplicates": kwargs["data"]["number_of_duplicates"],
+                                  "number_of_covered_tiles": kwargs["data"]["number_of_covered_tiles"],
+                                  "corner_check_hits": kwargs["data"]["corner_check_hits"],
+                                  "edge_pairs_hits": kwargs["data"]["edge_pairs_hits"],
+                                  "pairs_isolation_hits": kwargs["data"]["pair_isolation_hits"],
+                                  "sandwich_pairs_hits": kwargs["data"]["sandwich_pairs_hits"],
+                                  "sandwich_triple_hits": kwargs["data"]["sandwich_triple_hits"]
+                                  })
 
         return cpu_time
 

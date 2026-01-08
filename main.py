@@ -86,7 +86,7 @@ def collect_all_data(directory_name):
         for file in files:
             if file.endswith(".singles"):
 
-                n, board, number_of_covered_tiles, number_of_cycles = read_file(root, file)
+                n, board, data = read_file(root, file)
 
                 for environment in run_environments:
                     cpu_time = environment.run_puzzle(n, board, file)
@@ -103,11 +103,11 @@ def run_preprocess(directory_name):
         for file in files:
             if file.endswith(".singles"):
 
-                n, board, number_of_covered_tiles, number_of_cycles = read_file(root, file)
+                n, board, data = read_file(root, file)
 
                 cpu_time = environment.run_puzzle(n, board, file)
 
-                print(i, n, cpu_time, environment.solver.name)
+                print(i, n, environment.solver.name)
                 i += 1
         print(root)
 
@@ -168,7 +168,6 @@ if __name__ == "__main__":
         run_preprocess(directory_name)
     else:
         print("Solving all puzzles in file:", directory_name)
-        print("Using model:", model)
 
         if model == "duplicates":
             print("Running the duplicates model")
@@ -178,7 +177,7 @@ if __name__ == "__main__":
             solver = PathSolver("path_solver", [SandwichesConstraint()])
         else:
             print("Running the naive model")
-            solver = NaiveSolver("naive_solver", [])
+            solver = NaiveSolver("naive_solver", [], BFSConnectedChecker(), MinHeuristic())
 
         if time:
             print("Running in the Experiment Run Environment")
@@ -195,9 +194,11 @@ if __name__ == "__main__":
             for file in files:
                 if file.endswith(".singles"):
 
-                    n, board, number_of_covered_tiles, number_of_cycles = read_file(root, file)
+                    n, board, data = read_file(root, file)
 
-                    cpu_time = environment.run_puzzle(n, board, file)
+                    print(data)
+
+                    cpu_time = environment.run_puzzle(n, board, file, data=data)
 
                     print(i, n, cpu_time, environment.solver.name)
                     i += 1

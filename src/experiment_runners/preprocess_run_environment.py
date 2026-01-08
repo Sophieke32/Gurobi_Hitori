@@ -2,7 +2,6 @@ import os
 
 from src.experiment_runners.run_environment import RunEnvironment
 
-
 class PreprocessRunEnvironment(RunEnvironment):
     solver = None
     time_out = 10
@@ -17,7 +16,6 @@ class PreprocessRunEnvironment(RunEnvironment):
     def run_puzzle(self, n, board, file, **kwargs):
 
         data = self.solver.solve(n, board)
-        # number_of_cycles, number_of_covered_tiles, number_of_non_uniques = self.solver.solve(n, board)
 
         # Rewrite the file
         lines = []
