@@ -1,3 +1,5 @@
+import time
+
 import gurobipy as gp
 from gurobipy import GRB
 
@@ -44,8 +46,11 @@ class DuplicatesSolver(Solver):
         m.update()
 
         #Add optimisations
+        t1 = time.process_time_ns()
         for redundant_constraint in self.redundant_constraints:
-            redundant_constraint.apply(board, is_covered, duplicates, n, m, has_duplicates=True)
+            redundant_constraint.apply(board, is_covered, [], n, m)
+
+        time_spent_on_optimisations = (time.process_time_ns() - t1) / 1000000000
 
         # Adjacency constraint
         duplicates_connected_constraint(n, is_covered, m, duplicates)
@@ -64,4 +69,4 @@ class DuplicatesSolver(Solver):
         except GRB.ERROR_OUT_OF_MEMORY:
             print("Out of Memory")
 
-        return m, is_covered
+        return m, is_covered, time_spent_on_optimisations

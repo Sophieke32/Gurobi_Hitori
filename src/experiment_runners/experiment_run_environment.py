@@ -20,7 +20,8 @@ class ExperimentRunEnvironment(RunEnvironment):
 
         with open(self.path, "w", newline = '') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=["instance", "n", "cpu_time (s)", "duplicates time (s)",
-                                                         "graph time (s)","number_of_cycles",
+                                                         "graph time (s)", "time spent on optimisations (s)",
+                                                         "number_of_cycles",
                                                          "number_of_duplicates", "number_of_covered_tiles",
                                                          "corner_check_hits", "edge_pairs_hits",
                                                          "pairs_isolation_hits", "sandwich_pairs_hits",
@@ -34,7 +35,7 @@ class ExperimentRunEnvironment(RunEnvironment):
             signal.alarm(self.time_out)
             start = time.process_time_ns()
 
-            self.solver.solve(n, board)
+            m, is_covered, time_spent_on_optimisations = self.solver.solve(n, board)
 
             end = time.process_time_ns()
             signal.alarm(0)
@@ -44,19 +45,23 @@ class ExperimentRunEnvironment(RunEnvironment):
         except TimeoutError:
             print("Experiment timed out")
             cpu_time = 2 * self.time_out
+            time_spent_on_optimisations = 0
 
         with open(self.path, "a", newline = '') as csvfile:
             self.writer = csv.DictWriter(csvfile,
                                     fieldnames=["instance", "n", "cpu_time (s)", "duplicates time (s)",
-                                                "graph time (s)","number_of_cycles",
+                                                "graph time (s)", "time spent on optimisations (s)",
+                                                "number_of_cycles",
                                                 "number_of_duplicates", "number_of_covered_tiles",
                                                 "corner_check_hits", "edge_pairs_hits",
                                                 "pairs_isolation_hits", "sandwich_pairs_hits",
                                                 "sandwich_triple_hits",
                                                 ])
+
             self.writer.writerow({"instance": file, "n": n, "cpu_time (s)": cpu_time,
                                   "duplicates time (s)": kwargs["data"]["duplicates_time"],
                                   "graph time (s)": kwargs["data"]["graph_time"],
+                                  "time spent on optimisations (s)": time_spent_on_optimisations,
                                   "number_of_cycles": kwargs["data"]["number_of_cycles"],
                                   "number_of_duplicates": kwargs["data"]["number_of_duplicates"],
                                   "number_of_covered_tiles": kwargs["data"]["number_of_covered_tiles"],

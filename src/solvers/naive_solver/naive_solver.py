@@ -1,3 +1,5 @@
+import time
+
 import gurobipy as gp
 from gurobipy import GRB
 
@@ -40,8 +42,11 @@ class NaiveSolver(Solver):
         m.update()
 
         #Add optimisations
+        t1 = time.process_time_ns()
         for redundant_constraint in self.redundant_constraints:
             redundant_constraint.apply(board, is_covered, [], n, m)
+
+        time_spent_on_optimisations = (time.process_time_ns() - t1) / 1000000000
 
         # Adjacency constraint
         naive_adjacent_constraint(n, is_covered, m)
@@ -69,4 +74,4 @@ class NaiveSolver(Solver):
             iteration += 1
 
         # pretty_print(m, is_covered, n, board)
-        return m, is_covered
+        return m, is_covered, time_spent_on_optimisations
