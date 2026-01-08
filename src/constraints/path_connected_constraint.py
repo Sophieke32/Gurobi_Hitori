@@ -9,7 +9,7 @@ def path_connected_constraint(n, is_covered, m):
     for i in range(n):
         new_list = list()
         for j in range(n):
-            new_list.append(m.addVar(vtype=GRB.BINARY, name=f'in_path {i}_{j}'))
+            new_list.append(m.addVar(vtype=GRB.BINARY, name=f'in_path_{i}_{j}'))
         path.append(new_list)
     m.update()
 
@@ -57,19 +57,28 @@ def path_connected_constraint(n, is_covered, m):
 
 
     for i in range(1, n-1):
-        m.addConstr(path[i][0] <= path[i-1][0] + path[i][1] + path[i+1][0])
-        m.addConstr(path[i][n-1] <= path[i-1][n-1] + path[i][n-2] + path[i+1][n-1])
+        m.addConstr(path[i][0] <= 0)
+        m.addConstr(path[i][n-1] <= 0)
+        # m.addConstr(path[i][0] <= path[i-1][0] + path[i][1] + path[i+1][0])
+        # m.addConstr(path[i][n-1] <= path[i-1][n-1] + path[i][n-2] + path[i+1][n-1])
 
     for j in range(1, n-1):
+        # m.addConstr(path[0][j] <= 0)
+        m.addConstr(path[-1][j] <= 0)
         m.addConstr(path[0][j] <= path[0][j-1] + path[1][j] + path[0][j+1])
-        m.addConstr(path[n-1][j] <= path[n-1][j-1] + path[n-2][j] + path[n-1][j+1])
+        # m.addConstr(path[n-1][j] <= path[n-1][j-1] + path[n-2][j] + path[n-1][j+1])
 
-    m.addConstr(path[0][0] <= path[0][1] + path[1][0])
-    m.addConstr(path[-1][0] <= path[-1][1] + path[-2][0])
-    m.addConstr(path[0][-1] <= path[1][-1] + path[0][-2])
-    m.addConstr(path[-1][-1] <= path[-2][-1] + path[-1][-2])
+    m.addConstr(path[0][0] <= 0)
+    m.addConstr(path[-1][0] <= 0)
+    m.addConstr(path[0][-1] <= 0)
+    m.addConstr(path[-1][-1] <= 0)
+    # m.addConstr(path[0][0] <= path[0][1] + path[1][0])
+    # m.addConstr(path[-1][0] <= path[-1][1] + path[-2][0])
+    # m.addConstr(path[0][-1] <= path[1][-1] + path[0][-2])
+    # m.addConstr(path[-1][-1] <= path[-2][-1] + path[-1][-2])
 
-    m.addConstrs(path[x][y] <= path[x-1][y] + path[x+1][y] + path[x][y-1] + path[x][y+1] for x in range(1, n-1) for y in range(1, n-1))
+    m.addConstrs(path[x][y] <= 0 for x in range(1, n-1) for y in range(1, n-1))
+    # m.addConstrs(path[x][y] <= path[x-1][y] + path[x+1][y] + path[x][y-1] + path[x][y+1] for x in range(1, n-1) for y in range(1, n-1))
 
     # Covered tiles cannot be on the path
     m.addConstrs(path[x][y] <= 1 - is_covered[x][y] for x in range(n) for y in range(n))

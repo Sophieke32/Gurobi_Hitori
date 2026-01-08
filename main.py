@@ -41,25 +41,7 @@ redundant_constraints = {"cch": CornerCheckConstraint, "edge pairs": EdgePairsCo
     "pair isolation": PairIsolationConstraint(), "sandwiches": SandwichesConstraint()}
 naive_only_redundant_constraints = {"cc": CornerCloseConstraint()}
 duplicates_only_redundant_constraints = {"set unique values": SetUniqueValuesConstraint()}
-# naive_solver = NaiveSolver("naive solver", [], connected_checkers["bfs"], heuristics["min"])
-# duplicates_solver = DuplicatesSolver("duplicates solver", [redundant_constraints["most blacks"],
-#     redundant_constraints["set unique values"]])
 
-
-# def test():
-#     naive_solver.solve(5, np.array([
-#         [1, 5, 5, 3, 1],
-#         [3, 2, 4, 3, 1],
-#         [5, 3, 1, 5, 2],
-#         [4, 5, 2, 5, 3],
-#         [1, 1, 4, 2, 4]]))
-#
-#     duplicates_solver.solve(5, np.array([
-#         [1, 5, 5, 3, 1],
-#         [3, 2, 4, 3, 1],
-#         [5, 3, 1, 5, 2],
-#         [4, 5, 2, 5, 3],
-#         [1, 1, 4, 2, 4]]))
 
 def collect_all_data(directory_name):
     all_solvers = []
@@ -187,40 +169,36 @@ if __name__ == "__main__":
     else:
         print("Solving all puzzles in file:", directory_name)
         print("Using model:", model)
-        if time: print("Storing time!")
 
-    if model == "path":
-        solver = PathSolver("path solver", [])
-        env = TestRunEnvironment(solver)
+        if model == "duplicates":
+            print("Running the duplicates model")
+            solver = DuplicatesSolver("duplicates_solver", [])
+        elif model == "path":
+            print("Running the path model")
+            solver = PathSolver("path_solver", [])
+        else:
+            print("Running the naive model")
+            solver = NaiveSolver("naive_solver", [])
 
-        root = "problem_instances/custom_instances/experiment_10_instances"
-        file = "0a1e3f7c-02b3-4b5f-a923-3d6d9fde1c01.singles"
+        if time:
+            print("Running in the Experiment Run Environment")
+            environment = ExperimentRunEnvironment(solver)
+        else:
+            print("Running in the Testing Run Environment")
+            environment = TestRunEnvironment(solver)
 
-        n, board, number_of_covered_tiles, number_of_cycles = read_file(root, file)
-        env.run_puzzle(n, board, "")
+        i = 0
 
+        print("Directory name:", directory_name)
 
-        # i = 0
-    #
-    # if time:
-    #     with open(os.path.join("experiments", model, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "_" + model + ".csv"), "w", newline='') as csvfile:
-    #         writer = csv.DictWriter(csvfile, fieldnames=["instance", "n", "number of cycles", "covered squares", "cpu_time (s)", "solution found"])
-    #         writer.writeheader()
-    #
-    #         for root, dirs, files in os.walk(directory_name):
-    #             for file in files:
-    #                 if file.endswith(".singles"):
-    #                     n, number_of_cycles, number_of_covered_squares, time, solution = main(root, file, model, time)
-    #                     writer.writerow({"instance": file, "n": n, "number of cycles": number_of_cycles, "covered squares": number_of_covered_squares,"cpu_time (s)": time, "solution found": solution})
-    #                     print(i, n, time)
-    #                     i = i + 1
-    #             print(root)
-    #
-    # else:
-    #     for root, dirs, files in os.walk(directory_name):
-    #         for file in files:
-    #             if file.endswith(".singles"):
-    #                 n, time, solution = main(root, file, model, False)
-    #                 print(i, n, time)
-    #                 i = i + 1
-    #         print(root)
+        for root, dirs, files in os.walk(directory_name):
+            for file in files:
+                if file.endswith(".singles"):
+
+                    n, board, number_of_covered_tiles, number_of_cycles = read_file(root, file)
+
+                    cpu_time = environment.run_puzzle(n, board, file)
+
+                    print(i, n, cpu_time, environment.solver.name)
+                    i += 1
+            print(root)

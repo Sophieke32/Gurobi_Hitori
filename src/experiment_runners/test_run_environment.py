@@ -19,3 +19,4 @@ class TestRunEnvironment(RunEnvironment):
 
         uncovered, covered, grid = extract_solution(n, m, is_covered)
         print("Solution validity:", check_solution(board, grid, n))
+
