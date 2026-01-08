@@ -1,3 +1,5 @@
+import time
+
 import gurobipy as gp
 from gurobipy import GRB
 
@@ -25,8 +27,10 @@ class PreprocessingSolver(Solver):
         self.redundant_constraints = redundant_constraints
 
     def solve(self, n, board):
-        # Create the duplicates array
+        # Create the duplicates array, time it
+        t1 = time.process_time_ns()
         duplicates = find_duplicates(n, board)
+        make_duplicates_time = (time.process_time_ns() - t1) / 1000000000
 
         # Create a new model
         m = gp.Model("Hitori_Solver_Duplicates")
@@ -64,8 +68,10 @@ class PreprocessingSolver(Solver):
         duplicates_unique_constraint(n, is_covered, m, duplicates)
 
         # Path constraint
+        t2 = time.process_time_ns()
         g = create_graph(n, duplicates)
         number_of_cycles = duplicates_path_constraint(is_covered, m, g)
+        arrange_graph_time = (time.process_time_ns() - t2) / 1000000000
 
         # Optimise the model
         try:
@@ -87,7 +93,9 @@ class PreprocessingSolver(Solver):
             "edge_pairs_hits": edge_pairs,
             "pairs_isolation_hits": pair_isolations,
             "sandwich_pairs_hits": pairs,
-            "sandwich_triple_hits": triples
+            "sandwich_triple_hits": triples,
+            "duplicates_time": make_duplicates_time,
+            "graph_time": arrange_graph_time
         }
 
         return data

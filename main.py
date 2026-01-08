@@ -196,8 +196,6 @@ if __name__ == "__main__":
 
                     n, board, data = read_file(root, file)
 
-                    print(data)
-
                     cpu_time = environment.run_puzzle(n, board, file, data=data)
 
                     print(i, n, cpu_time, environment.solver.name)

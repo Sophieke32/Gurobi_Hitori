@@ -44,5 +44,7 @@ class PreprocessRunEnvironment(RunEnvironment):
             f.write("\n# Pair-isolation hits: " + str(data["pairs_isolation_hits"]))
             f.write("\n# Sandwich-pair hits: " + str(data["sandwich_pairs_hits"]))
             f.write("\n# Sandwich-triple hits: " + str(data["sandwich_triple_hits"]))
+            f.write("\n# Time spent making duplicates array (s): " + str(data["duplicates_time"]))
+            f.write("\n# Time spent making graph (s): " + str(data["graph_time"]))
 
         return 0

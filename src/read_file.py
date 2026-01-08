@@ -29,6 +29,8 @@ def read_file(root, file):
         pair_isolations = f.readline().replace("# Pair-isolation hits: ", "").replace("\n", "")
         pairs = f.readline().replace("# Sandwich-pair hits: ", "").replace("\n", "")
         triples = f.readline().replace("# Sandwich-triple hits: ", "").replace("\n", "")
+        duplicates_time = f.readline().replace("# Time spent making duplicates array (s): ", "").replace("\n", "")
+        graph_time = f.readline().replace("# Time spent making graph (s): ", "").replace("\n", "")
 
         data = {
             "number_of_covered_tiles": number_of_covered_tiles,
@@ -38,7 +40,9 @@ def read_file(root, file):
             "edge_pairs_hits": edge_pairs,
             "pair_isolation_hits": pair_isolations,
             "sandwich_pairs_hits": pairs,
-            "sandwich_triple_hits": triples
+            "sandwich_triple_hits": triples,
+            "duplicates_time": duplicates_time,
+            "graph_time": graph_time,
         }
 
         return n, board, data
