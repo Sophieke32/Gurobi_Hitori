@@ -1,38 +1,84 @@
-import numpy as np
+from scipy import stats
 
-from data_analysis.helper_methods.process_data import get_csv
 from data_analysis.helper_methods.spearman_test import print_spearman
+from data_analysis.retrieve_data import naive_files, duplicates_files
 
-duplicates_n10_file = "data_files/duplicates_n10.csv"  # duplicates model, n = 10, experiment_10_instances
-optimised_naive_n10_file = "data_files/optimised_naive_n10.csv"  # duplicates model, n = 10, experiment_10_instances
-naive_n10_file = "data_files/naive_n10.csv"  # duplicates model, n = 10, experiment_10_instances
-
-naive_n10_csv = get_csv(naive_n10_file)
-duplicates_n10_csv = get_csv(duplicates_n10_file)
-optimised_naive_n10_csv = get_csv(optimised_naive_n10_file)
-
-# Number of duplicates and graph time
-graph_time_csv = np.loadtxt("data_files/graph_time_share/duplicates_n10_graph_time_share.csv", delimiter=',', skiprows=1,
-        dtype={'names': ('instance', 'n', 'number of cycles', 'covered squares', 'cpu time', 'graph time (s)', 'graph time share (%)', 'solution found'),
-            'formats': ('S30', 'i4', 'i4', 'i4', 'f4', 'f4', 'f4', 'S1')})
-
-number_of_duplicates_csv = np.loadtxt("data_files/num_duplicates/duplicates_num_duplicates.csv", delimiter=',', skiprows=1,
-        dtype={'names': ('instance', 'n', 'number of cycles', 'covered squares', 'cpu time', 'number of duplicates', 'solution found'),
-            'formats': ('S30', 'i4', 'i4', 'i4', 'f4', 'i4', 'S1')})
 
 def hitori_properties_tests():
-    print("Spearman: Effect of number of covered tiles on non-optimised naive (n=10)",
-          print_spearman(naive_n10_csv, 'covered squares'))
-    print("Spearman: Effect of number of covered tiles on optimised naive (n=10)",
-          print_spearman(optimised_naive_n10_csv, 'covered squares'))
+    print("Spearman: Effect of number of covered tiles on naive (n=10)",
+          print_spearman(naive_files["base"], 'number_of_covered_tiles'))
     print("Spearman: Effect of number of covered tiles on duplicates (n=10)",
-          print_spearman(duplicates_n10_csv, 'covered squares'))
+          print_spearman(duplicates_files["base"], 'number_of_covered_tiles'))
     print("Spearman: Effect of number of cycles on duplicates (n=10)",
-          print_spearman(duplicates_n10_csv, 'number of cycles'))
+          print_spearman(duplicates_files["base"], 'number_of_cycles'))
 
     print("Spearman: Effect of graph time on runtime",
-          print_spearman(graph_time_csv, 'graph time (s)'))
-    print("Spearman: Effect of graph time share on runtime",
-          print_spearman(graph_time_csv, 'graph time share (%)'))
-    print("Spearman: Effect of num duplicates on runtime",
-          print_spearman(number_of_duplicates_csv, 'number of duplicates'))
+          print_spearman(duplicates_files["base"], 'graph time (s)'))
+    # print("Spearman: Effect of graph time share on runtime",
+    #       print_spearman(duplicates_files["base"], 'graph time share (%)'))
+    print("Spearman: Effect of num duplicates on runtime duplicates",
+          print_spearman(duplicates_files["base"], 'number_of_duplicates'))
+    print("Spearman: Effect of num duplicates on runtime naive",
+          print_spearman(naive_files["base"], 'number_of_duplicates'))
+
+    print("##################################################################" +
+          "\n#      Checking effect of properties without optimisations       #" +
+          "\n##################################################################")
+
+    print("Spearman: Effect of corner checks on runtime naive",
+          print_spearman(naive_files["base"], 'corner_check_hits'))
+    # print("Spearman: Effect of edge pairs on runtime naive",
+    #       print_spearman(naive_files["base"], 'edge_pairs_hits')) No edge pairs whatsoever
+    print("Spearman: Effect of pair isolations on runtime naive",
+          print_spearman(naive_files["base"], 'pairs_isolation_hits'))
+    print("Spearman: Effect of sandwich pairs on runtime naive",
+          print_spearman(naive_files["base"], 'sandwich_pairs_hits'))
+    print("Spearman: Effect of sandwich triples on runtime naive",
+          print_spearman(naive_files["base"], 'sandwich_triple_hits'))
+
+    print("Spearman: Effect of corner checks on runtime duplicates",
+          print_spearman(duplicates_files["base"], 'corner_check_hits'))
+    print("Spearman: Effect of pair isolations on runtime duplicates",
+          print_spearman(duplicates_files["base"], 'pairs_isolation_hits'))
+    print("Spearman: Effect of sandwich pairs on runtime duplicates",
+          print_spearman(duplicates_files["base"], 'sandwich_pairs_hits'))
+    print("Spearman: Effect of sandwich triples on runtime duplicates",
+          print_spearman(duplicates_files["base"], 'sandwich_triple_hits'))
+
+    print("##################################################################" +
+          "\n#       Checking effect of properties WITH optimisations         #" +
+          "\n##################################################################")
+
+    print("Spearman: Effect of corner checks on runtime naive cch",
+          print_spearman(naive_files["cch"], 'corner_check_hits'))
+    print("Spearman: Effect of pair isolations on runtime naive pair isolation",
+          print_spearman(naive_files["pair isolation"], 'pairs_isolation_hits'))
+    print("Spearman: Effect of sandwich pairs on runtime naive sandwich pairs",
+          print_spearman(naive_files["sandwiches"], 'sandwich_pairs_hits'))
+    print("Spearman: Effect of sandwich triples on runtime naive sandwich triples",
+          print_spearman(naive_files["sandwiches"], 'sandwich_triple_hits'))
+    print("Spearman: Effect of sandwich triples on runtime naive sandwiches both",
+          print_spearman_special(naive_files["sandwiches"]))
+
+    print("Spearman: Effect of corner checks on runtime duplicates cch",
+          print_spearman(duplicates_files["cch"], 'corner_check_hits'))
+    print("Spearman: Effect of pair isolations on runtime duplicates pair isolation",
+          print_spearman(duplicates_files["pair isolation"], 'pairs_isolation_hits'))
+    print("Spearman: Effect of sandwich pairs on runtime duplicates sandwich pairs",
+          print_spearman(duplicates_files["sandwiches"], 'sandwich_pairs_hits'))
+    print("Spearman: Effect of sandwich triples on runtime duplicates sandwich triples",
+          print_spearman(duplicates_files["sandwiches"], 'sandwich_triple_hits'))
+    print("Spearman: Effect of sandwich triples on runtime duplicates sandwiches both",
+          print_spearman_special(duplicates_files["sandwiches"]))
+
+
+def spearman_special(csv):
+    attribute_array = csv["sandwich_pairs_hits"] + csv["sandwich_triple_hits"]
+    cpu_time = csv['cpu time']
+
+    return stats.spearmanr(attribute_array, cpu_time)
+
+def print_spearman_special(csv):
+    res = spearman_special(csv)
+
+    return "\nRho: {}\np-value: {}\n".format(res.statistic, res.pvalue)

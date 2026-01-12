@@ -28,5 +28,12 @@ def remove_outliers_two_arrays(data1, data2):
 # Gets data from a csv file
 def get_csv(file):
     return np.loadtxt(file, delimiter=',', skiprows=1,
-        dtype={'names': ('instance', 'n', 'number of cycles', 'covered squares', 'cpu time', 'solution found'),
-            'formats': ('S30', 'i4', 'i4', 'i4', 'f4', 'S1')})
+        dtype={'names': ("instance", "n", "cpu time", "duplicates time (s)",
+                         "graph time (s)", "time spent on optimisations (s)",
+                         "number_of_cycles",
+                         "number_of_duplicates", "number_of_covered_tiles",
+                         "corner_check_hits", "edge_pairs_hits",
+                         "pairs_isolation_hits", "sandwich_pairs_hits",
+                         "sandwich_triple_hits",
+                         ),
+            'formats': ('S30', 'i4', 'f4', 'f4', 'f4', 'f4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4')})
