@@ -5,3 +5,4 @@ import matplotlib.pyplot as plt
 def show_histogram(data):
     plt.hist(data, 100, range=(data.min(), data.max()))
     plt.title('CPU_time (s)')
+    plt.show()

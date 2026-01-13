@@ -37,3 +37,8 @@ def get_csv(file):
                          "sandwich_triple_hits",
                          ),
             'formats': ('S30', 'i4', 'f4', 'f4', 'f4', 'f4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4')})
+
+def get_csv_small(file):
+    return np.loadtxt(file, delimiter=',', skiprows=1,
+                      dtype={'names': ("instance", "n", "cpu time"),
+                             'formats': ('S30', 'i4', 'f4')})

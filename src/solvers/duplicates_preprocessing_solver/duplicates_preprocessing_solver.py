@@ -13,12 +13,12 @@ from src.constraints.redundant_constraints.pair_isolation import PairIsolationCo
 from src.constraints.redundant_constraints.redundant_constraint import RedundantConstraint
 from src.constraints.redundant_constraints.sandwiches import SandwichesConstraint
 from src.solvers.naive_solver.helper_methods.extract_solution import extract_solution
-from src.solvers.preprocessing_solver.helper_methods.create_duplicates_graph import create_graph
-from src.solvers.preprocessing_solver.helper_methods.find_duplicates import find_duplicates
+from src.solvers.duplicates_preprocessing_solver.helper_methods.create_duplicates_graph import create_graph
+from src.solvers.duplicates_preprocessing_solver.helper_methods.find_duplicates import find_duplicates
 from src.solvers.solver import Solver
 
 
-class PreprocessingSolver(Solver):
+class DuplicatesPreprocessingSolver(Solver):
     name = ""
     redundant_constraints: list[RedundantConstraint] = []
 

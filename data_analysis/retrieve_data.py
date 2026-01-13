@@ -1,6 +1,7 @@
-from data_analysis.helper_methods.process_data import get_csv
+from data_analysis.helper_methods.process_data import get_csv, get_csv_small
 
 duplicates = get_csv("data_files/duplicates.csv")
+duplicates_ntest = get_csv_small("data_files/duplicates_ntest.csv")
 duplicates_cch = get_csv("data_files/duplicates_cch_constraint.csv")
 duplicates_edge_pairs = get_csv("data_files/duplicates_edge_pairs_constraint.csv")
 duplicates_least_whites = get_csv("data_files/duplicates_least_whites_constraint.csv")
@@ -10,6 +11,7 @@ duplicates_sandwiches = get_csv("data_files/duplicates_sandwiches_constraint.csv
 
 
 naive = get_csv("data_files/naive_solver.csv")
+naive_ntest = get_csv_small("data_files/naive_ntest.csv")
 
 naive_bfs = get_csv("data_files/naive_bfs_checker.csv")
 naive_connected_component = get_csv("data_files/naive_cc_checker.csv")
@@ -28,12 +30,12 @@ naive_pair_isolation = get_csv("data_files/naive_pair_isolation_constraint.csv")
 naive_sandwiches = get_csv("data_files/naive_sandwiches_constraint.csv")
 
 # Dict with all duplicates files for easier exporting to other files
-duplicates_files = {"base": duplicates, "cch": duplicates_cch, "edge pairs": duplicates_edge_pairs,
+duplicates_files = {"base": duplicates, "ntest": duplicates_ntest, "cch": duplicates_cch, "edge pairs": duplicates_edge_pairs,
                     "least whites": duplicates_least_whites, "most blacks": duplicates_most_blacks,
                     "pair isolation": duplicates_pair_isolation, "sandwiches": duplicates_sandwiches}
 
 # Dict with all naive files for easier exporting
-naive_files = {"base": naive, "bfs": naive_bfs, "connected component": naive_connected_component,
+naive_files = {"base": naive, "ntest": naive_ntest, "bfs": naive_bfs, "connected component": naive_connected_component,
                "cycles": naive_cycles, "min heuristic": naive_min, "max heuristic": naive_max,
                "no heuristic": naive_no, "cc": naive_cc, "cch": naive_cch, "edge pairs:": naive_edge_pairs,
                "least whites": naive_least_whites, "most blacks": naive_most_blacks,

@@ -26,9 +26,10 @@ from src.heuristics.no_heuristic import NoHeuristic
 from src.main import main
 from src.read_file import read_file
 from src.solvers.duplicates_solver.duplicates_solver import DuplicatesSolver
+from src.solvers.naive_preprocessing_solver.naive_preprocessing_solver import NaivePreprocessingSolver
 from src.solvers.naive_solver.naive_solver import NaiveSolver
 from src.solvers.path_solver.path_solver import PathSolver
-from src.solvers.preprocessing_solver.preprocessing_solver import PreprocessingSolver
+from src.solvers.duplicates_preprocessing_solver.duplicates_preprocessing_solver import DuplicatesPreprocessingSolver
 
 #############################
 #        All options        #
@@ -93,7 +94,8 @@ def collect_all_data(directory_name):
         print(root)
 
 def run_preprocess(directory_name):
-    solver = PreprocessingSolver("preprocessing solver", [])
+    # solver = DuplicatesPreprocessingSolver("duplicates preprocessing solver", [])
+    solver = NaivePreprocessingSolver("naive preprocessing solver", [], BFSConnectedChecker(), MinHeuristic())
     i = 1
     for root, dirs, files in os.walk(directory_name):
         environment = PreprocessRunEnvironment(solver, root=root)
@@ -107,6 +109,29 @@ def run_preprocess(directory_name):
                 print(i, n, environment.solver.name)
                 i += 1
         print(root)
+
+def run_custom(directory_name):
+    s1 = DuplicatesSolver("duplicates", [])
+    s2 = NaiveSolver("naive", [], BFSConnectedChecker(), MinHeuristic())
+    i = 1
+
+    env1 = ExperimentRunEnvironment(s1)
+    env2 = ExperimentRunEnvironment(s2)
+
+    for root, dirs, files in os.walk(directory_name):
+        for file in files:
+            if file.endswith(".singles"):
+                n, board, data = read_file(root, file)
+
+                cpu_time_1 = env1.run_puzzle(n, board, file)
+                cpu_time_2 = env2.run_puzzle(n, board, file)
+
+                print(i, n, env1.solver.name)
+                print(i, n, env2.solver.name)
+                i += 1
+        print(root)
+        print("haha you suck!!!! L!!!!")
+
 
 
 if __name__ == "__main__":
@@ -138,6 +163,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "-c", "--custom",
+        type=bool,
+        default=False,
+        help="Runs a custom setup"
+    )
+
+    parser.add_argument(
         "-m", "--model",
         type=str,
         default="duplicates",
@@ -156,6 +188,7 @@ if __name__ == "__main__":
     directory_name = args.dirname
     run_all = args.all
     preprocess = args.preprocess
+    custom = args.custom
     model = args.model
     time = args.time
 
@@ -163,6 +196,8 @@ if __name__ == "__main__":
         collect_all_data(directory_name)
     elif preprocess:
         run_preprocess(directory_name)
+    elif custom:
+        run_custom(directory_name)
     else:
         print("Solving all puzzles in file:", directory_name)
 

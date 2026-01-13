@@ -1,9 +1,13 @@
 # from data_analysis.connected_algorithms_tests import connected_algorithms_tests
+import pylab
 from numpy import mean, median
+from scipy import stats
+import statsmodels.api as sm
 
 from data_analysis.helper_methods.descriptive_statistics import print_descriptive_statistics
+from data_analysis.helper_methods.shapiro_wilk_test import shapiro_test
 from data_analysis.heuristic_tests import heuristic_tests
-from data_analysis.helper_methods.process_data import get_csv
+from data_analysis.helper_methods.process_data import get_csv, remove_outliers
 from data_analysis.helper_methods.spearman_test import print_spearman
 from data_analysis.helper_methods.t_tests import print_t_test
 from data_analysis.hitori_properties_tests import hitori_properties_tests
@@ -11,10 +15,12 @@ from data_analysis.naive_vs_duplicates_test import naive_vs_duplicates_test
 from data_analysis.optimisation_rules_tests import optimisation_rules_tests
 from data_analysis.retrieve_data import naive_files, duplicates_files
 from data_analysis.visualisation_methods.save_boxplot_two_models import save_boxplot_two_models
-from data_analysis.visualisation_methods.save_boxplots_covered_vs_time import save_boxplots_covered_vs_time
+from data_analysis.visualisation_methods.save_boxplots_covered_vs_time import save_boxplots_spearman_vs_time
+from data_analysis.visualisation_methods.save_graph_ntest import save_graph_ntest
 from data_analysis.visualisation_methods.save_plot_naive_vs_duplicates import save_plot_naive_vs_duplicates
 from data_analysis.visualisation_methods.save_scatter_cycles_vs_time import save_scatter_cycles_vs_time
 from data_analysis.visualisation_methods.save_survival_plot import save_survival_plot
+from data_analysis.visualisation_methods.show_histogram import show_histogram
 
 
 def main():
@@ -25,10 +31,19 @@ def main():
     # connected_algorithms_tests()
     # naive_vs_duplicates_test()
     # optimisation_rules_tests()
-    hitori_properties_tests()
+    # hitori_properties_tests()
 
-    print("share of duplicates time", mean(duplicates_files["base"]['duplicates time (s)'] / duplicates_files["base"]['cpu time']))
-    print("share of graph time", median(duplicates_files["base"]['graph time (s)'] / duplicates_files["base"]['cpu time']))
+    # diff = naive_files["base"]['cpu time'] - duplicates_files["base"]['cpu time']
+    # remove_outliers(diff)
+    # show_histogram(diff)
+    # stat = stats.shapiro(diff)
+    # print("w = {}, p = {}".format(stat.statistic, stat.pvalue))
+    # sm.qqplot(diff, line='45')
+    # pylab.show()
+
+
+    # print("share of duplicates time", mean(duplicates_files["base"]['duplicates time (s)'] / duplicates_files["base"]['cpu time']))
+    # print("share of graph time", median(duplicates_files["base"]['graph time (s)'] / duplicates_files["base"]['cpu time']))
 
 
     # print(sum(naive_files["base"]['cpu time']))
@@ -48,9 +63,14 @@ def main():
     # save_plot_naive_vs_duplicates(duplicates_files["base"], naive_files["base"], generate_for_poster)
     # save_scatter_cycles_vs_time(duplicates_files["base"], generate_for_poster)
     #
-    # save_boxplots_covered_vs_time(naive_files["base"], generate_for_poster, "naive", "Influence of number of covered tiles on naive runtime")
-    # save_boxplots_covered_vs_time(duplicates_files["base"], generate_for_poster, "duplicates", "Influence of number of covered tiles on duplicates runtime")
-    #
+    # save_boxplots_spearman_vs_time(naive_files["base"], generate_for_poster, "naive", "Influence of number of covered tiles on optimised naive runtime", 'number_of_covered_tiles', 'Number of covered tiles')
+    # save_boxplots_spearman_vs_time(duplicates_files["base"], generate_for_poster, "duplicates", "Influence of number of covered tiles on duplicates runtime", 'number_of_covered_tiles', 'Number of covered tiles')
+
+    # save_boxplots_spearman_vs_time(naive_files["base"], generate_for_poster, "naive", "Influence of number of duplicate tiles on optimised naive runtime", 'number_of_duplicates', 'Number of duplicate tiles')
+    # save_boxplots_spearman_vs_time(duplicates_files["base"], generate_for_poster, "duplicates", "Influence of number of duplicate tiles on duplicates runtime", 'number_of_duplicates', 'Number of duplicate tiles')
+
+    save_graph_ntest(naive_files["ntest"], duplicates_files["ntest"], generate_for_poster)
+    
     # save_boxplot_two_models(naive_files["base"], duplicates_files["base"], generate_for_poster)
 
     #################################
@@ -171,8 +191,8 @@ def t_tests():
 
 
 # def spearman_tests():
-#     print("Spearman: Effect of number of cycles on duplicates (n=5)",
-#           print_spearman(duplicates_n5_csv, 'number of cycles'))
+    # print("Spearman: Effect of number of cycles on duplicates (n=5)",
+    #       print_spearman(duplicates_n5_csv, 'number of cycles'))
 #     print("Spearman: Effect of number of cycles on duplicates (n=10)",
 #           print_spearman(duplicates_n10_csv, 'number of cycles'))
 #     print("Spearman: Effect of number of covered tiles on naive (n=5)",
