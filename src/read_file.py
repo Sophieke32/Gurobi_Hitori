@@ -31,6 +31,9 @@ def read_file(root, file):
         triples = f.readline().replace("# Sandwich-triple hits: ", "").replace("\n", "")
         duplicates_time = f.readline().replace("# Time spent making duplicates array (s): ", "").replace("\n", "")
         graph_time = f.readline().replace("# Time spent making graph (s): ", "").replace("\n", "")
+        runs = f.readline().replace("# Number of runs to collect time data: ", "").replace("\n", "")
+        iterations = f.readline().replace("# Number of iterations: ", "").replace("\n", "")
+        time_illegal_solutions = f.readline().replace("# Time spent on illegal solutions (s): ", "").replace("\n", "")
 
         data = {
             "number_of_covered_tiles": number_of_covered_tiles,
@@ -43,6 +46,9 @@ def read_file(root, file):
             "sandwich_triple_hits": triples,
             "duplicates_time": duplicates_time,
             "graph_time": graph_time,
+            "runs": runs,
+            "iterations": iterations,
+            "time_illegal_solutions": time_illegal_solutions,
         }
 
         return n, board, data

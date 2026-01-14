@@ -42,3 +42,18 @@ def get_csv_small(file):
     return np.loadtxt(file, delimiter=',', skiprows=1,
                       dtype={'names': ("instance", "n", "cpu time"),
                              'formats': ('S30', 'i4', 'f4')})
+
+def get_csv_better(file):
+    return np.loadtxt(file, delimiter=',', skiprows=1,
+                      dtype={'names': ("instance", "n", "cpu time", "duplicates time (s)",
+                                       "graph time (s)", "time spent on optimisations (s)",
+                                       "time illegal solutions (s)", "iterations",
+                                       "number_of_runs_for_time_data",
+                                       "number_of_cycles",
+                                       "number_of_duplicates", "number_of_covered_tiles",
+                                       "corner_check_hits", "edge_pairs_hits",
+                                       "pairs_isolation_hits", "sandwich_pairs_hits",
+                                       "sandwich_triple_hits",
+                                       ),
+                             'formats': ('S30', 'i4', 'f4', 'f4', 'f4', 'f4', 'f4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4',
+                                         'i4')})

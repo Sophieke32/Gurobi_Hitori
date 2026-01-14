@@ -1,4 +1,4 @@
-from data_analysis.helper_methods.process_data import get_csv, get_csv_small
+from data_analysis.helper_methods.process_data import get_csv, get_csv_small, get_csv_better
 
 duplicates = get_csv("data_files/duplicates.csv")
 duplicates_ntest = get_csv_small("data_files/duplicates_ntest.csv")
@@ -10,7 +10,7 @@ duplicates_pair_isolation = get_csv("data_files/duplicates_pair_isolation_constr
 duplicates_sandwiches = get_csv("data_files/duplicates_sandwiches_constraint.csv")
 
 
-naive = get_csv("data_files/naive_solver.csv")
+naive = get_csv_better("data_files/naive.csv")
 naive_ntest = get_csv_small("data_files/naive_ntest.csv")
 
 naive_bfs = get_csv("data_files/naive_bfs_checker.csv")
@@ -37,6 +37,6 @@ duplicates_files = {"base": duplicates, "ntest": duplicates_ntest, "cch": duplic
 # Dict with all naive files for easier exporting
 naive_files = {"base": naive, "ntest": naive_ntest, "bfs": naive_bfs, "connected component": naive_connected_component,
                "cycles": naive_cycles, "min heuristic": naive_min, "max heuristic": naive_max,
-               "no heuristic": naive_no, "cc": naive_cc, "cch": naive_cch, "edge pairs:": naive_edge_pairs,
+               "no heuristic": naive_no, "cc": naive_cc, "cch": naive_cch, "edge pairs": naive_edge_pairs,
                "least whites": naive_least_whites, "most blacks": naive_most_blacks,
                "pair isolation": naive_pair_isolation, "sandwiches": naive_sandwiches}

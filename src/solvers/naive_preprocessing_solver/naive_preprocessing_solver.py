@@ -63,8 +63,8 @@ class NaivePreprocessingSolver(Solver):
 
         # Extract values
         white, black, grid = extract_solution(n, m, is_covered)
-        t1 = time.process_time()
-        iteration = 0
+        t1 = time.process_time_ns()
+        iteration = 1
 
         while not self.connected_checker.check(n, grid):
             add_illegal_solution(white, black, m, iteration)

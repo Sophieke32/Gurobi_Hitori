@@ -94,11 +94,11 @@ def collect_all_data(directory_name):
         print(root)
 
 def run_preprocess(directory_name):
-    # solver = DuplicatesPreprocessingSolver("duplicates preprocessing solver", [])
-    solver = NaivePreprocessingSolver("naive preprocessing solver", [], BFSConnectedChecker(), MinHeuristic())
+    s1 = DuplicatesPreprocessingSolver("duplicates preprocessing solver", [])
+    s2 = NaivePreprocessingSolver("naive preprocessing solver", [], BFSConnectedChecker(), MinHeuristic())
     i = 1
     for root, dirs, files in os.walk(directory_name):
-        environment = PreprocessRunEnvironment(solver, root=root)
+        environment = PreprocessRunEnvironment(s1, root=root, second_solver=s2)
         for file in files:
             if file.endswith(".singles"):
 
@@ -111,11 +111,11 @@ def run_preprocess(directory_name):
         print(root)
 
 def run_custom(directory_name):
-    s1 = DuplicatesSolver("duplicates", [])
-    s2 = NaiveSolver("naive", [], BFSConnectedChecker(), MinHeuristic())
+    # s1 = DuplicatesSolver("duplicates", [])
+    s2 = NaiveSolver("naive2ntest", [], BFSConnectedChecker(), MinHeuristic())
     i = 1
 
-    env1 = ExperimentRunEnvironment(s1)
+    # env1 = ExperimentRunEnvironment(s1)
     env2 = ExperimentRunEnvironment(s2)
 
     for root, dirs, files in os.walk(directory_name):
@@ -123,14 +123,13 @@ def run_custom(directory_name):
             if file.endswith(".singles"):
                 n, board, data = read_file(root, file)
 
-                cpu_time_1 = env1.run_puzzle(n, board, file)
-                cpu_time_2 = env2.run_puzzle(n, board, file)
+                # cpu_time_1 = env1.run_puzzle(n, board, file)
+                cpu_time_2 = env2.run_puzzle(n, board, file, data=data)
 
-                print(i, n, env1.solver.name)
+                # print(i, n, env1.solver.name)
                 print(i, n, env2.solver.name)
                 i += 1
-        print(root)
-        print("haha you suck!!!! L!!!!")
+        print("############ Root:", root, "############")
 
 
 

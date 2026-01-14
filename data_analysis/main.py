@@ -1,10 +1,13 @@
 # from data_analysis.connected_algorithms_tests import connected_algorithms_tests
+import numpy as np
 import pylab
 from numpy import mean, median
 from scipy import stats
 import statsmodels.api as sm
 
+from data_analysis.connected_algorithms_tests import connected_algorithms_tests
 from data_analysis.helper_methods.descriptive_statistics import print_descriptive_statistics
+from data_analysis.helper_methods.permutation_test import print_permutation_test
 from data_analysis.helper_methods.shapiro_wilk_test import shapiro_test
 from data_analysis.heuristic_tests import heuristic_tests
 from data_analysis.helper_methods.process_data import get_csv, remove_outliers
@@ -23,15 +26,21 @@ from data_analysis.visualisation_methods.save_survival_plot import save_survival
 from data_analysis.visualisation_methods.show_histogram import show_histogram
 
 
+
 def main():
     #################################
     #       Print Descriptive       #
     #################################
-    # heuristic_tests()
-    # connected_algorithms_tests()
-    # naive_vs_duplicates_test()
-    # optimisation_rules_tests()
-    # hitori_properties_tests()
+
+    verbose = False
+    heuristic_tests(verbose=verbose)
+    connected_algorithms_tests(verbose=verbose)
+    naive_vs_duplicates_test(verbose=verbose)
+    optimisation_rules_tests(verbose=verbose)
+    hitori_properties_tests(verbose=verbose)
+
+
+
 
     # diff = naive_files["base"]['cpu time'] - duplicates_files["base"]['cpu time']
     # remove_outliers(diff)
@@ -44,6 +53,34 @@ def main():
 
     # print("share of duplicates time", mean(duplicates_files["base"]['duplicates time (s)'] / duplicates_files["base"]['cpu time']))
     # print("share of graph time", median(duplicates_files["base"]['graph time (s)'] / duplicates_files["base"]['cpu time']))
+    # print("share of iteration time", mean(naive_files["base"]['time illegal solutions (s)'] / naive_files["base"]['cpu time']))
+    # print("avg nr iterations", mean(naive_files["base"]['iterations']))
+    # print(np.count_nonzero(naive_files['base']['iterations'] < 3))
+    # print(len(naive_files['base']['time illegal solutions (s)']))
+    #
+    # print(mean(naive_files['base']['cpu time']))
+    # print(mean(duplicates_files['base']['cpu time']))
+    # print("Number of timeouts naive:", np.count_nonzero(naive_files['base']['cpu time'] == 20))
+    # print("Number of timeouts duplicates:", np.count_nonzero(duplicates_files['base']['cpu time'] == 20))
+    #
+    # print("naive ntest thingies")
+    # print(naive_files['ntest']['n'] == 5)
+    #
+    #
+    # def spearman_special(csv):
+    #     cov_tiles_array = csv["number_of_covered_tiles"]
+    #     duplicates_tiles_array = csv['number_of_duplicates']
+    #
+    #     return stats.spearmanr(duplicates_tiles_array, cov_tiles_array)
+    #
+    # def print_spearman_special(csv):
+    #     res = spearman_special(csv)
+    #
+    #     return "\nRho: {}\np-value: {}\n".format(res.statistic, res.pvalue)
+    #
+    # print("Spearman number of duplicates, number of covered tiles in final array",
+    #       print_spearman_special(duplicates_files['base']))
+
 
 
     # print(sum(naive_files["base"]['cpu time']))
@@ -69,7 +106,7 @@ def main():
     # save_boxplots_spearman_vs_time(naive_files["base"], generate_for_poster, "naive", "Influence of number of duplicate tiles on optimised naive runtime", 'number_of_duplicates', 'Number of duplicate tiles')
     # save_boxplots_spearman_vs_time(duplicates_files["base"], generate_for_poster, "duplicates", "Influence of number of duplicate tiles on duplicates runtime", 'number_of_duplicates', 'Number of duplicate tiles')
 
-    save_graph_ntest(naive_files["ntest"], duplicates_files["ntest"], generate_for_poster)
+    # save_graph_ntest(naive_files["ntest"], duplicates_files["ntest"], generate_for_poster)
     
     # save_boxplot_two_models(naive_files["base"], duplicates_files["base"], generate_for_poster)
 
