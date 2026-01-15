@@ -63,25 +63,25 @@ def optimisation_rules_tests(verbose=False):
     # pylab.savefig("figures/qq-plot4.svg")
 
     ########################### Permutation Test: ###########################
-    res_duplicates = []
-    res_duplicates.append(["naive base", "naive cc", print_permutation_test(naive_files['base']['cpu time'], naive_files['cc']['cpu time'])])
-    res_duplicates.append(["naive base", "naive cch", print_permutation_test(naive_files['base']['cpu time'], naive_files['cch']['cpu time'])])
-    res_duplicates.append(["naive base", "naive sandwiches", print_permutation_test(naive_files['base']['cpu time'], naive_files['sandwiches']['cpu time'])])
-    res_duplicates.append(["naive base", "naive edge pairs", print_permutation_test(naive_files['base']['cpu time'], naive_files['edge pairs']['cpu time'])])
-    res_duplicates.append(["naive base", "naive most blacks", print_permutation_test(naive_files['base']['cpu time'], naive_files['most blacks']['cpu time'])])
-    res_duplicates.append(["naive base", "naive least whites", print_permutation_test(naive_files['base']['cpu time'], naive_files['least whites']['cpu time'])])
-    res_duplicates.append(["naive base", "naive pair isolation", print_permutation_test(naive_files['base']['cpu time'], naive_files['pair isolation']['cpu time'])])
+    res_naive = []
+    res_naive.append(["naive base", "naive cc", print_permutation_test(naive_files['base']['cpu time'], naive_files['cc']['cpu time'])])
+    res_naive.append(["naive base", "naive cch", print_permutation_test(naive_files['base']['cpu time'], naive_files['cch']['cpu time'])])
+    res_naive.append(["naive base", "naive sandwiches", print_permutation_test(naive_files['base']['cpu time'], naive_files['sandwiches']['cpu time'])])
+    res_naive.append(["naive base", "naive edge pairs", print_permutation_test(naive_files['base']['cpu time'], naive_files['edge pairs']['cpu time'])])
+    res_naive.append(["naive base", "naive most blacks", print_permutation_test(naive_files['base']['cpu time'], naive_files['most blacks']['cpu time'])])
+    res_naive.append(["naive base", "naive least whites", print_permutation_test(naive_files['base']['cpu time'], naive_files['least whites']['cpu time'])])
+    res_naive.append(["naive base", "naive pair isolation", print_permutation_test(naive_files['base']['cpu time'], naive_files['pair isolation']['cpu time'])])
 
 
     with open("results/naive_optimisation_rules_tests.csv", "w", newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "direction", "p-value"])
+        writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "mean difference", "p-value"])
         writer.writeheader()
 
-        for i in res_duplicates:
-            if i[2][0] == 'greater':
-                writer.writerow({"model 1": i[1], "model 2": i[0], "direction": 'less', "p-value": i[2][1]})
+        for i in res_naive:
+            if i[2][2] == 1:
+                writer.writerow({"model 1": i[0], "model 2": i[1], "mean difference": -1 * i[2][0], "p-value": i[2][1]})
             else:
-                writer.writerow({"model 1": i[0], "model 2": i[1], "direction": i[2][0], "p-value": i[2][1]})
+                writer.writerow({"model 1": i[0], "model 2": i[1], "mean difference": i[2][0], "p-value": i[2][1]})
 
     res_duplicates = []
     res_duplicates.append(["duplicates base", "duplicates cch",
@@ -99,11 +99,11 @@ def optimisation_rules_tests(verbose=False):
                                                                                        'cpu time'])])
 
     with open("results/duplicates_optimisation_rules_tests.csv", "w", newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "direction", "p-value"])
+        writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "mean difference", "p-value"])
         writer.writeheader()
 
         for i in res_duplicates:
-            if i[2][0] == 'greater':
-                writer.writerow({"model 1": i[1], "model 2": i[0], "direction": 'less', "p-value": i[2][1]})
+            if i[2][2] == 1:
+                writer.writerow({"model 1": i[0], "model 2": i[1], "mean difference": -1 * i[2][0], "p-value": i[2][1]})
             else:
-                writer.writerow({"model 1": i[0], "model 2": i[1], "direction": i[2][0], "p-value": i[2][1]})
+                writer.writerow({"model 1": i[0], "model 2": i[1], "mean difference": i[2][0], "p-value": i[2][1]})

@@ -9,12 +9,12 @@ from data_analysis.optimisation_rules_tests import optimisation_rules_tests
 
 def main():
     verbose = False
-    descriptive_statistics()
-    heuristic_tests(verbose=verbose)
-    connected_algorithms_tests(verbose=verbose)
-    naive_vs_duplicates_test(verbose=verbose)
-    optimisation_rules_tests(verbose=verbose)
-    hitori_properties_tests(verbose=verbose)
+    # descriptive_statistics()
+    # heuristic_tests(verbose=verbose)
+    # connected_algorithms_tests(verbose=verbose)
+    # naive_vs_duplicates_test(verbose=verbose)
+    # optimisation_rules_tests(verbose=verbose)
+    # hitori_properties_tests(verbose=verbose)
 
     generate_graphs(generate_for_poster=False)
 

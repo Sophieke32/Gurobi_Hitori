@@ -1,14 +1,10 @@
-import matplotlib.pyplot as plt
+import pylab
+import statsmodels.api as sm
+from matplotlib import pyplot as plt
 import matplotlib.font_manager as fm
 
 
-# Generates a histogram of the given data. Does not show the histogram, this has to be done with plt.show()
-def show_histogram(data):
-    plt.hist(data, 100, range=(data.min(), data.max()))
-    plt.title('CPU_time (s)')
-    plt.show()
-
-def save_histogram(data, file_path, generate_for_poster=False):
+def save_qq_plot(csv, file_path, generate_for_poster=False):
     # Define the fonts
     font = {'fontname': 'Nimbus Roman'}
     font_manager = fm.FontProperties(family='Nimbus Roman')
@@ -24,7 +20,7 @@ def save_histogram(data, file_path, generate_for_poster=False):
 
     fig, ax = plt.subplots(figsize=(6, 4))
 
-    ax.hist(data, 50, range=(data.min(), data.max()))
+    sm.qqplot(csv['cpu time'], line='45', ax=ax)
 
     ax.set_ylabel('Time (s)', size=15, **font)
 
@@ -56,9 +52,12 @@ def save_histogram(data, file_path, generate_for_poster=False):
         ax.tick_params(axis='y', colors='white')
 
         # plt.show()
-        plt.savefig('figures/poster/histogram.png', transparent=True)
+        # plt.savefig('figures/poster/histogram.png', transparent=True)
+        pylab.savefig("figures/" + file_path, transparent=True)
 
     else:
         # plt.show()
         plt.savefig('figures/' + file_path + '.svg')
+        # pylab.savefig("figures/" + file_path)
+        # pylab.show()
 

@@ -16,7 +16,7 @@ def save_scatter_cycles_vs_time(csv, generate_for_poster):
     if generate_for_poster:
         whisker_props_color = 'white'
 
-    ax.scatter(csv['cpu time'], csv['number of cycles'], color=color)
+    ax.scatter(csv['cpu time'], csv['number_of_cycles'], color=color)
     ax.set_xlabel('Time (s)', size=15, **font)
     ax.set_ylabel('Number of cycles', size=15, **font)
     ax.set_title("Influence of number of cycles in duplicates model on runtime", size=15, color='white', **font)

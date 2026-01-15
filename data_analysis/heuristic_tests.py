@@ -29,14 +29,6 @@ def heuristic_tests(verbose=False):
         bartlett_test_3(naive_files["no heuristic"], naive_files["min heuristic"], naive_files["max heuristic"])
         print("So variances differ")
 
-    ########################### QQ plots: ###########################
-    create_qq_plot(naive_files["no heuristic"])
-    pylab.savefig("figures/qq-plot1.svg")
-    create_qq_plot(naive_files["min heuristic"])
-    pylab.savefig("figures/qq-plot2.svg")
-    create_qq_plot(naive_files["max heuristic"])
-    # pylab.savefig("figures/qq-plot3.png")
-
 
     ########################### Permutation Test: ###########################
     res = []
@@ -46,11 +38,11 @@ def heuristic_tests(verbose=False):
 
 
     with open("results/heuristic_tests.csv", "w", newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "direction", "p-value"])
+        writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "mean difference", "p-value"])
         writer.writeheader()
 
         for i in res:
-            if i[2][0] == 'greater':
-                writer.writerow({"model 1": i[1], "model 2": i[0], "direction": 'less', "p-value": i[2][1]})
+            if i[2][2] == 1:
+                writer.writerow({"model 1": i[1], "model 2": i[0], "mean difference": i[2][0], "p-value": i[2][1]})
             else:
-                writer.writerow({"model 1": i[0], "model 2": i[1], "direction": i[2][0], "p-value": i[2][1]})
+                writer.writerow({"model 1": i[0], "model 2": i[1], "mean difference": i[2][0], "p-value": i[2][1]})

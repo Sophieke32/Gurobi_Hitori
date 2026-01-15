@@ -17,11 +17,11 @@ def naive_vs_duplicates_test(verbose=False):
     res.append(["naive", "duplicates", print_permutation_test(naive_files['base']['cpu time'], duplicates_files['base']['cpu time'])])
 
     with open("results/naive_vs_duplicates.csv", "w", newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "direction", "p-value"])
+        writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "mean difference", "p-value"])
         writer.writeheader()
 
         for i in res:
-            if i[2][0] == 'greater':
-                writer.writerow({"model 1": i[1], "model 2": i[0], "direction": 'less', "p-value": i[2][1]})
+            if i[2][2] == 1:
+                writer.writerow({"model 1": i[1], "model 2": i[0], "mean difference": i[2][0], "p-value": i[2][1]})
             else:
-                writer.writerow({"model 1": i[0], "model 2": i[1], "direction": i[2][0], "p-value": i[2][1]})
+                writer.writerow({"model 1": i[0], "model 2": i[1], "mean difference": i[2][0], "p-value": i[2][1]})
