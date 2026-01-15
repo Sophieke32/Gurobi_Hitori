@@ -13,9 +13,13 @@ class TestRunEnvironment(RunEnvironment):
         self.time_out = time_out
 
     def run_puzzle(self, n, board, file, **kwargs):
-        m, is_covered, path = self.solver.solve(n, board)
+        m, is_covered, time_spent_on_optimisations, path = self.solver.solve(n, board)
 
-        path_pretty_print(m, is_covered, path, n, board)
 
         uncovered, covered, grid = extract_solution(n, m, is_covered)
-        print("Solution validity:", check_solution(board, grid, n))
+        validity = check_solution(board, grid, n)
+        # print("Solution validity:", check_solution(board, grid, n))
+
+        if not validity:
+            path_pretty_print(m, is_covered, path, n, board)
+            raise Exception("file:", file)

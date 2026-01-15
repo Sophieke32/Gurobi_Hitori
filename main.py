@@ -30,6 +30,7 @@ from src.solvers.naive_preprocessing_solver.naive_preprocessing_solver import Na
 from src.solvers.naive_solver.naive_solver import NaiveSolver
 from src.solvers.path_solver.path_solver import PathSolver
 from src.solvers.duplicates_preprocessing_solver.duplicates_preprocessing_solver import DuplicatesPreprocessingSolver
+from src.solvers.path_solver.quartic_path_solver import QuarticPathSolver
 
 #############################
 #        All options        #
@@ -47,6 +48,7 @@ naive_only_redundant_constraints = {"cc": CornerCloseConstraint()}
 def collect_all_data(directory_name):
     all_solvers = []
 
+    # Naive solvers
     for key, value in heuristics.items():
         all_solvers.append(
             NaiveSolver("naive_" + key + "_heuristic", [], connected_checkers["bfs"], value))
@@ -66,12 +68,24 @@ def collect_all_data(directory_name):
         all_solvers.append(
             NaiveSolver("naive_" + key + "_constraint", [value], connected_checkers["bfs"], heuristics["min"]))
 
+    # Duplicates Solvers
     all_solvers.append(
         DuplicatesSolver("duplicates", []))
 
     for key, value in redundant_constraints.items():
         all_solvers.append(
             DuplicatesSolver("duplicates_" + key + "_constraint", [value]))
+
+    # QuarticPath solvers
+    all_solvers.append(
+        QuarticPathSolver("path", []))
+    all_solvers.append(
+        QuarticPathSolver("path", [CornerCloseConstraint()])
+    )
+
+    for key, value in redundant_constraints.items():
+        all_solvers.append(
+            QuarticPathSolver("path_" + key + "_constraint", [value]))
 
 
     run_environments = []
@@ -110,26 +124,54 @@ def run_preprocess(directory_name):
                 i += 1
         print(root)
 
-def run_custom(directory_name):
-    # s1 = DuplicatesSolver("duplicates", [])
-    s2 = NaiveSolver("naive2ntest", [], BFSConnectedChecker(), MinHeuristic())
+def verify_instance(directory_name):
+    solver = QuarticPathSolver("quartic", [])
+    environment = TestRunEnvironment(solver)
+
     i = 1
-
-    # env1 = ExperimentRunEnvironment(s1)
-    env2 = ExperimentRunEnvironment(s2)
-
     for root, dirs, files in os.walk(directory_name):
         for file in files:
             if file.endswith(".singles"):
+
                 n, board, data = read_file(root, file)
 
-                # cpu_time_1 = env1.run_puzzle(n, board, file)
-                cpu_time_2 = env2.run_puzzle(n, board, file, data=data)
+                cpu_time = environment.run_puzzle(n, board, file, data=data)
 
-                # print(i, n, env1.solver.name)
-                print(i, n, env2.solver.name)
+                print(i, n, cpu_time, environment.solver.name)
                 i += 1
-        print("############ Root:", root, "############")
+        print(root)
+
+
+def run_custom(directory_name):
+    all_solvers = []
+
+    all_solvers.append(
+        QuarticPathSolver("path_test", []))
+    # all_solvers.append(
+    #     QuarticPathSolver("path", [CornerCloseConstraint()])
+    # )
+
+    # for key, value in redundant_constraints.items():
+    #     all_solvers.append(
+    #         QuarticPathSolver("path_" + key + "_constraint", [value]))
+
+    run_environments = []
+    for solver in all_solvers:
+        run_environments.append(ExperimentRunEnvironment(solver))
+
+    i = 1
+    for root, dirs, files in os.walk(directory_name):
+        for file in files:
+            if file.endswith(".singles"):
+
+                n, board, data = read_file(root, file)
+
+                for environment in run_environments:
+                    cpu_time = environment.run_puzzle(n, board, file, data=data)
+
+                    print(i, n, cpu_time, environment.solver.name)
+                i += 1
+        print(root)
 
 
 
@@ -169,6 +211,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "-v", "--verify",
+        type=bool,
+        default=False,
+        help="Runs in test mode"
+    )
+
+    parser.add_argument(
         "-m", "--model",
         type=str,
         default="duplicates",
@@ -188,6 +237,7 @@ if __name__ == "__main__":
     run_all = args.all
     preprocess = args.preprocess
     custom = args.custom
+    verify = args.verify
     model = args.model
     time = args.time
 
@@ -197,6 +247,8 @@ if __name__ == "__main__":
         run_preprocess(directory_name)
     elif custom:
         run_custom(directory_name)
+    elif verify:
+        verify_instance(directory_name)
     else:
         print("Solving all puzzles in file:", directory_name)
 

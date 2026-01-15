@@ -4,16 +4,17 @@ import gurobipy as gp
 from gurobipy import GRB
 
 from src.constraints.duplicates_connected_constraint import duplicates_connected_constraint
-from src.constraints.duplicates_path_constraint import duplicates_path_constraint
 from src.constraints.duplicates_unique_constraint import duplicates_unique_constraint
+from src.constraints.naive_adjacent_constraint import naive_adjacent_constraint
+from src.constraints.naive_unique_constraint import naive_unique_constraint
+from src.constraints.quadratic_path_connected_constraint import quadratic_path_connected_constraint
 from src.constraints.redundant_constraints.redundant_constraint import RedundantConstraint
-from src.solvers.duplicates_solver.helper_methods.create_duplicates_graph import create_graph
-from src.solvers.duplicates_solver.helper_methods.find_duplicates import find_duplicates
-from src.solvers.solver import Solver
+from src.solvers.path_solver.helper_methods.find_duplicates import find_duplicates
 from src.solvers.set_model_parameters import set_model_parameters
+from src.solvers.solver import Solver
 
 
-class DuplicatesSolver(Solver):
+class QuarticPathSolver(Solver):
     name = ""
     redundant_constraints: list[RedundantConstraint] = []
 
@@ -30,22 +31,16 @@ class DuplicatesSolver(Solver):
 
         set_model_parameters(m)
 
-        # Make the variables. Only add variables for duplicate values.
-        # Values on the Hitori board that are unique in their row and column will never
-        # have to be blacked out.
         is_covered = list()
 
         for i in range(n):
             new_list = list()
             for j in range(n):
-                if duplicates[i][j] == 0:
-                    new_list.append(0)
-                else:
-                    new_list.append(m.addVar(vtype=GRB.BINARY, name=f'is_covered {i}_{j}'))
+                new_list.append(m.addVar(vtype=GRB.BINARY, name=f'is_covered {i}_{j}'))
             is_covered.append(new_list)
         m.update()
 
-        #Add optimisations
+        # Add optimisations
         t1 = time.process_time_ns()
         for redundant_constraint in self.redundant_constraints:
             redundant_constraint.apply(board, is_covered, duplicates, n, m, has_duplicates=True)
@@ -53,14 +48,13 @@ class DuplicatesSolver(Solver):
         time_spent_on_optimisations = (time.process_time_ns() - t1) / 1000000000
 
         # Adjacency constraint
-        duplicates_connected_constraint(n, is_covered, m, duplicates)
+        naive_adjacent_constraint(n, is_covered, m)
 
         # Unique constraint
-        duplicates_unique_constraint(n, is_covered, m, duplicates)
+        naive_unique_constraint(n, is_covered, board, m)
 
         # Connected constraint
-        g = create_graph(n, duplicates)
-        duplicates_path_constraint(is_covered, m, g)
+        path = quadratic_path_connected_constraint(n, is_covered, m)
 
         # Optimise the model
         try:
@@ -68,4 +62,5 @@ class DuplicatesSolver(Solver):
         except GRB.ERROR_OUT_OF_MEMORY:
             print("Out of Memory")
 
-        return m, is_covered, time_spent_on_optimisations
+
+        return m, is_covered, time_spent_on_optimisations, path

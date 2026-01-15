@@ -36,7 +36,14 @@ def print_board_square(board_tile, n, m, value):
 
 
 def print_path_square(path_tile, board_tile, n, m, value):
-    if m.getAttr('X', [path_tile])[0]:
+    # path tile is an array of variables. If at least one of them is set to 1, colour the board
+    flag = 0
+    for i in range(n*n):
+        if m.getAttr('X', [path_tile[i]])[0]:
+            flag = 1
+            break
+    # if m.getAttr('X', [path_tile])[0]:
+    if flag:
         print(Back.LIGHTBLUE_EX + Fore.BLACK + "", get_cube(str(value), n), end=" ")
     else:
         print_board_square(board_tile, n, m, value)

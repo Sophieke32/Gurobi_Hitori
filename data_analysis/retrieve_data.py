@@ -10,6 +10,16 @@ duplicates_pair_isolation = get_csv("data_files/duplicates_pair_isolation_constr
 duplicates_sandwiches = get_csv("data_files/duplicates_sandwiches_constraint.csv")
 
 
+path = get_csv_better("data_files/path.csv")
+
+path_cch = get_csv_better("data_files/path_cch_constraint.csv")
+path_edge_pairs = get_csv_better("data_files/path_edge_pairs_constraint.csv")
+path_least_whites = get_csv_better("data_files/path_least_whites_constraint.csv")
+path_most_blacks = get_csv_better("data_files/path_most_blacks_constraint.csv")
+path_pair_isolation = get_csv_better("data_files/path_pair_isolation_constraint.csv")
+path_sandwiches = get_csv_better("data_files/path_sandwiches_constraint.csv")
+
+
 naive = get_csv_better("data_files/naive.csv")
 naive_ntest = get_csv_small("data_files/naive_ntest.csv")
 
@@ -29,10 +39,15 @@ naive_most_blacks = get_csv("data_files/naive_most_blacks_constraint.csv")
 naive_pair_isolation = get_csv("data_files/naive_pair_isolation_constraint.csv")
 naive_sandwiches = get_csv("data_files/naive_sandwiches_constraint.csv")
 
+
 # Dict with all duplicates files for easier exporting to other files
 duplicates_files = {"base": duplicates, "ntest": duplicates_ntest, "cch": duplicates_cch, "edge pairs": duplicates_edge_pairs,
                     "least whites": duplicates_least_whites, "most blacks": duplicates_most_blacks,
                     "pair isolation": duplicates_pair_isolation, "sandwiches": duplicates_sandwiches}
+
+path_files = {"base": path, "cch": path_cch, "edge pairs": path_edge_pairs,
+                    "least whites": path_least_whites, "most blacks": path_most_blacks,
+                    "pair isolation": path_pair_isolation, "sandwiches": path_sandwiches}
 
 # Dict with all naive files for easier exporting
 naive_files = {"base": naive, "ntest": naive_ntest, "bfs": naive_bfs, "connected component": naive_connected_component,

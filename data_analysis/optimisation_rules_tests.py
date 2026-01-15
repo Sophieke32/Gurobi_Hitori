@@ -11,7 +11,7 @@ from data_analysis.helper_methods.process_data import get_csv
 from data_analysis.helper_methods.qq_plot import create_qq_plot
 from data_analysis.helper_methods.shapiro_wilk_test import shapiro_test
 from data_analysis.helper_methods.wilcoxon_test import print_wilcoxon_test
-from data_analysis.retrieve_data import duplicates_files, naive_files
+from data_analysis.retrieve_data import duplicates_files, naive_files, path_files
 from data_analysis.visualisation_methods.show_histogram import show_histogram
 
 def optimisation_rules_tests(verbose=False):
@@ -99,6 +99,33 @@ def optimisation_rules_tests(verbose=False):
                                                                                        'cpu time'])])
 
     with open("results/duplicates_optimisation_rules_tests.csv", "w", newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "mean difference", "p-value"])
+        writer.writeheader()
+
+        for i in res_duplicates:
+            if i[2][2] == 1:
+                writer.writerow({"model 1": i[0], "model 2": i[1], "mean difference": -1 * i[2][0], "p-value": i[2][1]})
+            else:
+                writer.writerow({"model 1": i[0], "model 2": i[1], "mean difference": i[2][0], "p-value": i[2][1]})
+
+    res_path = []
+    # res_path.append(["path base", "path cc",
+    #                   print_permutation_test(path_files['base']['cpu time'], path_files['cc']['cpu time'])])
+    res_path.append(["path base", "path cch",
+                      print_permutation_test(path_files['base']['cpu time'], path_files['cch']['cpu time'])])
+    res_path.append(["path base", "path sandwiches",
+                      print_permutation_test(path_files['base']['cpu time'], path_files['sandwiches']['cpu time'])])
+    res_path.append(["path base", "path edge pairs",
+                      print_permutation_test(path_files['base']['cpu time'], path_files['edge pairs']['cpu time'])])
+    res_path.append(["path base", "path most blacks",
+                      print_permutation_test(path_files['base']['cpu time'], path_files['most blacks']['cpu time'])])
+    res_path.append(["path base", "path least whites",
+                      print_permutation_test(path_files['base']['cpu time'], path_files['least whites']['cpu time'])])
+    res_path.append(["path base", "path pair isolation", print_permutation_test(path_files['base']['cpu time'],
+                                                                                   path_files['pair isolation'][
+                                                                                       'cpu time'])])
+
+    with open("results/path_optimisation_rules_tests.csv", "w", newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "mean difference", "p-value"])
         writer.writeheader()
 

@@ -3,10 +3,11 @@ import csv
 from data_analysis.helper_methods.descriptive_statistics import print_descriptive_statistics
 from data_analysis.helper_methods.permutation_test import print_permutation_test
 from data_analysis.helper_methods.wilcoxon_test import print_wilcoxon_test
-from data_analysis.retrieve_data import naive_files, duplicates_files
+from data_analysis.retrieve_data import naive_files, duplicates_files, path_files
 
-def naive_vs_duplicates_test(verbose=False):
-    print("Performing naive vs duplicates tests...")
+
+def compare_models_test(verbose=False):
+    print("Comparing the base models...")
     if verbose:
         print("\n########################### Describe Naive Heuristics: ###########################")
         print("Optimised naive:", print_descriptive_statistics(naive_files["base"]))
@@ -15,8 +16,10 @@ def naive_vs_duplicates_test(verbose=False):
     ########################### Permutation Test: ###########################
     res = []
     res.append(["naive", "duplicates", print_permutation_test(naive_files['base']['cpu time'], duplicates_files['base']['cpu time'])])
+    res.append(["naive", "path", print_permutation_test(naive_files['base']['cpu time'], path_files['base']['cpu time'])])
+    res.append(["duplicates", "path", print_permutation_test(duplicates_files['base']['cpu time'], path_files['base']['cpu time'])])
 
-    with open("results/naive_vs_duplicates.csv", "w", newline='') as csvfile:
+    with open("results/base_models_compared.csv", "w", newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "mean difference", "p-value"])
         writer.writeheader()
 

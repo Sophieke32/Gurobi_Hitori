@@ -1,7 +1,7 @@
 import csv
 
 from data_analysis.helper_methods.descriptive_statistics import get_descriptive_statistics
-from data_analysis.retrieve_data import naive_files, duplicates_files
+from data_analysis.retrieve_data import naive_files, duplicates_files, path_files
 
 
 def descriptive_statistics():
@@ -10,6 +10,7 @@ def descriptive_statistics():
     res = []
     res.append(["naive", "cpu_time"] + [get_descriptive_statistics(naive_files['base'], 'cpu time')])
     res.append(["duplicates", "cpu_time"] + [get_descriptive_statistics(duplicates_files['base'], 'cpu time')])
+    res.append(["path", "cpu_time"] + [get_descriptive_statistics(path_files['base'], 'cpu time')])
 
 
     with open("results/descriptives.csv", "w", newline='') as csvfile:

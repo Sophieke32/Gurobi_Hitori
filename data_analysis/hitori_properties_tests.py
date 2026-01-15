@@ -4,7 +4,7 @@ from scipy import stats
 
 from data_analysis.helper_methods.spearman_test import print_spearman, spearman_data, spearman_data_special, \
     print_spearman_special
-from data_analysis.retrieve_data import naive_files, duplicates_files
+from data_analysis.retrieve_data import naive_files, duplicates_files, path_files
 
 
 def hitori_properties_tests(verbose=False):
@@ -78,37 +78,50 @@ def hitori_properties_tests(verbose=False):
     res = []
     res.append(["naive"] + spearman_data(naive_files["base"], 'number_of_covered_tiles', 'cpu time'))
     res.append(["duplicates"] + spearman_data(duplicates_files["base"], 'number_of_covered_tiles', 'cpu time'))
+    res.append(["path"] + spearman_data(path_files["base"], 'number_of_covered_tiles', 'cpu time'))
     res.append(["naive"] + spearman_data(naive_files["base"], 'number_of_duplicates', 'cpu time'))
     res.append(["duplicates"] + spearman_data(duplicates_files["base"], 'number_of_duplicates', 'cpu time'))
+    res.append(["path"] + spearman_data(path_files["base"], 'number_of_duplicates', 'cpu time'))
     res.append(["duplicates"] + spearman_data(duplicates_files["base"], 'number_of_cycles', 'cpu time'))
 
     res.append(["####", "####", "####", "####", "####"])
 
     res.append(["naive"] + spearman_data(naive_files["base"], "corner_check_hits", "cpu time"))
     res.append(["duplicates"] + spearman_data(duplicates_files["base"], "corner_check_hits", "cpu time"))
+    res.append(["path"] + spearman_data(path_files["base"], "corner_check_hits", "cpu time"))
     res.append(["naive"] + spearman_data(naive_files["base"], "pairs_isolation_hits", "cpu time"))
     res.append(["duplicates"] + spearman_data(duplicates_files["base"], "pairs_isolation_hits", "cpu time"))
+    res.append(["path"] + spearman_data(path_files["base"], "pairs_isolation_hits", "cpu time"))
     # res.append(["naive"] + spearman_data(naive_files["base"], "edge_pairs_hits", "cpu time"))
     # res.append(["duplicates"] + spearman_data(duplicates_files["base"], "edge_pairs_hits", "cpu time"))
+    # res.append(["path"] + spearman_data(path_files["base"], "edge_pairs_hits", "cpu time"))
     res.append(["naive"] + spearman_data(naive_files["base"], "sandwich_pairs_hits", "cpu time"))
     res.append(["duplicates"] + spearman_data(duplicates_files["base"], "sandwich_pairs_hits", "cpu time"))
+    res.append(["path"] + spearman_data(path_files["base"], "sandwich_pairs_hits", "cpu time"))
     res.append(["naive"] + spearman_data(naive_files["base"], "sandwich_triple_hits", "cpu time"))
     res.append(["duplicates"] + spearman_data(duplicates_files["base"], "sandwich_triple_hits", "cpu time"))
+    res.append(["path"] + spearman_data(path_files["base"], "sandwich_triple_hits", "cpu time"))
 
     res.append(["####", "####", "####", "####", "####"])
 
     res.append(["naive cch"] + spearman_data(naive_files["cch"], "corner_check_hits", "cpu time"))
     res.append(["duplicates cch"] + spearman_data(duplicates_files["cch"], "corner_check_hits", "cpu time"))
+    res.append(["path cch"] + spearman_data(path_files["cch"], "corner_check_hits", "cpu time"))
     res.append(["naive pair isolation"] + spearman_data(naive_files["pair isolation"], "pairs_isolation_hits", "cpu time"))
     res.append(["duplicates pair isolation"] + spearman_data(duplicates_files["pair isolation"], "pairs_isolation_hits", "cpu time"))
-    # res.append(["naive"] + spearman_data(naive_files["base"], "edge_pairs_hits", "cpu time"))
-    # res.append(["duplicates"] + spearman_data(duplicates_files["base"], "edge_pairs_hits", "cpu time"))
+    res.append(["path pair isolation"] + spearman_data(path_files["pair isolation"], "pairs_isolation_hits", "cpu time"))
+    # res.append(["naive"] + spearman_data(naive_files["edge pairs"], "edge_pairs_hits", "cpu time"))
+    # res.append(["duplicates"] + spearman_data(duplicates_files["edge pairs"], "edge_pairs_hits", "cpu time"))
+    # res.append(["path"] + spearman_data(path_files["edge pairs"], "edge_pairs_hits", "cpu time"))
     res.append(["naive sandwiches"] + spearman_data(naive_files["sandwiches"], "sandwich_pairs_hits", "cpu time"))
-    res.append(["duplicates "] + spearman_data(duplicates_files["sandwiches"], "sandwich_pairs_hits", "cpu time"))
+    res.append(["duplicates sandwiches"] + spearman_data(duplicates_files["sandwiches"], "sandwich_pairs_hits", "cpu time"))
+    res.append(["path sandwiches"] + spearman_data(path_files["sandwiches"], "sandwich_pairs_hits", "cpu time"))
     res.append(["naive sandwiches"] + spearman_data(naive_files["sandwiches"], "sandwich_triple_hits", "cpu time"))
     res.append(["duplicates sandwiches"] + spearman_data(duplicates_files["sandwiches"], "sandwich_triple_hits", "cpu time"))
+    res.append(["path sandwiches"] + spearman_data(path_files["sandwiches"], "sandwich_triple_hits", "cpu time"))
     res.append(["naive sandwiches"] + spearman_data_special(naive_files["sandwiches"]))
     res.append(["duplicates sandwiches"] + spearman_data_special(duplicates_files["sandwiches"]))
+    res.append(["path sandwiches"] + spearman_data_special(path_files["sandwiches"]))
 
 
     with open("results/properties_tests.csv", "w", newline='') as csvfile:
