@@ -39,7 +39,7 @@ def get_csv(file):
             'formats': ('S30', 'i4', 'f4', 'f4', 'f4', 'f4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4', 'i4')})
 
 def get_csv_small(file):
-    return np.loadtxt(file, delimiter=',', skiprows=1,
+    return np.loadtxt(file, delimiter=',', skiprows=1, usecols=(0,1,2),
                       dtype={'names': ("instance", "n", "cpu time"),
                              'formats': ('S30', 'i4', 'f4')})
 

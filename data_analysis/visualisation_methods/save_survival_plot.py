@@ -4,10 +4,10 @@ import numpy as np
 import pandas as pd
 
 
-def save_survival_plot(csv1, csv2, generate_for_poster):
+def save_survival_plot(csv1, csv2, csv3, generate_for_poster):
     datapoints = list()
 
-    for csv in [csv1, csv2]:
+    for csv in [csv1, csv2, csv3]:
         y = sorted(csv['cpu time'])
 
         for i in range(1, len(y)):
@@ -33,6 +33,7 @@ def save_survival_plot(csv1, csv2, generate_for_poster):
 
     ax.plot(datapoints[0], x, label="Naive model", color='#49c3fb')
     ax.plot(datapoints[1], x, label="Duplicates model", color='red')
+    ax.plot(datapoints[2], x, label="Path model", color='#8c52ff')
 
     ax.legend(prop=legend_font)
 
