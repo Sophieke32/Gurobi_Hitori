@@ -63,4 +63,4 @@ class QuarticPathSolver(Solver):
             print("Out of Memory")
 
 
-        return m, is_covered, time_spent_on_optimisations, path
+        return m, is_covered, time_spent_on_optimisations

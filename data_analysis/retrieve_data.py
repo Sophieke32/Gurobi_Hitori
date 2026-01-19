@@ -1,17 +1,17 @@
 from data_analysis.helper_methods.process_data import get_csv, get_csv_small, get_csv_better
 
-duplicates = get_csv("data_files/duplicates.csv")
+duplicates = get_csv_better("data_files/duplicates.csv")
 duplicates_ntest = get_csv_small("data_files/duplicates_ntest.csv")
-duplicates_cch = get_csv("data_files/duplicates_cch_constraint.csv")
-duplicates_edge_pairs = get_csv("data_files/duplicates_edge_pairs_constraint.csv")
-duplicates_least_whites = get_csv("data_files/duplicates_least_whites_constraint.csv")
-duplicates_most_blacks = get_csv("data_files/duplicates_most_blacks_constraint.csv")
-duplicates_pair_isolation = get_csv("data_files/duplicates_pair_isolation_constraint.csv")
-duplicates_sandwiches = get_csv("data_files/duplicates_sandwiches_constraint.csv")
+duplicates_cch = get_csv_better("data_files/duplicates_cch_constraint.csv")
+duplicates_edge_pairs = get_csv_better("data_files/duplicates_edge_pairs_constraint.csv")
+duplicates_least_whites = get_csv_better("data_files/duplicates_least_whites_constraint.csv")
+duplicates_most_blacks = get_csv_better("data_files/duplicates_most_blacks_constraint.csv")
+duplicates_pair_isolation = get_csv_better("data_files/duplicates_pair_isolation_constraint.csv")
+duplicates_sandwiches = get_csv_better("data_files/duplicates_sandwiches_constraint.csv")
 
 
 path = get_csv_better("data_files/path.csv")
-
+path_ntest = get_csv_small("data_files/path_ntest.csv")
 path_cch = get_csv_better("data_files/path_cch_constraint.csv")
 path_edge_pairs = get_csv_better("data_files/path_edge_pairs_constraint.csv")
 path_least_whites = get_csv_better("data_files/path_least_whites_constraint.csv")
@@ -23,21 +23,21 @@ path_sandwiches = get_csv_better("data_files/path_sandwiches_constraint.csv")
 naive = get_csv_better("data_files/naive.csv")
 naive_ntest = get_csv_small("data_files/naive_ntest.csv")
 
-naive_bfs = get_csv("data_files/naive_bfs_checker.csv")
-naive_connected_component = get_csv("data_files/naive_cc_checker.csv")
-naive_cycles = get_csv("data_files/naive_cycles_checker.csv")
+naive_bfs = get_csv_better("data_files/naive_bfs_checker.csv")
+naive_connected_component = get_csv_better("data_files/naive_cc_checker.csv")
+naive_cycles = get_csv_better("data_files/naive_cycles_checker.csv")
 
-naive_min = get_csv("data_files/naive_min_heuristic.csv")
-naive_max = get_csv("data_files/naive_max_heuristic.csv")
-naive_no = get_csv("data_files/naive_no_heuristic.csv")
+naive_min = get_csv_better("data_files/naive_min_heuristic.csv")
+naive_max = get_csv_better("data_files/naive_max_heuristic.csv")
+naive_no = get_csv_better("data_files/naive_no_heuristic.csv")
 
-naive_cc = get_csv("data_files/naive_cc_constraint.csv")
-naive_cch = get_csv("data_files/naive_cch_constraint.csv")
-naive_edge_pairs = get_csv("data_files/naive_edge_pairs_constraint.csv")
-naive_least_whites = get_csv("data_files/naive_least_whites_constraint.csv")
-naive_most_blacks = get_csv("data_files/naive_most_blacks_constraint.csv")
-naive_pair_isolation = get_csv("data_files/naive_pair_isolation_constraint.csv")
-naive_sandwiches = get_csv("data_files/naive_sandwiches_constraint.csv")
+naive_cc = get_csv_better("data_files/naive_cc_constraint.csv")
+naive_cch = get_csv_better("data_files/naive_cch_constraint.csv")
+naive_edge_pairs = get_csv_better("data_files/naive_edge_pairs_constraint.csv")
+naive_least_whites = get_csv_better("data_files/naive_least_whites_constraint.csv")
+naive_most_blacks = get_csv_better("data_files/naive_most_blacks_constraint.csv")
+naive_pair_isolation = get_csv_better("data_files/naive_pair_isolation_constraint.csv")
+naive_sandwiches = get_csv_better("data_files/naive_sandwiches_constraint.csv")
 
 
 # Dict with all duplicates files for easier exporting to other files
@@ -45,7 +45,7 @@ duplicates_files = {"base": duplicates, "ntest": duplicates_ntest, "cch": duplic
                     "least whites": duplicates_least_whites, "most blacks": duplicates_most_blacks,
                     "pair isolation": duplicates_pair_isolation, "sandwiches": duplicates_sandwiches}
 
-path_files = {"base": path, "cch": path_cch, "edge pairs": path_edge_pairs,
+path_files = {"base": path, "ntest": path_ntest, "cch": path_cch, "edge pairs": path_edge_pairs,
                     "least whites": path_least_whites, "most blacks": path_most_blacks,
                     "pair isolation": path_pair_isolation, "sandwiches": path_sandwiches}
 

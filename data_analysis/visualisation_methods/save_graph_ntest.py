@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import numpy as np
 
-def save_graph_ntest(csv1, csv2, generate_for_poster):
+def save_graph_ntest(csv1, csv2, csv3, generate_for_poster):
     # Define the fonts
     font = {'fontname': 'Nimbus Roman'}
     font_manager = fm.FontProperties(family='Nimbus Roman')
@@ -16,13 +16,16 @@ def save_graph_ntest(csv1, csv2, generate_for_poster):
 
     data1 = []
     data2 = []
+    data3 = []
     for i in sizes:
         data1.append(np.mean(csv1[csv1['n']==i]['cpu time']))
         data2.append(np.mean(csv2[csv2['n']==i]['cpu time']))
+        data3.append(np.mean(csv3[csv3['n']==i]['cpu time']))
 
     # data1, data2 = csv1['cpu time'], csv2['cpu time']
-    ax.plot(sizes, data2, label="Duplicates model", color='red')
+    ax.plot(sizes, data2, label="Duplicates model", color='red', linestyle='dashed')
     ax.plot(sizes, data1, label="Optimised naive model", color='#49c3fb')
+    ax.plot(sizes, data3, label="Path model", color='#8c52ff', linestyle='dashdot')
 
     ax.set_ylabel('Mean solving time (s)', size=15, **font)
     ax.set_xlabel('Instance size', size=15, **font)
@@ -35,11 +38,13 @@ def save_graph_ntest(csv1, csv2, generate_for_poster):
     for label in ax.get_yticklabels():
         label.set_fontproperties(font_manager)
 
+    ax.tick_params(axis='both', labelsize=15)
+
     # Only show ticks on the left and bottom spines
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
     ax.spines["bottom"].set_bounds(5, 10)
-    ax.spines["left"].set_bounds(0, 0.14)
+    ax.spines["left"].set_bounds(0, 0.48)
 
     if generate_for_poster:
         # Set title
@@ -57,5 +62,5 @@ def save_graph_ntest(csv1, csv2, generate_for_poster):
         plt.savefig('figures/poster/graph_ntest.png', transparent=True)
 
     else:
-        plt.show()
-        # plt.savefig('figures/graph_ntest.svg')
+        # plt.show()
+        plt.savefig('figures/graph_ntest.svg')

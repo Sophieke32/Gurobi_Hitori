@@ -52,3 +52,28 @@ def read_file(root, file):
         }
 
         return n, board, data
+
+def edit_file(root, file):
+    lines = []
+    with open(os.path.join(root, file), "r") as f:
+        line = f.readline()
+        while type(int(line)) != int: continue
+        n = int(line)
+
+        lines.append(str(n))
+        lines.append("\n")
+
+        lines.append(f.readline())
+
+        for i in range(n):
+            lines.append(f.readline())
+
+        lines.append(f.readline())
+        lines.append(f.readline().replace("#", "\n#"))
+
+        for i in range(12):
+            lines.append(f.readline())
+
+    with open(os.path.join(root, file), "w") as f:
+        for line in lines:
+            f.write(str(line))
