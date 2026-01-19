@@ -48,7 +48,7 @@ def save_boxplots_spearman_vs_time(csv, generate_for_poster, file_addition, titl
 
     # Set labels and title
     ax.set_ylabel(x_label, size=15, **font)
-    ax.set_xlabel('Time (s)', size=15, **font)
+    ax.set_xlabel('Solving time (s)', size=15, **font)
     ax.set_title(title, size=15, color='white', **font)
 
     ax.spines["right"].set_visible(False)
@@ -57,7 +57,7 @@ def save_boxplots_spearman_vs_time(csv, generate_for_poster, file_addition, titl
     ax.grid()
     # ax.grid(which="minor", color="0.8")
 
-    ax.tick_params(axis='both', labelsize=10)
+    ax.tick_params(axis='both', labelsize=15)
     if len(ax.get_yticklabels()) > 10: plt.setp(ax.get_yticklabels()[::2], visible=False)
 
     if generate_for_poster:

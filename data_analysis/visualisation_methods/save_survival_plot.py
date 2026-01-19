@@ -32,14 +32,14 @@ def save_survival_plot(csv1, csv2, csv3, generate_for_poster):
 
 
     ax.plot(datapoints[0], x, label="Naive model", color='#49c3fb')
-    ax.plot(datapoints[1], x, label="Duplicates model", color='red')
-    ax.plot(datapoints[2], x, label="Path model", color='#8c52ff')
+    ax.plot(datapoints[1], x, label="Duplicates model", color='red', linestyle='dashed')
+    ax.plot(datapoints[2], x, label="Path model", color='#8c52ff', linestyle='dashdot')
 
     ax.legend(prop=legend_font)
 
     ax.set_xscale('log')
 
-    ax.set_xlabel('Time (s)', size=15, **font)
+    ax.set_xlabel('Solving time (s)', size=15, **font)
     ax.set_ylabel('Number of instances solved', size=15, **font)
 
     # Set the ticks' font
@@ -52,12 +52,15 @@ def save_survival_plot(csv1, csv2, csv3, generate_for_poster):
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
 
+
+    ax.tick_params(axis='both', labelsize=15)
+
     ax.grid()
     # ax.grid(which="minor", color="0.8")
 
     if generate_for_poster:
         # Generate with a title
-        ax.set_title("Performance of the naive and duplicates model", size=15, color='white', **font)
+        ax.set_title("Solving speed of the naive and duplicates model", size=15, color='white', **font)
 
         # Set axes colours to white
         ax.spines["bottom"].set_color("white")

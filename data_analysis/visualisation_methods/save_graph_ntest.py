@@ -23,9 +23,9 @@ def save_graph_ntest(csv1, csv2, csv3, generate_for_poster):
         data3.append(np.mean(csv3[csv3['n']==i]['cpu time']))
 
     # data1, data2 = csv1['cpu time'], csv2['cpu time']
-    ax.plot(sizes, data2, label="Duplicates model", color='red')
+    ax.plot(sizes, data2, label="Duplicates model", color='red', linestyle='dashed')
     ax.plot(sizes, data1, label="Optimised naive model", color='#49c3fb')
-    ax.plot(sizes, data3, label="Path model", color='#8c52ff')
+    ax.plot(sizes, data3, label="Path model", color='#8c52ff', linestyle='dashdot')
 
     ax.set_ylabel('Mean solving time (s)', size=15, **font)
     ax.set_xlabel('Instance size', size=15, **font)
@@ -38,11 +38,13 @@ def save_graph_ntest(csv1, csv2, csv3, generate_for_poster):
     for label in ax.get_yticklabels():
         label.set_fontproperties(font_manager)
 
+    ax.tick_params(axis='both', labelsize=15)
+
     # Only show ticks on the left and bottom spines
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
     ax.spines["bottom"].set_bounds(5, 10)
-    ax.spines["left"].set_bounds(0, 0.14)
+    ax.spines["left"].set_bounds(0, 0.48)
 
     if generate_for_poster:
         # Set title
