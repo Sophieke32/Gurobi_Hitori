@@ -1,20 +1,21 @@
 import time
 
-from pyscipopt import Model
+import highspy
 
 from src.connected_checkers.connected_checker import ConnectedChecker
 from src.constraints.redundant_constraints.redundant_constraint import RedundantConstraint
+from src.other_solvers.cylp.naive_solver.cylp_naive_unique_constraint import cylp_naive_unique_constraint
+from src.other_solvers.cylp.naive_solver.helper_methods.cylp_add_illegal_solution import cylp_add_illegal_solution
+from src.other_solvers.cylp.naive_solver.helper_methods.cylp_extract_solution import cylp_extract_solution
+from src.other_solvers.cylp.naive_solver.helper_methods.cylp_pretty_print import cylp_pretty_print
 from src.heuristics.heuristic import Heuristic
-from src.scipopt.naive_solver.helper_methods.scipopt_add_illegal_solution import scipopt_add_illegal_solution
-from src.scipopt.naive_solver.helper_methods.scipopt_extract_solution import scipopt_extract_solution
-from src.scipopt.naive_solver.helper_methods.scipopt_pretty_print import scipopt_pretty_print
-from src.scipopt.naive_solver.scipopt_naive_adjacent_constraint import scipopt_naive_adjacent_constraint
-from src.scipopt.naive_solver.scipopt_naive_unique_constraint import scipopt_naive_unique_constraint
+from src.other_solvers.scipopt.naive_solver.helper_methods.scipopt_extract_solution import scipopt_extract_solution
+from src.other_solvers.scipopt.naive_solver.helper_methods.scipopt_pretty_print import scipopt_pretty_print
+from src.other_solvers.cylp.naive_solver.cylp_naive_adjacent_constraint import cylp_naive_adjacent_constraint
 from src.solvers.solver import Solver
-from src.solvers.naive_solver.helper_methods.extract_solution import extract_solution
 
 
-class ScipOptNaiveSolver(Solver):
+class CylpNaiveSolver(Solver):
     name = ""
     redundant_constraints: list[RedundantConstraint] = []
     connected_checker: ConnectedChecker = None
@@ -28,7 +29,8 @@ class ScipOptNaiveSolver(Solver):
 
     def solve(self, n, board):
         # Create a new model
-        m = Model("scipopt_naive")
+
+        m = highspy.Highs()
 
         # set_model_parameters(m)
 
@@ -37,7 +39,7 @@ class ScipOptNaiveSolver(Solver):
         for i in range(n):
             new_list = list()
             for j in range(n):
-                new_list.append(m.addVar(vtype='BINARY', name=f'is_covered {i}_{j}'))
+                new_list.append(m.addVariable(0, 1))
             is_covered.append(new_list)
 
 
@@ -49,27 +51,29 @@ class ScipOptNaiveSolver(Solver):
         time_spent_on_optimisations = (time.process_time_ns() - t1) / 1000000000
 
         # Adjacency constraint
-        scipopt_naive_adjacent_constraint(n, is_covered, m)
+        cylp_naive_adjacent_constraint(n, is_covered, m)
 
         # Unique constraint
-        scipopt_naive_unique_constraint(n, is_covered, board, m)
+        cylp_naive_unique_constraint(n, is_covered, board, m)
 
         # Apply Heuristic
         self.heuristic.apply(n, is_covered, m)
 
 
-        m.optimize()
+        m.run()
+
+        print("Var 0_0", is_covered[0][0].value())
 
         # Extract values
-        uncovered, covered, grid = scipopt_extract_solution(n, m, is_covered)
-        scipopt_pretty_print(m, is_covered, n, board)
+        uncovered, covered, grid = cylp_extract_solution(n, m, is_covered)
+        cylp_pretty_print(m, is_covered, n, board)
         iteration = 0
 
         while not self.connected_checker.check(n, grid):
             # print("Infeasible iteration")
-            scipopt_add_illegal_solution(uncovered, covered, m, iteration, is_covered, n)
-            m.optimize()
-            print(m.getStatus())
+            cylp_add_illegal_solution(uncovered, covered, m, iteration, is_covered, n)
+            m.run()
+            print(m.getModelStatus())
 
             uncovered, covered, grid = scipopt_extract_solution(n, m, is_covered)
             print("\n")

@@ -5,7 +5,7 @@ from pyscipopt import quicksum
 # Does so by creating a binary decision variable v
 # if v = 0, at least one of the current black squares must be made white
 # if v = 1, at least one additional square must be made black
-def scipopt_add_illegal_solution(uncovered, covered, m, iteration, is_covered, n):
+def cylp_add_illegal_solution(uncovered, covered, m, iteration, is_covered, n):
     m.freeTransform()
 
     print("Covered tiles:", covered)
@@ -57,6 +57,6 @@ def scipopt_add_illegal_solution(uncovered, covered, m, iteration, is_covered, n
     covered_tiles_expression = quicksum(c for c in covered)
     # print(covered_tiles_expression)
 
-    m.addCons(uncovered_tiles_expression >= 1, name="different_uncovered_tiles")
+    m.addConstr(uncovered_tiles_expression >= 1, name="different_uncovered_tiles")
     # m.addCons(uncovered_tiles_expression >= 1 - (v0 * 10000), name="different_uncovered_tiles")
     # m.addCons(covered_tiles_expression <= len(covered) - 1 + ((1 - v0) * 10000), name="different_covered_tiles")

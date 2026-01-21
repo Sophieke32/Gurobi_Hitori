@@ -1,9 +1,6 @@
 import argparse
 import os
 import datetime
-import csv
-
-import numpy as np
 
 from src.connected_checkers.bfs_connected_checker import BFSConnectedChecker
 from src.connected_checkers.connected_components_connected_checker import ConnectedComponentsConnectedChecker
@@ -15,19 +12,20 @@ from src.constraints.redundant_constraints.least_whites import LeastWhitesConstr
 from src.constraints.redundant_constraints.most_blacks import MostBlacksConstraint
 from src.constraints.redundant_constraints.pair_isolation import PairIsolationConstraint
 from src.constraints.redundant_constraints.sandwiches import SandwichesConstraint
-from src.constraints.redundant_constraints.set_unique_values import SetUniqueValuesConstraint
+from src.other_solvers.cylp.naive_solver.cylp_min_heuristic import CylpMinHeuristic
+from src.other_solvers.cylp.naive_solver.cylp_naive_solver import CylpNaiveSolver
 from src.experiment_runners.benchmark_run_environment import BenchmarkRunEnvironment
 from src.experiment_runners.experiment_run_environment import ExperimentRunEnvironment
 from src.experiment_runners.preprocess_run_environment import PreprocessRunEnvironment
-from src.experiment_runners.run_environment import RunEnvironment
 from src.experiment_runners.test_run_environment import TestRunEnvironment
 from src.heuristics.max_heuristic import MaxHeuristic
 from src.heuristics.min_heuristic import MinHeuristic
 from src.heuristics.no_heuristic import NoHeuristic
-from src.main import main
-from src.read_file import read_file, edit_file
-from src.scipopt.naive_solver.scipopt_min_heuristic import ScipOptMinHeuristic
-from src.scipopt.naive_solver.scipopt_naive_solver import ScipOptNaiveSolver
+from src.other_solvers.ilpy.naive_solver.ilpy_min_heuristic import IlpyMinHeuristic
+from src.other_solvers.ilpy.naive_solver.ilpy_naive_solver import IlpyNaiveSolver
+from src.other_solvers.scipopt.naive_solver.scipopt_min_heuristic import ScipOptMinHeuristic
+from src.other_solvers.scipopt.naive_solver.scipopt_naive_solver import ScipOptNaiveSolver
+from src.read_file import read_file
 from src.solvers.duplicates_solver.duplicates_solver import DuplicatesSolver
 from src.solvers.naive_preprocessing_solver.naive_preprocessing_solver import NaivePreprocessingSolver
 from src.solvers.naive_solver.naive_solver import NaiveSolver
@@ -125,7 +123,7 @@ def run_preprocess(directory_name):
 # Manually change the code to change what model is run
 def verify_instance(directory_name):
     # solver = QuarticPathSolver("quartic", [])
-    solver = ScipOptNaiveSolver("scipopt", [], BFSConnectedChecker(), ScipOptMinHeuristic())
+    solver = ScipOptNaiveSolver("cylp", [], BFSConnectedChecker(), ScipOptMinHeuristic())
     environment = TestRunEnvironment(solver)
 
     i = 1
@@ -153,12 +151,14 @@ def run_custom(directory_name):
 def run_ntest(directory_name):
     all_solvers = []
 
+    # all_solvers.append(
+    #     QuarticPathSolver("path_ntest", []))
+    # all_solvers.append(
+    #     DuplicatesSolver("duplicates_ntest", []))
+    # all_solvers.append(
+    #     NaiveSolver("naive_ntest", [], BFSConnectedChecker(), MinHeuristic()))
     all_solvers.append(
-        QuarticPathSolver("path_ntest", []))
-    all_solvers.append(
-        DuplicatesSolver("duplicates_ntest", []))
-    all_solvers.append(
-        NaiveSolver("naive_ntest", [], BFSConnectedChecker(), MinHeuristic()))
+        ScipOptNaiveSolver("scipopt_naive_ntest", [], BFSConnectedChecker(), ScipOptMinHeuristic()))
 
     run_environments = []
     for solver in all_solvers:

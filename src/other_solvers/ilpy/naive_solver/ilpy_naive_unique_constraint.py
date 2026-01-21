@@ -1,4 +1,4 @@
-def scipopt_naive_unique_constraint(n, is_covered, board, m):
+def ilpy_naive_unique_constraint(n, is_covered, board, m):
     # For each row we make a map, from a value (the value on the board) to all the variables
     # on a square with that value. We sum all these variables, and that should not exceed 1
     for i in range(n):
@@ -11,7 +11,7 @@ def scipopt_naive_unique_constraint(n, is_covered, board, m):
 
         for i in range(1, n + 1):
             if i in horizontal_map:
-                m.addCons(horizontal_map[i] <= 1)
+                m.addConstr(horizontal_map[i] <= 1)
 
     # For each column we make a map, from a value (the value on the board) to all the variables
     # on a square with that value. We sum all these variables, and that should not exceed 1
@@ -25,5 +25,5 @@ def scipopt_naive_unique_constraint(n, is_covered, board, m):
 
         for i in range(1, n+1):
             if i in vertical_map:
-                m.addCons(vertical_map[i] <= 1)
+                m.addConstr(vertical_map[i] <= 1)
         # m.addConstrs(vertical_map[i] <= 1 for i in range(1, n + 1) if i in vertical_map)
