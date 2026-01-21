@@ -13,10 +13,11 @@ def main():
     # heuristic_tests(verbose=verbose)
     # connected_algorithms_tests(verbose=verbose)
     # compare_models_test(verbose=verbose)
-    # optimisation_rules_tests(verbose=verbose)
+    optimisation_rules_tests(verbose=verbose)
     # hitori_properties_tests(verbose=verbose)
 
-    generate_graphs(generate_for_poster=False)
+    # generate_graphs(generate_for_poster=False)
+
 
 if __name__ == "__main__":
     main()

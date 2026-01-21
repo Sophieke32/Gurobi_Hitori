@@ -26,6 +26,8 @@ from src.heuristics.min_heuristic import MinHeuristic
 from src.heuristics.no_heuristic import NoHeuristic
 from src.main import main
 from src.read_file import read_file, edit_file
+from src.scipopt.naive_solver.scipopt_min_heuristic import ScipOptMinHeuristic
+from src.scipopt.naive_solver.scipopt_naive_solver import ScipOptNaiveSolver
 from src.solvers.duplicates_solver.duplicates_solver import DuplicatesSolver
 from src.solvers.naive_preprocessing_solver.naive_preprocessing_solver import NaivePreprocessingSolver
 from src.solvers.naive_solver.naive_solver import NaiveSolver
@@ -122,7 +124,8 @@ def run_preprocess(directory_name):
 # Runs the model in the TestRunEnvironment, which actually checks solutions
 # Manually change the code to change what model is run
 def verify_instance(directory_name):
-    solver = QuarticPathSolver("quartic", [])
+    # solver = QuarticPathSolver("quartic", [])
+    solver = ScipOptNaiveSolver("scipopt", [], BFSConnectedChecker(), ScipOptMinHeuristic())
     environment = TestRunEnvironment(solver)
 
     i = 1
@@ -141,7 +144,9 @@ def verify_instance(directory_name):
 
 # Currently there is no custom run setup
 def run_custom(directory_name):
-    print("NOT HERE")
+    # solver = ScipOptNaiveSolver("scipopt", [], BFSConnectedChecker(), ScipOptMinHeuristic())
+    print("Not here right now")
+
 
 
 # Runs all models in experiment mode on all files in custom_instances/ntest
@@ -289,7 +294,7 @@ if __name__ == "__main__":
             print("Running in the Test Run Environment")
             environment = TestRunEnvironment(solver)
 
-
+        print("## This is a single file run environment, change it if need be")
         n, board, data = read_file(root, file)
 
         environment.run_puzzle(n, board, file, data={})

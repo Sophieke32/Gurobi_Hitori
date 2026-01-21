@@ -109,8 +109,8 @@ def optimisation_rules_tests(verbose=False):
                 writer.writerow({"model 1": i[0], "model 2": i[1], "mean difference": i[2][0], "p-value": i[2][1]})
 
     res_path = []
-    # res_path.append(["path base", "path cc",
-    #                   print_permutation_test(path_files['base']['cpu time'], path_files['cc']['cpu time'])])
+    res_path.append(["path base", "path cc",
+                      print_permutation_test(path_files['base']['cpu time'], path_files['cc']['cpu time'])])
     res_path.append(["path base", "path cch",
                       print_permutation_test(path_files['base']['cpu time'], path_files['cch']['cpu time'])])
     res_path.append(["path base", "path sandwiches",
@@ -129,7 +129,7 @@ def optimisation_rules_tests(verbose=False):
         writer = csv.DictWriter(csvfile, fieldnames=["model 1", "model 2", "mean difference", "p-value"])
         writer.writeheader()
 
-        for i in res_duplicates:
+        for i in res_path:
             if i[2][2] == 1:
                 writer.writerow({"model 1": i[0], "model 2": i[1], "mean difference": -1 * i[2][0], "p-value": i[2][1]})
             else:
