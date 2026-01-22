@@ -3,8 +3,6 @@ import time
 import gurobipy as gp
 from gurobipy import GRB
 
-from src.constraints.duplicates_connected_constraint import duplicates_connected_constraint
-from src.constraints.duplicates_unique_constraint import duplicates_unique_constraint
 from src.constraints.naive_adjacent_constraint import naive_adjacent_constraint
 from src.constraints.naive_unique_constraint import naive_unique_constraint
 from src.constraints.quadratic_path_connected_constraint import quadratic_path_connected_constraint

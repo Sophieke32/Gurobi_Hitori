@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import numpy as np
 
-def save_graph_ntest(csv1, csv2, csv3, generate_for_poster):
+def save_graph_naive_ntests(csv1, csv2, csv3, generate_for_poster):
     # Define the fonts
     font = {'fontname': 'Nimbus Roman'}
     font_manager = fm.FontProperties(family='Nimbus Roman')
@@ -23,9 +23,9 @@ def save_graph_ntest(csv1, csv2, csv3, generate_for_poster):
         data3.append(np.mean(csv3[csv3['n']==i]['cpu time']))
 
     # data1, data2 = csv1['cpu time'], csv2['cpu time']
-    ax.plot(sizes, data2, label="Duplicates model", color='red', linestyle='dashed')
+    ax.plot(sizes, data2, label="ScipOpt model", color='red', linestyle='dashed')
     ax.plot(sizes, data1, label="Optimised naive model", color='#49c3fb')
-    ax.plot(sizes, data3, label="Path model", color='#8c52ff', linestyle='dashdot')
+    # ax.plot(sizes, data3, label="Path model", color='#8c52ff', linestyle='dashdot')
 
     ax.set_ylabel('Mean solving time (s)', size=15, **font)
     ax.set_xlabel('Instance size', size=15, **font)
@@ -48,7 +48,7 @@ def save_graph_ntest(csv1, csv2, csv3, generate_for_poster):
 
     if generate_for_poster:
         # Set title
-        ax.set_title("Solving time of naive and duplicate model", size=15, color='white', **font)
+        ax.set_title("Solving time of the path, naive, and duplicates model", size=15, color='white', **font)
 
         # Set axes colours to white
         ax.spines["bottom"].set_color("white")
@@ -59,8 +59,8 @@ def save_graph_ntest(csv1, csv2, csv3, generate_for_poster):
         ax.tick_params(axis='y', colors='white')
 
         # plt.show()
-        plt.savefig('figures/poster/graph_ntest.png', transparent=True)
+        plt.savefig('figures/poster/graph_naive_ntest.png', transparent=True)
 
     else:
         # plt.show()
-        plt.savefig('figures/graph_ntest.svg')
+        plt.savefig('figures/graph_naive_ntest.svg')

@@ -6,6 +6,8 @@ benchmark_prolog = get_csv_small("data_files/benchmark/prolog.csv")
 benchmark_pumpkin = get_csv_small("data_files/benchmark/pumpkin.csv")
 benchmark_z3 = get_csv_small("data_files/benchmark/z3.csv")
 
+scipopt_naive_ntest = get_csv_small("data_files/scipopt_naive_ntest.csv")
+
 duplicates = get_csv_better("data_files/duplicates.csv")
 duplicates_ntest = get_csv_small("data_files/duplicates_ntest.csv")
 duplicates_cch = get_csv_better("data_files/duplicates_cch_constraint.csv")
@@ -50,6 +52,8 @@ naive_sandwiches = get_csv_better("data_files/naive_sandwiches_constraint.csv")
 # Dict with all duplicates files for easier exporting to other files
 benchmark_files = {"asp": benchmark_asp, "gurobi": benchmark_gurobi, "prolog": benchmark_prolog,
                    "pumpkin": benchmark_pumpkin, "z3": benchmark_z3}
+
+scipopt_files = {"naive_ntest": scipopt_naive_ntest}
 
 duplicates_files = {"base": duplicates, "ntest": duplicates_ntest, "cch": duplicates_cch, "edge pairs": duplicates_edge_pairs,
                     "least whites": duplicates_least_whites, "most blacks": duplicates_most_blacks,
