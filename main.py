@@ -153,12 +153,12 @@ def run_ntest(directory_name):
 
     all_solvers.append(
         QuarticPathSolver("path_ntest", []))
-    # all_solvers.append(
-    #     DuplicatesSolver("duplicates_ntest", []))
-    # all_solvers.append(
-    #     NaiveSolver("naive_ntest", [], BFSConnectedChecker(), MinHeuristic()))
-    # all_solvers.append(
-    #     ScipOptNaiveSolver("scipopt_naive_ntest", [], BFSConnectedChecker(), ScipOptMinHeuristic()))
+    all_solvers.append(
+        DuplicatesSolver("duplicates_ntest", []))
+    all_solvers.append(
+        NaiveSolver("naive_ntest", [], BFSConnectedChecker(), MinHeuristic()))
+    all_solvers.append(
+        ScipOptNaiveSolver("scipopt_naive_ntest", [], BFSConnectedChecker(), ScipOptMinHeuristic()))
 
     run_environments = []
     for solver in all_solvers:
@@ -279,38 +279,33 @@ if __name__ == "__main__":
             solver = DuplicatesSolver("duplicates_solver", [])
         elif model == "path":
             print("Running the path model")
-            solver = PathSolver("path_solver", [SandwichesConstraint()])
+            solver = QuarticPathSolver("path_solver", [])
         else:
             print("Running the naive model")
             solver = NaiveSolver("naive_solver", [], BFSConnectedChecker(), MinHeuristic())
 
         root = os.path.dirname(directory_name)
-        file = directory_name.split("/")[-1]
+        # file = directory_name.split("/")[-1]
 
         if time:
             print("Running in the Benchmarking Run Environment")
-            environment = BenchmarkRunEnvironment(solver, root)
+            environment = ExperimentRunEnvironment(solver, root)
         else:
             print("Running in the Test Run Environment")
             environment = TestRunEnvironment(solver)
 
-        print("## This is a single file run environment, change it if need be")
-        n, board, data = read_file(root, file)
+        i = 0
 
-        environment.run_puzzle(n, board, file, data={})
+        print("Directory name:", directory_name)
 
-        # i = 0
-        #
-        # print("Directory name:", directory_name)
-        #
-        # for root, dirs, files in os.walk(directory_name):
-        #     for file in files:
-        #         if file.endswith(".singles"):
-        #
-        #             n, board, data = read_file(root, file)
-        #
-        #             cpu_time = environment.run_puzzle(n, board, file, data=data)
-        #
-        #             print(i, n, cpu_time, environment.solver.name)
-        #             i += 1
-        #     print(root)
+        for root, dirs, files in os.walk(directory_name):
+            for file in files:
+                if file.endswith(".singles"):
+
+                    n, board, data = read_file(root, file)
+
+                    cpu_time = environment.run_puzzle(n, board, file, data=data)
+
+                    print(i, n, cpu_time, environment.solver.name)
+                    i += 1
+            print(root)
