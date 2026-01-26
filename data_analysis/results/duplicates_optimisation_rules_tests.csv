@@ -1,0 +1,7 @@
+model 1,model 2,mean difference,p-value
+duplicates base,duplicates cch,0.000252001,0.21514
+duplicates base,duplicates sandwiches,0.021312602,0.0314
+duplicates base,duplicates edge pairs,-6.758422e-05,0.4334
+duplicates base,duplicates most blacks,0.00016134977,0.34773
+duplicates base,duplicates least whites,-0.0006204471,0.06233
+duplicates base,duplicates pair isolation,-0.000115439296,0.4027

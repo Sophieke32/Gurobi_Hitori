@@ -1,0 +1,5 @@
+model 1,model 2,mean difference,p-value
+asp,gurobi,-12.862293,1e-05
+gurobi,prolog,-1.7393417,1e-05
+pumpkin,gurobi,-12.357021,1e-05
+z3,gurobi,-9.190861,1e-05

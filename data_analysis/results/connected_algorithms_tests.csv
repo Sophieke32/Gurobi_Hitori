@@ -1,0 +1,4 @@
+model 1,model 2,mean difference,p-value
+bfs,cycles,-0.0011925548,1e-05
+bfs,connected component,-0.0009714067,1e-05
+connected component,cycles,-0.00022114813,0.08256

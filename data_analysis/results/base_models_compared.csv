@@ -1,0 +1,4 @@
+model 1,model 2,mean difference,p-value
+duplicates,naive,-0.023122676,0.3305
+naive,path,-0.30794245,1e-05
+duplicates,path,-0.33106515,1e-05

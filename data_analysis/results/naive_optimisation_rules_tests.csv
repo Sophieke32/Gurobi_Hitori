@@ -1,0 +1,8 @@
+model 1,model 2,mean difference,p-value
+naive base,naive cc,0.039529875,0.10415
+naive base,naive cch,4.0069222e-05,0.4191
+naive base,naive sandwiches,-0.024872288,0.21394
+naive base,naive edge pairs,2.0593405e-05,0.41035
+naive base,naive most blacks,-0.016961917,0.28851
+naive base,naive least whites,-0.0175848,0.27225
+naive base,naive pair isolation,-0.0037871748,0.48877

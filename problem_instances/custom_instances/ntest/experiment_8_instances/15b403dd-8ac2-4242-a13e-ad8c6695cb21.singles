@@ -1,0 +1,25 @@
+8
+
+1 2 4 7 8 5 3 6
+6 4 8 3 7 3 2 8
+4 6 8 1 4 5 8 2
+2 4 5 3 5 8 2 7
+3 6 6 3 5 6 4 3
+7 5 1 8 1 4 6 3
+6 3 1 4 8 2 6 5
+4 8 5 2 3 3 7 1
+
+@60377770293812992152213537926358455462
+# Number of covered tiles: 18
+# Number of duplicates: 40
+# Number of cycles: 195
+# Corner-checks hits: 0
+# Edge-pairs hits: 0
+# Pair-isolation hits: 2
+# Sandwich-pair hits: 2
+# Sandwich-triple hits: 0
+# Time spent making duplicates array (s): 0.0003581783400000002
+# Time spent making graph (s): 0.003687963800000001
+# Number of runs to collect time data: 100
+# Number of iterations: 4
+# Time spent on illegal solutions (s): 0.00254666342

@@ -1,0 +1,21 @@
+11
+
+2 3 9 6 3 11 4 10 1 6 5
+9 4 6 10 11 1 11 7 8 6 9
+1 10 8 2 4 3 7 4 6 3 2
+3 3 5 11 9 7 11 4 5 10 6
+8 11 10 8 3 1 1 5 7 8 4
+5 6 2 2 1 8 11 11 6 4 2
+1 5 2 3 10 5 6 8 4 3 7
+7 6 11 4 11 10 1 2 6 5 3
+9 1 4 10 6 2 10 3 5 7 11
+8 2 1 3 9 11 11 6 7 7 6
+1 7 8 5 10 4 3 1 10 9 8
+
+@335184806467002080557939860521417538575
+# Computed in 146952382 nanoseconds
+# Number of covered squares: 34
+# Number of cycles: 8953
+# Computed in 141633653 nanoseconds
+# Number of covered squares: 34
+# Number of cycles: 8953

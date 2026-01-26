@@ -1,0 +1,21 @@
+9
+
+6 5 8 3 4 9 6 6 4
+1 7 4 9 3 6 2 5 3
+9 5 4 8 8 2 7 3 6
+4 9 4 6 7 3 2 8 5
+4 1 6 4 8 5 9 2 6
+7 4 5 4 4 8 7 9 1
+8 3 4 7 4 1 6 1 8
+3 2 1 2 5 4 8 3 9
+5 4 3 2 4 1 1 7 4
+
+@340148197654468642701674327284051473587
+# Number of covered tiles: 24
+# Number of duplicates: 47
+# Number of cycles: 33
+# Corner-checks hits: 0
+# Edge-pairs hits: 0
+# Pair-isolation hits: 2
+# Sandwich-pair hits: 2
+# Sandwich-triple hits: 0

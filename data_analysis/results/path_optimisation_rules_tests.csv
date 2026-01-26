@@ -1,0 +1,8 @@
+model 1,model 2,mean difference,p-value
+path base,path cc,0.049292773,1e-05
+path base,path cch,-0.0034627318,0.00028
+path base,path sandwiches,0.016905159,0.05925
+path base,path edge pairs,-0.0030452013,1e-05
+path base,path most blacks,-0.008034259,0.22683
+path base,path least whites,-0.009371668,0.1922
+path base,path pair isolation,0.026741445,2e-05

@@ -1,0 +1,37 @@
+model,property 1,property 2,rho,p-value
+naive,number_of_covered_tiles,cpu time,-0.03846360958764243,0.22426901732202337
+duplicates,number_of_covered_tiles,cpu time,0.162632470856015,2.329439589328855e-07
+path,number_of_covered_tiles,cpu time,-0.17337720183691738,3.435649651330093e-08
+naive,number_of_duplicates,cpu time,-0.10996181353324858,0.0004948710864743393
+duplicates,number_of_duplicates,cpu time,0.5316598843004158,4.8046477103004466e-74
+path,number_of_duplicates,cpu time,-0.1214705441348864,0.00011778131041468369
+duplicates,number_of_cycles,cpu time,0.9777665936244547,0.0
+####,####,####,#,#
+naive,corner_check_hits,cpu time,-0.04753035513450111,0.1330943040878584
+duplicates,corner_check_hits,cpu time,0.05032169600230989,0.11176064660953029
+path,corner_check_hits,cpu time,0.010545070317076846,0.7390915647836578
+naive,pairs_isolation_hits,cpu time,-0.01365686649206684,0.6662153480573494
+duplicates,pairs_isolation_hits,cpu time,-0.0642728839922808,0.04214897015016578
+path,pairs_isolation_hits,cpu time,0.006090315304118074,0.8474652474314212
+naive,sandwich_pairs_hits,cpu time,-0.014177706580783853,0.6542973930901449
+duplicates,sandwich_pairs_hits,cpu time,0.017221595096434023,0.5864732254614529
+path,sandwich_pairs_hits,cpu time,-0.00892142144537354,0.7781176738128073
+naive,sandwich_triple_hits,cpu time,0.008846508615361997,0.7799326971819617
+duplicates,sandwich_triple_hits,cpu time,-0.018450227679943844,0.5600499586879624
+path,sandwich_triple_hits,cpu time,-0.0273652668473756,0.3873433301310456
+####,####,####,#,#
+naive cch,corner_check_hits,cpu time,-0.04931371266809577,0.11913032624171732
+duplicates cch,corner_check_hits,cpu time,0.050244158720334074,0.11231448334052234
+path cch,corner_check_hits,cpu time,-0.06451101841035246,0.04139109718666077
+naive pair isolation,pairs_isolation_hits,cpu time,-0.05492363942763518,0.08256805440215377
+duplicates pair isolation,pairs_isolation_hits,cpu time,-0.06616306353480057,0.036444289734802605
+path pair isolation,pairs_isolation_hits,cpu time,-0.08386785233581256,0.007966334547654068
+naive sandwiches,sandwich_pairs_hits,cpu time,-0.022645800219393993,0.4744118622615686
+duplicates sandwiches,sandwich_pairs_hits,cpu time,0.02927168548432494,0.3551259430070641
+path sandwiches,sandwich_pairs_hits,cpu time,-0.05065517834562744,0.10940312038094456
+naive sandwiches,sandwich_triple_hits,cpu time,-0.018488089143306345,0.5592449388855399
+duplicates sandwiches,sandwich_triple_hits,cpu time,-0.10256612919320321,0.0011624452732797753
+path sandwiches,sandwich_triple_hits,cpu time,-0.06908117359343986,0.02893167505354427
+naive sandwiches,sandwich pairs and triples,cpu time,-0.02567022382667907,0.41743338855735845
+duplicates sandwiches,sandwich pairs and triples,cpu time,0.006843814291873351,0.8288690644474076
+path sandwiches,sandwich pairs and triples,cpu time,-0.06509781200981943,0.03957264139666942

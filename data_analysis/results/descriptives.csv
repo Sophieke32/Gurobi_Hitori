@@ -1,0 +1,4 @@
+model,property,mean,variance
+naive,cpu_time,0.14030905,1.8311707942454785
+duplicates,cpu_time,0.117186375,0.8893581004710767
+path,cpu_time,0.44825152,0.24818409014273218

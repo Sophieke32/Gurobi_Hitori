@@ -1,0 +1,4 @@
+model 1,model 2,mean difference,p-value
+min heuristic,no heuristic,-9.3861265,1e-05
+no heuristic,max heuristic,-8.422586,1e-05
+min heuristic,max heuristic,-17.808712,1e-05
