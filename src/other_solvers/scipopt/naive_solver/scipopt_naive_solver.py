@@ -37,6 +37,11 @@ class ScipOptNaiveSolver(Solver):
     def solve(self, n, board):
         # Create a new model
         m = Model("scipopt_naive")
+
+        # This one requires some explanation I'm afraid:
+        # Creating constraints with is_covered[0][0] created buggy behaviour where is_covered[0][0] instead referred to
+        # all variables in the model. I wasn't sure how to fix this (and frankly I was in a hurry), so instead I created
+        # that_one_var which for all intents and purposes is is_covered[0][0].
         self.that_one_var = m.addVar(vtype='BINARY', name=f'This var is 0_0. Do not ask why, there might be a bug in SCIPOPT.')
 
         # set_model_parameters(m)
@@ -58,57 +63,25 @@ class ScipOptNaiveSolver(Solver):
 
         time_spent_on_optimisations = (time.process_time_ns() - t1) / 1000000000
 
-        var = True
+        var_scipopt_naive_adjacent_constraint(n, is_covered, m, self.that_one_var)
+        var_scipopt_naive_unique_constraint(n, is_covered, board, m, self.that_one_var)
+        VarScipOptMinHeuristic().apply(n, is_covered, m, self.that_one_var)
 
-        if var:
-            var_scipopt_naive_adjacent_constraint(n, is_covered, m, self.that_one_var)
-            var_scipopt_naive_unique_constraint(n, is_covered, board, m, self.that_one_var)
-            VarScipOptMinHeuristic().apply(n, is_covered, m, self.that_one_var)
+        m.optimize()
 
-            m.optimize()
+        uncovered, covered, grid = var_scipopt_extract_solution(n, m, is_covered, self.that_one_var)
+        # var_scipopt_pretty_print(m, is_covered, n, board, self.that_one_var)
+        iteration = 0
 
-            uncovered, covered, grid = var_scipopt_extract_solution(n, m, is_covered, self.that_one_var)
-            # var_scipopt_pretty_print(m, is_covered, n, board, self.that_one_var)
-            iteration = 0
-
-            while not self.connected_checker.check(n, grid):
-                # print("Infeasible iteration")
-                scipopt_add_illegal_solution(uncovered, covered, m, iteration, self.that_one_var)
-                m.optimize()
-                # print(m.getStatus())
-
-                uncovered, covered, grid = var_scipopt_extract_solution(n, m, is_covered, self.that_one_var)
-                # print("\n")
-                # var_scipopt_pretty_print(m, is_covered, n, board, self.that_one_var)
-                iteration += 1
-
-        else:
-            # Adjacency constraint
-            scipopt_naive_adjacent_constraint(n, is_covered, m)
-
-            # Unique constraint
-            scipopt_naive_unique_constraint(n, is_covered, board, m)
-
-            # Apply Heuristic
-            ScipOptMinHeuristic().apply(n, is_covered, m)
-
-
-            m.optimize()
-
-            # Extract values
-            uncovered, covered, grid = scipopt_extract_solution(n, m, is_covered)
-            scipopt_pretty_print(m, is_covered, n, board)
-            iteration = 0
-
-            # while not self.connected_checker.check(n, grid):
-                # print("Infeasible iteration")
+        while not self.connected_checker.check(n, grid):
+            # print("Infeasible iteration")
             scipopt_add_illegal_solution(uncovered, covered, m, iteration, self.that_one_var)
             m.optimize()
-            print(m.getStatus())
+            # print(m.getStatus())
 
-            uncovered, covered, grid = scipopt_extract_solution(n, m, is_covered)
-            print("\n")
-            scipopt_pretty_print(m, is_covered, n, board)
+            uncovered, covered, grid = var_scipopt_extract_solution(n, m, is_covered, self.that_one_var)
+            # print("\n")
+            # var_scipopt_pretty_print(m, is_covered, n, board, self.that_one_var)
             iteration += 1
 
 
