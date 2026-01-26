@@ -22,10 +22,19 @@ def save_graph_ntest(csv1, csv2, csv3, generate_for_poster):
         data2.append(np.mean(csv2[csv2['n']==i]['cpu time']))
         data3.append(np.mean(csv3[csv3['n']==i]['cpu time']))
 
-    # data1, data2 = csv1['cpu time'], csv2['cpu time']
-    ax.plot(sizes, data2, label="Duplicates model", color='red', linestyle='dashed')
-    ax.plot(sizes, data1, label="Optimised naive model", color='#49c3fb')
-    ax.plot(sizes, data3, label="Path model", color='#8c52ff', linestyle='dashdot')
+    colour1 = 'red'
+    colour2 = '#49c3fb'
+    colour3 = '#8c52ff'
+
+    if generate_for_poster:
+        colour1 = '#e07970'
+        colour2 = '#49c3fb'
+        colour3 = '#d6befa'
+
+
+    ax.plot(sizes, data2, label="Duplicates model", color=colour1, linestyle='dashed')
+    ax.plot(sizes, data1, label="Optimised naive model", color=colour2)
+    ax.plot(sizes, data3, label="Path model", color=colour3, linestyle='dashdot')
 
     ax.set_ylabel('Mean solving time (s)', size=15, **font)
     ax.set_xlabel('Instance size', size=15, **font)

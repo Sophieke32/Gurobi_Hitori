@@ -19,12 +19,12 @@ class TestRunEnvironment(RunEnvironment):
         m, is_covered, time_spent_on_optimisations = self.solver.solve(n, board)
 
 
-        # uncovered, covered, grid = extract_solution(n, m, is_covered)
-        uncovered, covered, grid = var_scipopt_extract_solution(n, m, is_covered, self.solver.that_one_var)
+        uncovered, covered, grid = extract_solution(n, m, is_covered)
+        # uncovered, covered, grid = var_scipopt_extract_solution(n, m, is_covered, self.solver.that_one_var)
         validity = check_solution(board, grid, n)
-        # print("Solution validity:", check_solution(board, grid, n))
+        print("Solution validity:", check_solution(board, grid, n))
 
         if not validity:
             # path_pretty_print(m, is_covered, path, n, board)
-            var_scipopt_pretty_print(m, is_covered, n, board, self.solver.that_one_var)
+            # var_scipopt_pretty_print(m, is_covered, n, board, self.solver.that_one_var)
             raise Exception("file:", file)

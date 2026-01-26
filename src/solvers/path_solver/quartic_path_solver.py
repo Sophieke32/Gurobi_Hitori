@@ -6,6 +6,7 @@ from gurobipy import GRB
 from src.constraints.naive_adjacent_constraint import naive_adjacent_constraint
 from src.constraints.naive_unique_constraint import naive_unique_constraint
 from src.constraints.quadratic_path_connected_constraint import quadratic_path_connected_constraint
+from src.constraints.quartic_connected_constraint_free import quadratic_path_connected_constraint_free
 from src.constraints.redundant_constraints.redundant_constraint import RedundantConstraint
 from src.solvers.path_solver.helper_methods.find_duplicates import find_duplicates
 from src.solvers.set_model_parameters import set_model_parameters
@@ -52,7 +53,7 @@ class QuarticPathSolver(Solver):
         naive_unique_constraint(n, is_covered, board, m)
 
         # Connected constraint
-        path = quadratic_path_connected_constraint(n, is_covered, m)
+        path = quadratic_path_connected_constraint_free(n, is_covered, m)
 
         # Optimise the model
         try:

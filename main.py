@@ -122,8 +122,8 @@ def run_preprocess(directory_name):
 # Runs the model in the TestRunEnvironment, which actually checks solutions
 # Manually change the code to change what model is run
 def verify_instance(directory_name):
-    # solver = QuarticPathSolver("quartic", [])
-    solver = ScipOptNaiveSolver("cylp", [], BFSConnectedChecker(), ScipOptMinHeuristic())
+    solver = QuarticPathSolver("quartic", [])
+    # solver = ScipOptNaiveSolver("cylp", [], BFSConnectedChecker(), ScipOptMinHeuristic())
     environment = TestRunEnvironment(solver)
 
     i = 1
@@ -151,14 +151,14 @@ def run_custom(directory_name):
 def run_ntest(directory_name):
     all_solvers = []
 
-    # all_solvers.append(
-    #     QuarticPathSolver("path_ntest", []))
+    all_solvers.append(
+        QuarticPathSolver("path_ntest", []))
     # all_solvers.append(
     #     DuplicatesSolver("duplicates_ntest", []))
     # all_solvers.append(
     #     NaiveSolver("naive_ntest", [], BFSConnectedChecker(), MinHeuristic()))
-    all_solvers.append(
-        ScipOptNaiveSolver("scipopt_naive_ntest", [], BFSConnectedChecker(), ScipOptMinHeuristic()))
+    # all_solvers.append(
+    #     ScipOptNaiveSolver("scipopt_naive_ntest", [], BFSConnectedChecker(), ScipOptMinHeuristic()))
 
     run_environments = []
     for solver in all_solvers:

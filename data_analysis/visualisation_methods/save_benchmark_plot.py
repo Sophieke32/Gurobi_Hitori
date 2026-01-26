@@ -13,7 +13,7 @@ def save_benchmark_plot(generate_for_poster):
         font = {'fontname': 'DejaVu Sans'}
         font_manager = fm.FontProperties(family='DejaVu Sans')
 
-    fig, ax = plt.subplots(figsize=(6, 5))
+    fig, ax = plt.subplots(figsize=(6.5, 5))
 
 
     sizes = np.unique(benchmark_files['asp']['n'])
@@ -30,12 +30,24 @@ def save_benchmark_plot(generate_for_poster):
         pumpkin.append(np.mean(benchmark_files['pumpkin'][benchmark_files['pumpkin']['n'] == i]['cpu time']))
         z3.append(np.mean(benchmark_files['z3'][benchmark_files['z3']['n'] == i]['cpu time']))
 
+    colour1 = '#49c3fb'
+    colour2 = 'red'
+    colour3 = '#8c52ff'
+    colour4 = '#479643'
+    colour5 = '#e0911a'
 
-    ax.plot(sizes, gurobi, label="ILP", color='#49c3fb')
-    ax.plot(sizes, asp, label="ASP", color='red', linestyle='dashed')
-    ax.plot(sizes, prolog, label="LP", color='#8c52ff', linestyle='dashdot')
-    ax.plot(sizes, pumpkin, label="CSP", color='#479643', linestyle=(0, (1, 5)))
-    ax.plot(sizes, z3, label="SMT", color='#e0911a', linestyle=(0, (1, 1)))
+    if generate_for_poster:
+        colour1 = '#e07970'
+        colour2 = '#49c3fb'
+        colour3 = '#d6befa'
+        colour4 = '#7de278'
+        colour5 = '#e2aa56'
+
+    ax.plot(sizes, gurobi, label="ILP", color=colour1)
+    ax.plot(sizes, asp, label="ASP", color=colour2, linestyle='dashed')
+    ax.plot(sizes, prolog, label="LP", color=colour3, linestyle='dashdot')
+    ax.plot(sizes, pumpkin, label="CSP", color=colour4, linestyle=(0, (1, 5)))
+    ax.plot(sizes, z3, label="SMT", color=colour5, linestyle=(0, (1, 1)))
 
     ax.set_ylabel('Mean solving time (s)', size=15, **font)
     ax.set_xlabel('Instance size', size=15, **font)

@@ -3,7 +3,7 @@ import numpy as np
 from gurobipy import GRB
 
 
-def quadratic_path_connected_constraint(n, is_covered, m):
+def quadratic_path_connected_constraint_free(n, is_covered, m):
     # Make another 2d array of variables in the size of the board
     path = list()
 
@@ -22,44 +22,37 @@ def quadratic_path_connected_constraint(n, is_covered, m):
     m.addConstrs(path[x][y][z] <= 1 - is_covered[x][y] for x in range(n) for y in range(n) for z in range(n*n))
     m.update()
 
-    l = gp.LinExpr()
-    for i in range(n):
-        for j in range(n):
-            l += path[i][j][0]
-
-    m.addConstr(l <= 1)
-
     # Allow path-making. path[x][y][z] may be set to 1 if one of its neighbour has path[a][b][z-1] set to 1
     for i in range(1, n-1):
-        # if not i == 1 and not i == 2:
-        #     m.addConstr(path[i][0][0] <= 0)
+        if not i == 1 and not i == 2:
+            m.addConstr(path[i][0][0] <= 0)
         m.addConstrs(path[i][0][z] <= path[i-1][0][z-1] + path[i][1][z-1] + path[i+1][0][z-1] for z in range(1, n*n))
 
     for i in range(1, n-1):
-        # m.addConstr(path[i][n-1][0] <= 0)
+        m.addConstr(path[i][n-1][0] <= 0)
         m.addConstrs(path[i][n-1][z] <= path[i-1][n-1][z-1] + path[i][n-2][z-1] + path[i+1][n-1][z-1] for z in range(1, n*n))
 
 
     for j in range(1, n-1):
-        # m.addConstr(path[0][j][0] <= 0)
+        m.addConstr(path[0][j][0] <= 0)
         m.addConstrs(path[0][j][z] <= path[0][j-1][z-1] + path[1][j][z-1] + path[0][j+1][z-1] for z in range(1, n*n))
-        # m.addConstr(path[-1][j][0] <= 0)
+        m.addConstr(path[-1][j][0] <= 0)
         m.addConstrs(path[n-1][j][z] <= path[n-1][j-1][z-1] + path[n-2][j][z-1] + path[n-1][j+1][z-1] for z in range(1, n*n))
 
 
-    # m.addConstr(path[0][0][0] <= 0)
+    m.addConstr(path[0][0][0] <= 0)
     m.addConstrs(path[0][0][z] <= path[0][1][z - 1] + path[1][0][z - 1] for z in range(1, n * n))
 
-    # m.addConstr(path[-1][0][0] <= 0)
+    m.addConstr(path[-1][0][0] <= 0)
     m.addConstrs(path[-1][0][z] <= path[-1][1][z - 1] + path[-2][0][z - 1] for z in range(1, n * n))
 
-    # m.addConstr(path[0][-1][0] <= 0)
+    m.addConstr(path[0][-1][0] <= 0)
     m.addConstrs(path[0][-1][z] <= path[1][-1][z - 1] + path[0][-2][z - 1] for z in range(1, n * n))
 
-    # m.addConstr(path[-1][-1][0] <= 0)
+    m.addConstr(path[-1][-1][0] <= 0)
     m.addConstrs(path[-1][-1][z] <= path[-2][-1][z - 1] + path[-1][-2][z - 1] for z in range(1, n * n))
 
-    # m.addConstrs(path[x][y][0] <= 0 for x in range(1, n-1) for y in range(1, n-1))
+    m.addConstrs(path[x][y][0] <= 0 for x in range(1, n-1) for y in range(1, n-1))
     m.addConstrs(path[x][y][z] <= path[x-1][y][z-1] + path[x+1][y][z-1] + path[x][y-1][z-1] + path[x][y+1][z-1]
                              for x in range(1, n-1) for y in range(1, n-1) for z in range(1, n*n))
 

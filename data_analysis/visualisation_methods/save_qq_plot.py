@@ -15,14 +15,10 @@ def save_qq_plot(csv, file_path, generate_for_poster=False):
     blue_color = "#49c3fb"
     whisker_props_color = 'black'
 
-    if generate_for_poster:
-        whisker_props_color = 'white'
 
-    fig, ax = plt.subplots(figsize=(6, 4))
+    fig, ax = plt.subplots(figsize=(6, 4.5))
 
     sm.qqplot(csv['cpu time'], line='45', ax=ax)
-
-    ax.set_ylabel('Time (s)', size=15, **font)
 
     # Set the ticks' font
     for label in ax.get_xticklabels():
@@ -31,10 +27,16 @@ def save_qq_plot(csv, file_path, generate_for_poster=False):
     for label in ax.get_yticklabels():
         label.set_fontproperties(font_manager)
 
+    # Set labels
+    ax.set_ylabel('Solving time (s)', size=15, **font)
+    ax.set_xlabel('Theoretical Quantiles', size=15, **font)
+
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
 
     ax.set_xlim(left=0)
+
+    ax.tick_params(axis='both', labelsize=15)
 
     # ax.grid()
     # ax.grid(which="minor", color="0.5")
@@ -58,6 +60,4 @@ def save_qq_plot(csv, file_path, generate_for_poster=False):
     else:
         # plt.show()
         plt.savefig('figures/' + file_path + '.svg')
-        # pylab.savefig("figures/" + file_path)
-        # pylab.show()
 

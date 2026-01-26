@@ -22,11 +22,12 @@ def save_histogram(data, file_path, generate_for_poster=False):
     if generate_for_poster:
         whisker_props_color = 'white'
 
-    fig, ax = plt.subplots(figsize=(6, 4))
+    fig, ax = plt.subplots(figsize=(6, 5))
 
     ax.hist(data, 50, range=(data.min(), data.max()))
 
-    ax.set_ylabel('Time (s)', size=15, **font)
+    ax.set_xlabel('Solving time (s)', size=15, **font)
+    ax.set_ylabel('Number of instances', size=15, **font)
 
     # Set the ticks' font
     for label in ax.get_xticklabels():
@@ -39,6 +40,8 @@ def save_histogram(data, file_path, generate_for_poster=False):
     ax.spines["top"].set_visible(False)
 
     ax.set_xlim(left=0)
+
+    ax.tick_params(axis='both', labelsize=15)
 
     # ax.grid()
     # ax.grid(which="minor", color="0.5")
@@ -61,4 +64,3 @@ def save_histogram(data, file_path, generate_for_poster=False):
     else:
         # plt.show()
         plt.savefig('figures/' + file_path + '.svg')
-

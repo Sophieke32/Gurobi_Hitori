@@ -31,7 +31,7 @@ def save_survival_plot(csv1, csv2, csv3, generate_for_poster):
     fig, ax = plt.subplots(figsize=(6, 5))
 
 
-    ax.plot(datapoints[0], x, label="Naive model", color='#49c3fb')
+    ax.plot(datapoints[0], x, label="Optimised naive model", color='#49c3fb')
     ax.plot(datapoints[1], x, label="Duplicates model", color='red', linestyle='dashed')
     ax.plot(datapoints[2], x, label="Path model", color='#8c52ff', linestyle='dashdot')
 
