@@ -20,14 +20,14 @@ python main.py -d name_of_directory
 ```
 and it will run all .singles files in that directory (and any sub+directories) using the optimised naive model.
 
-There are optional flags to specify what behaviour you want: 
--m allows you to specify a model. Currently, 'duplicates' and 'naive' are available. Default is 'duplicates'.
--t gives you the option to track the time the model took for all solutions in a csv file. Can be True or False. Default is 'False'
--a will run all the variations of different solvers, different heuristics, and different redundant constraints. It will always time this.
+There are optional flags to specify what behaviour you want:   
+-m allows you to specify a model. Currently, 'duplicates' and 'naive' are available. Default is 'duplicates'.  
+-t gives you the option to track the time the model took for all solutions in a csv file. Can be True or False. Default is 'False'  
+-a will run all the variations of different solvers, different heuristics, and different redundant constraints. It will always time this.  
 -p preprocesses the Hitori files in the directory. This means that it will collect data on the instances and put that in the 
-.singles files. If other run environments (such as with the -t flag) do not work, consider first preprocessing the data.
--c allows you to easily define a custom job to run, but it requires you to write the code for it. 
--n runs and times the three base models on the files in the given directory. 
+.singles files. If other run environments (such as with the -t flag) do not work, consider first preprocessing the data.  
+-c allows you to easily define a custom job to run, but it requires you to write the code for it.   
+-n runs and times the three base models on the files in the given directory.   
 
 ## Dependencies
 This project's dependencies are detailed in the `requirements.txt` file.
